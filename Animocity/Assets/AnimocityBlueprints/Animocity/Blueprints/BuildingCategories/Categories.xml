@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<BuildingCategories>
+  <BuildingCategoryBlueprint label="bcb_Residential">
+    <description>Provides places for people to live. People without homes will be unhappy and unproductive.</description>
+    <categoryColour>0.2,1.0,0.2</categoryColour>
+    <iconPath>Temporary/Icons/bc_Residential</iconPath>
+  </BuildingCategoryBlueprint>
+
+  <BuildingCategoryBlueprint label="bcb_Utility">
+    <description>The services that lubricate society. Or that make it feel greasy.</description>
+    <categoryColour>0.5,1.0,1.0</categoryColour>
+    <iconPath>Temporary/Icons/bc_Utility</iconPath>
+  </BuildingCategoryBlueprint>
+
+  <BuildingCategoryBlueprint label="bcb_Industrial">
+    <description>Turn things into other things with INDUSTRY!!!</description>
+    <categoryColour>1.0,1.0,0.2</categoryColour>
+    <iconPath>Temporary/Icons/bc_Industrial</iconPath>
+  </BuildingCategoryBlueprint>
+
+</BuildingCategories>
