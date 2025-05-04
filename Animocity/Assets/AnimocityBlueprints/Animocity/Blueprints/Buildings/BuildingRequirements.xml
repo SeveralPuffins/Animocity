@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<BuildingRequirements>
+  <BuildRequirementBlueprint label="BuildRequirementBlue_Fits">
+    <requirementCheckWorker>BuildRequirementWorker_Fits</requirementCheckWorker>
+  </BuildRequirementBlueprint>
+  <BuildRequirementBlueprint label="BuildRequirementBlue_IsSupported">
+    <requirementCheckWorker>BuildRequirementWorker_Supported</requirementCheckWorker>
+  </BuildRequirementBlueprint>
+</BuildingRequirements>
