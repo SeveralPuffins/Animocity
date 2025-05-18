@@ -119,11 +119,11 @@ Material:
     - _GlossyReflections: 0
     - _Levels: 12
     - _Metallic: 0
-    - _NormalThreshold: 0.54
+    - _NormalThreshold: 0.64
     - _OVERLAY: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Posterizeblend: 0.636
+    - _Posterizeblend: 0.836
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -135,11 +135,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _brush_opacity: 1
-    - _colourThreshold: 0.27
+    - _colourThreshold: 0.94
     - _contrast: 1
-    - _lineopacity: 0.474
+    - _lineopacity: 0.656
     - _posterize: 1
-    - _posterizeLevels: 12.09
+    - _posterizeLevels: 35.7
     - _saturation: 1
     - _tilingBrush: 4.17
     m_Colors:
