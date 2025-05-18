@@ -28,6 +28,7 @@ namespace Animocity.Cities
         public List<Vector2Int> tilesNeeded;
 
         public List<BuildRequirementBlueprint> buildRequirements;
+        public List<BuildingComponentData> components;
 
         public Dictionary<ResourceBlueprint, float> resourceInputs;
         public Dictionary<ResourceBlueprint, float> resourceOutputs;

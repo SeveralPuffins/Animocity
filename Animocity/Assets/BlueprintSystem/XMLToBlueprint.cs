@@ -179,14 +179,14 @@ namespace BlueprintSystem
  											where f.Name==childName
  											select f);
 
- 				if(matchingFields.Count()==0){ 
-					Console.WriteLine(string.Format("Could not find field in type {0} named {1}.", typeof(T).Name, childName));
+ 				if(matchingFields.Count()==0){
+                    MonoBehaviour.print(string.Format("Could not find field in type {0} named {1}.", typeof(T).Name, childName));
  					continue;
  				}
  				FieldInfo field = matchingFields.Reverse().First();
 
- 				if(field==null){ 
- 					Console.WriteLine(string.Format("Could not find field in type {0} named {1}.", typeof(T).Name, childName));
+ 				if(field==null){
+                    MonoBehaviour.print(string.Format("Could not find field in type {0} named {1}.", typeof(T).Name, childName));
  					continue;
  				}
 				object current = field.GetValue(obj);
@@ -204,22 +204,22 @@ namespace BlueprintSystem
 
 			Type fieldType = field.FieldType;
 
-			if(field.Name=="label"){ 
-				Console.WriteLine("Parser was passed field named label, which should be filled from attribute");
+			if(field.Name=="label"){
+                MonoBehaviour.print("Parser was passed field named label, which should be filled from attribute");
 				return null;
 			}
 
 			// Check for alternative derived class to parse...
 			if(node.Attributes!=null && node.Attributes["Class"]!=null && node.Attributes["Class"].Value!=null){
-				#if DEBUG
-				MonoBehaviour.print("Class specified for field type "+fieldType.Name);
-				#endif
+				//#if DEBUG
+				MonoBehaviour.print("CLASS specified for field type "+fieldType.Name);
+				//#endif
 				Type newType = ParseType(node.Attributes["Class"].Value);
 				if(newType!=null && newType.IsSubclassOf(fieldType)){
 					fieldType = newType;
-					#if DEBUG
+					//#if DEBUG
 					MonoBehaviour.print("New parsing as type "+fieldType.Name);
-					#endif
+					//#endif
 				}
 			}
 
@@ -231,9 +231,9 @@ namespace BlueprintSystem
 			//MonoBehaviour.print(string.Format("Now parsing field {0} of type {1}", node.Name, type.Name));
 
 			if(node.Attributes!=null && node.Attributes["Class"]!=null && node.Attributes["Class"].Value!=null){
-				#if DEBUG
-				MonoBehaviour.print("Class specified for field type "+type.Name);
-				#endif
+				//#if DEBUG
+				MonoBehaviour.print("CLASS specified for field type " + type.Name);
+				//#endif
 				Type newType = ParseType(node.Attributes["Class"].Value);
 				if(newType!=null && newType.IsSubclassOf(type)){
 					type = newType;
