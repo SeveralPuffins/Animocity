@@ -138,7 +138,7 @@ namespace Animocity.Cities
                     float lossMultiplier = 1f + path.TotalCost;
                     float available = Math.Min(lossMultiplier * checkSupply, supplyAvailable[supplier]);
 
-                    checkSupply -= available/lossMultiplier;as
+                    checkSupply -= available/lossMultiplier;
                     if (checkSupply <= 0f) break;
                 }
                 if (checkSupply > 0) return false;
