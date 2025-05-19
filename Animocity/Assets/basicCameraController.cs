@@ -5,6 +5,10 @@ using UnityEngine;
 public class basicCameraController : MonoBehaviour
 {
     public float baseSpeed = 5f;
+    public Rect maxBounds=  new Rect(-20,20,20,20);
+    public float maxZoom = -16f;
+    public float minZoom = -160f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +30,11 @@ public class basicCameraController : MonoBehaviour
 
         zoom = Input.mouseScrollDelta.y*speed*12f;
 
-        transform.position += ((Vector3)move + Vector3.forward * zoom) * Time.deltaTime;
+        var target = transform.localPosition + ((Vector3)move + Vector3.forward * zoom) * Time.deltaTime;
+
+        if(target.x > maxBounds.xMin && target.x < maxBounds.xMax && target.y > maxBounds.yMin && target.y < maxBounds.yMax && target.z > minZoom && target.z < maxZoom)
+        {
+            transform.localPosition = target;
+        }
     }
 }

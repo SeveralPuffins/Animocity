@@ -43,6 +43,8 @@ namespace Animocity.UI
    
         private void HighlightLocalGrid(BuildingGrid grid, Vector2Int ctr)
         {
+
+            
            
             var minCell = ctr - HIGHLIGHT_DIST*Vector2Int.one;
             float alpha;
@@ -59,6 +61,7 @@ namespace Animocity.UI
 
                     if (grid.IsInBounds(square))
                     {
+                        MonoBehaviour.print($"Centre at {ctr}");
                         alpha = 0.5f * (1f - dst);
                         Color hClr = grid.IsOccupied(square)
                           ? grid.highlightNegative.WithAlpha(alpha)
