@@ -33,7 +33,7 @@ public class MechController : MonoBehaviour
     private void Update()
     {
         
-        if(navMeshAgent.remainingDistance <0.2f)
+        if(navMeshAgent!=null && navMeshAgent.remainingDistance <0.2f)
         {
             navMeshAgent.destination = goal.position;
         }
