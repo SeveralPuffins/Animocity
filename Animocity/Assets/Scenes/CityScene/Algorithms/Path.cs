@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace Animocity.Cities.Algorithms
 {

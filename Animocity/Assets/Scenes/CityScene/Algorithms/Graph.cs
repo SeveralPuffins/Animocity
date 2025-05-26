@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor.SearchService;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Animocity.Cities.Algorithms
 {
