@@ -11,7 +11,8 @@ namespace Scenes.BattleScene
         
         public void Move(Vector2 direction)
         {
-            // direction.
+            // mech only walks back and forwards, so discard the Y-Axis for movement
+            // possibly use Y-Axis for pitching?
             _movement = new Vector3(direction.x, 0, 0);
         }
 

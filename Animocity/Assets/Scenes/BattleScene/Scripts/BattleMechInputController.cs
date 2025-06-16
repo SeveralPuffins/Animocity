@@ -1,13 +1,14 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Scenes.BattleScene.Scripts
 {
     public class BattleMechInputController : MonoBehaviour
     {
         private BattleControls _controls;
-        [SerializeField] private BattleMechMovementController _movementController;
+        [SerializeField] private BattleMechMovementController movementController;
 
         private void Awake()
         {
@@ -29,12 +30,12 @@ namespace Scenes.BattleScene.Scripts
         private void MovementOnCancel(InputAction.CallbackContext context)
         {
 
-            _movementController.StopMoving();
+            movementController.StopMoving();
         }
 
         private void MovementOnPerformed(InputAction.CallbackContext context)
         {
-            _movementController.Move(context.ReadValue<Vector2>());
+            movementController.Move(context.ReadValue<Vector2>());
         }
     }
 }
