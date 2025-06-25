@@ -6,4 +6,11 @@
   <BuildRequirementBlueprint label="BuildRequirementBlue_IsSupported">
     <requirementCheckWorker>BuildRequirementWorker_Supported</requirementCheckWorker>
   </BuildRequirementBlueprint>
+  <BuildRequirementBlueprint label="BuildRequirementBlue_IsOnCoil">
+    <requirementCheckWorker>BuildRequirementWorker_IsOnCoil</requirementCheckWorker>
+  </BuildRequirementBlueprint>
+  <BuildRequirementBlueprint label="BuildRequirementBlue_Accessible">
+    <requirementCheckWorker>BuildRequirementWorker_Accessible</requirementCheckWorker>
+  </BuildRequirementBlueprint>
+  
 </BuildingRequirements>

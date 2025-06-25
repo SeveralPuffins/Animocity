@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Animocity.Cities
 {
@@ -19,6 +21,12 @@ namespace Animocity.Cities
             Building = building;
             Building.Tick += this.Tick;
             Building.LongTick += this.Tick;
+            OnBuild();
+        }
+
+        protected virtual void OnBuild()
+        {
+            MonoBehaviour.print($"Initialising component {this.GetType()} on {Building.Blue.DisplayName}");
         }
 
         protected virtual bool Tick(Building building)

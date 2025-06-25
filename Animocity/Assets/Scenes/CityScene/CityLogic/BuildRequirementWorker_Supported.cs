@@ -15,7 +15,7 @@ namespace Animocity.Cities
             return buildingBlue.tilesNeeded.Where(el => el.y <= 0).ToList();
         }
 
-        public override bool CanBuildAtLocation(Vector2Int location, BuildingBlueprint buildingBlue, BuildingGrid buildingGrid)
+        public override bool CanBuildAtLocation(Vector2Int location, BuildingBlueprint buildingBlue, CityGrid buildingGrid)
         {
             return GetAllTilesNeedingSupport(buildingBlue).All((offset) => buildingGrid.IsSupported(offset+location));
         }

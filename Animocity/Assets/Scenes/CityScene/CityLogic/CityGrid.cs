@@ -12,10 +12,12 @@ using UnityEngine.UI;
 
 namespace Animocity.Cities
 {
-    public class BuildingGrid : MonoBehaviour
+    public class CityGrid : MonoBehaviour
     {
         [Header("Grid Settings")]
         [SerializeField] private List<Vector2> polygonPoints;
+        public PowerGrid powerGrid;
+        public TransportGrid transportGrid;
         public Polygon bounds { get; private set; }
         private Dictionary<Vector2Int, Building> tileContents;
         public Vector2 cellSize;
@@ -62,6 +64,54 @@ namespace Animocity.Cities
             }
             return false;
         }
+        private List<Vector2Int> GetSquares(Vector2Int fromSquare, Vector2Int toSquare, Vector2Int stride, bool lockLongestRowCol = false)
+        {
+            int roundedToSquareX = ((toSquare.x - fromSquare.x) / stride.x)*stride.x + fromSquare.x;
+            int roundedToSquareY = ((toSquare.y - fromSquare.y) / stride.y)*stride.y + fromSquare.y;
+
+            int iMin = Math.Min(roundedToSquareX, fromSquare.x);
+            int jMin = Math.Min(roundedToSquareY, fromSquare.y);
+
+            int iMax = Math.Max(toSquare.x, fromSquare.x);
+            int jMax = Math.Max(toSquare.y, fromSquare.y);
+
+            int dx = iMax - iMin;
+            int dy = jMax - jMin;
+
+            if (dx == 0 && dy == 0)
+            {
+                return new List<Vector2Int>() { fromSquare };
+            }
+
+            if (lockLongestRowCol)
+            {
+                if (dx >= dy)
+                {
+                    jMin = jMax = fromSquare.y;
+                }
+                else
+                {
+                    iMin = iMax = fromSquare.x;
+                }
+            }
+
+            List<Vector2Int> squaresList = new();
+            for (int i = iMin; i<=iMax; i+=stride.x)
+            {
+                for(int j = jMin; j<=jMax; j+=stride.y)
+                {
+                    squaresList.Add(new Vector2Int(i, j));
+                }
+            }
+            return squaresList;
+        }
+        public List<Vector2Int> GetSquaresBetween(Vector3 dragFromPosition, Vector3 dragToPosition, Vector2Int stride, bool lockLongestRowCol = false)
+        {
+            var fromSquare = WorldToCell(dragFromPosition);
+            var toSquare = WorldToCell(dragToPosition);
+            return GetSquares(fromSquare, toSquare, stride, lockLongestRowCol);
+        }
+
         public bool TryGetBuildingAt(Vector2Int tile, out Building building)
         {
             return tileContents.TryGetValue(tile, out building);
@@ -77,6 +127,12 @@ namespace Animocity.Cities
 
         public bool TryBuildAtLocation(BuildingBlueprint blue, Vector2Int loc, out Building newBuilding)
         {
+            if (!IsInBounds(loc))
+            {
+                newBuilding = null;
+                return false;
+            }
+
             if(blue.CanBuildAtLocation(loc, this))
             {
                 var newBuildingTransform = Instantiate<Transform>(blue.GetPrefab(), WorldFromCell(loc), Quaternion.identity);
@@ -102,17 +158,32 @@ namespace Animocity.Cities
             return WorldToCell(GetMousePosition());
         }
 
+        bool _dragging = false;
+        float _minDragDist = 0.2f;
+        Vector2 _dragStartLocation;
+
         public void Update()
         {
-            if (Input.GetMouseButtonDown(0)) {
-                ControlContext.Current.OnInteract(this, GetMousePosition());
+            var pos = GetMousePosition();
+            if (Input.GetMouseButtonDown(0))
+            {
+                _dragging = true;
+                _dragStartLocation = pos;
+            }
+
+            var drag = _dragging && ((pos - _dragStartLocation).sqrMagnitude >= _minDragDist * _minDragDist);
+
+            if (Input.GetMouseButtonUp(0)) {
+                ControlContext.Current.OnInteract(this, pos, drag, _dragStartLocation);
+                _dragging = false;
             }
             else if(Input.GetMouseButtonDown(1)) {
-                ControlContext.Current.OnInspect(this, GetMousePosition());
+                ControlContext.Current.OnInspect(this, pos);
+                _dragging = false;
             }
             else
             {
-                ControlContext.Current.OnHover(this, GetMousePosition());
+                ControlContext.Current.OnHover(this, pos, drag, _dragStartLocation);
             }
         }
 

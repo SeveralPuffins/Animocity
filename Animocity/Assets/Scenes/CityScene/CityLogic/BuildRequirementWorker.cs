@@ -9,7 +9,7 @@ namespace Animocity.Cities
 {
     public abstract class BuildRequirementWorker
     {
-        public virtual bool CanBuildAtLocation(Vector2Int location, BuildingBlueprint buildingBlue, BuildingGrid buildingGrid)
+        public virtual bool CanBuildAtLocation(Vector2Int location, BuildingBlueprint buildingBlue, CityGrid buildingGrid)
         {
             return false;
         }

@@ -1,4 +1,5 @@
 ﻿using Animocity.Cities;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Animocity.UI
@@ -32,17 +33,21 @@ namespace Animocity.UI
             _default = _def;
         }
 
-        public virtual void OnHover(BuildingGrid grid, Vector3 hoverPositionWorld)
+        public virtual void OnHover(CityGrid grid, Vector3 hoverPositionWorld, bool drag=false, Vector3 dragFrom=default)
         {
 
         }
 
-        public virtual void OnInteract(BuildingGrid grid, Vector3 interactPositionWorld)
+        public virtual void OnInteract(CityGrid grid, Vector3 interactPositionWorld, bool isDrag=false, Vector3 dragStartPositionWorld = default)
+        {
+
+        }
+        public virtual void OnCommitInteract(CityGrid grid, Vector3 interactPositionWorld)
         {
 
         }
 
-        public virtual void OnInspect(BuildingGrid grid, Vector3 inspectPositionWorld)
+        public virtual void OnInspect(CityGrid grid, Vector3 inspectPositionWorld)
         {
 
         }

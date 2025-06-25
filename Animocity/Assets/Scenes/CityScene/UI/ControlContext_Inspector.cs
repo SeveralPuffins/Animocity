@@ -25,23 +25,23 @@ namespace Animocity.UI
         }
 
 
-        public override void OnHover(BuildingGrid grid, Vector3 positionWorld)
+        public override void OnHover(CityGrid grid, Vector3 positionWorld, bool drag, Vector3 dragFrom)
         {
             HighlightLocalGrid(grid, grid.WorldToCell(positionWorld));
         }
 
-        public override void OnInteract(BuildingGrid grid, Vector3 positionWorld)
+        public override void OnInteract(CityGrid grid, Vector3 positionWorld, bool drag, Vector3 dragStartWorldPos)
         {
 
         }
 
-        public override void OnInspect(BuildingGrid grid, Vector3 positionWorld)
+        public override void OnInspect(CityGrid grid, Vector3 positionWorld)
         {
 
         }
 
    
-        private void HighlightLocalGrid(BuildingGrid grid, Vector2Int ctr)
+        private void HighlightLocalGrid(CityGrid grid, Vector2Int ctr)
         {
 
             
@@ -61,7 +61,7 @@ namespace Animocity.UI
 
                     if (grid.IsInBounds(square))
                     {
-                        MonoBehaviour.print($"Centre at {ctr}");
+                        //MonoBehaviour.print($"Centre at {ctr}");
                         alpha = 0.5f * (1f - dst);
                         Color hClr = grid.IsOccupied(square)
                           ? grid.highlightNegative.WithAlpha(alpha)

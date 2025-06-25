@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace Animocity.Cities
 {
@@ -32,17 +34,35 @@ namespace Animocity.Cities
         private void FillComponents()
         {
             Components = new List<BuildingComponent>();
-            foreach(var data in Blue.components)
+            if (Blue.components != null)
             {
-                var worker = data.GetWorker(this);
-                Components.Add(worker);
-                print($"Making Building Component of type {data.GetType().ToString()} with worker type {worker.GetType().ToString()}");
+                foreach (var data in Blue.components)
+                {
+                    var worker = data.GetWorker(this);
+                    Components.Add(worker);
+                    print($"Making Building Component of type {data.GetType().ToString()} with worker type {worker.GetType().ToString()}");
+                }
             }
         }
 
         public List<T> GetComps<T>() where T : BuildingComponent
         {
-           return Components.Where((comp)=> comp.GetType().IsAssignableFrom(typeof(T))).ToList() as List<T>;
+            var found = Components.OfType<T>().ToList();
+            if (found != null)
+            {
+                MonoBehaviour.print($"Found {found.Count()} comps");
+            }
+
+            foreach ( var component in Components)
+            {
+                MonoBehaviour.print($"Comp {component.GetType().Name} found on {this.Blue.label}");
+
+                bool isAssignable = typeof(T).IsAssignableFrom(component.GetType());
+
+                MonoBehaviour.print($"{typeof(T).Name} is assignable from {component.GetType().Name} ? -> {isAssignable}");
+            }
+
+            return found;
         }
 
 

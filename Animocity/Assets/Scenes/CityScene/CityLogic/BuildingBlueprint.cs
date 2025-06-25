@@ -24,6 +24,8 @@ namespace Animocity.Cities
 
         public bool needsSupport;
         public bool grantsSupport;
+        public bool autoRow;
+
 
         public List<Vector2Int> tilesNeeded;
 
@@ -33,7 +35,7 @@ namespace Animocity.Cities
         public Dictionary<ResourceBlueprint, float> resourceInputs;
         public Dictionary<ResourceBlueprint, float> resourceOutputs;
 
-        public bool CanBuildAtLocation(Vector2Int loc, BuildingGrid grid)
+        public bool CanBuildAtLocation(Vector2Int loc, CityGrid grid)
         {
             if(buildRequirements == null || buildRequirements.Count  == 0)
             {
@@ -59,6 +61,21 @@ namespace Animocity.Cities
                 _cachedPrefab =  Resources.Load<Transform>(prefabPath);
             }
             return _cachedPrefab;
+        }
+
+        public int Width
+        {
+            get
+            {
+                return 1 + (tilesNeeded.Max(v2i => v2i.x) - tilesNeeded.Min(v2i => v2i.x));
+            }
+        }
+        public int Height
+        {
+            get
+            {
+                return 1 + (tilesNeeded.Max(v2i => v2i.y) - tilesNeeded.Min(v2i => v2i.y));
+            }
         }
     }
 }
