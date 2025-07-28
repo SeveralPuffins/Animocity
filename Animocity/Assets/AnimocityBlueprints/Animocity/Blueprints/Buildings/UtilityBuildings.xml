@@ -11,6 +11,12 @@
     <tilesNeeded>
       <li>0,0</li>
     </tilesNeeded>
+    <components>
+      <li Class="BuildingComponentData_Power">
+        <componentClass>Animocity.Cities.BuildingComponent_PowerSupplier</componentClass>
+        <powerAmount>200.0</powerAmount>
+    </li>
+    </components>
     <buildRequirements>
       <li>BuildRequirementBlue_IsOnCoil</li>
     </buildRequirements>

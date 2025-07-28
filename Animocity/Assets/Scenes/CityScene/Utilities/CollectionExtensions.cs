@@ -15,6 +15,24 @@ namespace Animocity.Utilities
                 yield return map(t);
             }
         }
+        public static IEnumerable<double> CumulativeSum(this IEnumerable<double> sequence)
+        {
+            double sum = 0;
+            foreach (var item in sequence)
+            {
+                sum += item;
+                yield return sum;
+            }
+        }
+        public static IEnumerable<double> CumulativeSum<T>(this IEnumerable<T> sequence, Func<T, double> map)
+        {
+            double sum = 0;
+            foreach (var item in sequence)
+            {
+                sum += map(item);
+                yield return sum;
+            }
+        }
         public static bool WhereAny<T>(this IEnumerable<T> data, Func<T, bool> predicate)
         {
             foreach(T t in data)

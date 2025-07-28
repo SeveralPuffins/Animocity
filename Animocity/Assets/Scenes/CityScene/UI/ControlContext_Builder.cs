@@ -52,7 +52,7 @@ namespace Animocity.UI
 
         public override void OnInteract(CityGrid grid, Vector3 positionWorld, bool drag, Vector3 dragFrom)
         {
-            if(drag)
+            if(drag && _selected.autoRow)
             {
                 var stride = new Vector2Int(_selected.Width, _selected.Height);
                 var dragSquares = grid.GetSquaresBetween(dragFrom, positionWorld, stride, lockLongestRowCol:true);

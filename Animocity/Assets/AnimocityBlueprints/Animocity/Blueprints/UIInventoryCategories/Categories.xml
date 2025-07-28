@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<InventoryMenuCategories>
+  <InventoryMenuCategoryBlue label="InventoryMenuCategoryBlue_Resources">
+    <inventoryCategoryWorker>Animocity.UI.InventoryCategoryWorker_Resources</inventoryCategoryWorker>
+    <iconPath>Temporary/Icons/GenericResource</iconPath>
+  </InventoryMenuCategoryBlue>
+  <InventoryMenuCategoryBlue label="InventoryMenuCategoryBlue_Population">
+    <inventoryCategoryWorker>Animocity.UI.InventoryCategoryWorker_Population</inventoryCategoryWorker>
+    <iconPath>Temporary/Icons/PopIcon</iconPath>
+  </InventoryMenuCategoryBlue>
+  <InventoryMenuCategoryBlue label="InventoryMenuCategoryBlue_Power">
+    <inventoryCategoryWorker>Animocity.UI.InventoryCategoryWorker_Power</inventoryCategoryWorker>
+    <iconPath>Temporary/Icons/bc_Utility</iconPath>
+  </InventoryMenuCategoryBlue>
+</InventoryMenuCategories>

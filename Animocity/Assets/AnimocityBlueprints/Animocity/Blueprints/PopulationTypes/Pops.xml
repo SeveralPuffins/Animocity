@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<PopulationTypes>
+  <PopulationBlue label="Pioneers">
+    <startingPopulation>100</startingPopulation>
+    <birthType>false</birthType>
+    <description>Discoverers of the mech, with all-round talents. </description>
+    <iconPath>Temporary/Icons/PopPioneer</iconPath>
+  </PopulationBlue>
+  <PopulationBlue label="Labourers">
+    <startingPopulation>0</startingPopulation>
+    <birthType>true</birthType>
+    <description>Labourers for vertical farms and basic workshops. </description>
+    <iconPath>Temporary/Icons/PopWorkers</iconPath>
+  </PopulationBlue>
+  <PopulationBlue label="Mechanists">
+    <startingPopulation>0</startingPopulation>
+    <birthType>false</birthType>
+    <description>Mechizens with advanced practical skills. </description>
+    <iconPath>Temporary/Icons/PopMechanist</iconPath>
+  </PopulationBlue>
+  <PopulationBlue label="Virtuosi">
+    <startingPopulation>0</startingPopulation>
+    <birthType>false</birthType>
+    <description>Mechizens whose efforts reveal the beauty and meaning inherent in life in a giant steel killing machine. </description>
+    <iconPath>Temporary/Icons/PopVirtuosi</iconPath>
+  </PopulationBlue>
+  <PopulationBlue label="Technologists">
+    <startingPopulation>0</startingPopulation>
+    <birthType>false</birthType>
+    <description>Mechizens dedicated to the pure persuit of knowledge (that goes bang). </description>
+    <iconPath>Temporary/Icons/PopTechnologist</iconPath>
+  </PopulationBlue>
+</PopulationTypes>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Scenarios>
+  <ScenarioBlue label="Scrap">
+    <isDefault>true</isDefault>
+    <description>Basic starting resources blurgh blurgh</description>
+    <startingPopulations>
+      <di>
+        <dk>Pioneers</dk>
+        <dv>100</dv>
+      </di>
+      <di>
+      <dk>Virtuosi</dk>
+        <dv>5</dv>
+      </di>
+    </startingPopulations>
+    <startingResources>
+      <di>
+        <dk>Scrap</dk>
+        <dv>20</dv>
+      </di>
+      <di>
+        <dk>Stone</dk>
+        <dv>20</dv>
+      </di>
+      <di>
+        <dk>Food</dk>
+        <dv>50</dv>
+      </di>
+    </startingResources>
+  </ScenarioBlue>
+</Scenarios>

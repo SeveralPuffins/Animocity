@@ -30,5 +30,25 @@
       <li>BuildRequirementBlue_Fits</li>
       <li>BuildRequirementBlue_IsSupported</li>
     </buildRequirements>
+    <components>
+      <li Class="BuildingComponentData_StaffRequirement">
+        <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
+        <maxStaff>40</maxStaff>
+        <minStaff>20</minStaff>
+        <efficiencyAtMax>1.0</efficiencyAtMax>
+        <efficiencyAtMin>0.35</efficiencyAtMin>
+        <populationTypesAccepted>
+          <li>Pioneers</li>
+          <li>Labourers</li>
+          <li>Mechanists</li>
+        </populationTypesAccepted>
+      </li>
+      <li Class="BuildingComponentData_Housing">
+        <componentClass>Animocity.Cities.BuildingComponent_Housing</componentClass>
+        <minSatisfaction>0.3</minSatisfaction>
+        <maxSatisfaction>1.0</maxSatisfaction>
+        <capacity>10</capacity>
+      </li>
+    </components>
   </BuildingBlueprint>
 </Buildings>

@@ -8,13 +8,13 @@
       <li>BuildRequirementBlue_Accessible</li>
     </buildRequirements>
     <grantsSupport>true</grantsSupport>
-    <autoRow>false</autoRow>
+    <autoRow>true</autoRow>
   </BuildingBlueprint>
   
   <BuildingBlueprint label="Tenement" parent ="BaseResidential">
     <displayName>Wee tenement</displayName>
     <prefabPath>Main/Buildings/Prefabs/Tenement</prefabPath>
-    <description>A small residential building that can house up to 200 people.</description>
+    <description>A small residential building that can house up to 24 people.</description>
     <grantsSupport>false</grantsSupport>
     <tilesNeeded>
       <li> 0,0</li>
@@ -46,15 +46,20 @@
     <components>
       <li Class="BuildingComponentData_Power">
         <componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
-        <powerConsumption>12.0</powerConsumption>
+        <powerAmount>2.0</powerAmount>
       </li>
+      <li Class="BuildingComponentData_Housing">
+        <componentClass>Animocity.Cities.BuildingComponent_Housing</componentClass>
+        <minSatisfaction>0.3</minSatisfaction>
+        <maxSatisfaction>1.0</maxSatisfaction>
+        <capacity>24</capacity>
+    </li>
     </components>
   </BuildingBlueprint>
-
   <BuildingBlueprint label="MedFlats" parent ="BaseResidential">
     <displayName>Medium Towerblock</displayName>
     <prefabPath>Temporary/Flat_Style_Vehicles/Prefabs/Buildings/FlatsMedium</prefabPath>
-    <description>A residential building that can house up to 500 people.</description>
+    <description>A residential building that can house up to 60 people.</description>
     <grantsSupport>true</grantsSupport>
     <tilesNeeded>
       <li>-1,0</li>
@@ -77,9 +82,11 @@
       <li> 1,5</li>
     </tilesNeeded>
     <components>
-      <li Class="BuildingComponentData_Power">
-        <componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
-        <powerConsumption>24.0</powerConsumption>
+      <li Class="BuildingComponentData_Housing">
+        <componentClass>Animocity.Cities.BuildingComponent_Housing</componentClass>
+        <minSatisfaction>0.5</minSatisfaction>
+        <maxSatisfaction>0.6</maxSatisfaction>
+        <capacity>40</capacity>
       </li>
     </components>
   </BuildingBlueprint>
@@ -87,7 +94,7 @@
   <BuildingBlueprint label="LargeFlats" parent ="BaseResidential">
     <displayName>Large Towerblock</displayName>
     <prefabPath>Temporary/Flat_Style_Vehicles/Prefabs/Buildings/FlatsLarge</prefabPath>
-    <description>A residential building that can house up to 2500 people.</description>
+    <description>A residential building that can house up to 120 people.</description>
     <grantsSupport>true</grantsSupport>
     <tilesNeeded>
       <li>-1,0</li>
@@ -126,7 +133,13 @@
     <components>
       <li Class="BuildingComponentData_Power">
         <componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
-        <powerConsumption>100.0</powerConsumption>
+        <powerAmount>10.0</powerAmount>
+    </li>
+      <li Class="BuildingComponentData_Housing">
+        <componentClass>Animocity.Cities.BuildingComponent_Housing</componentClass>
+        <minSatisfaction>0.20</minSatisfaction>
+        <maxSatisfaction>0.6</maxSatisfaction>
+        <capacity>120</capacity>
       </li>
     </components>
   </BuildingBlueprint>

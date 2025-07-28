@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Resources>
+  <ResourceBlue label="Scrap">
+    <value>1</value>
+    <edible>false</edible>
+    <description>Rusting sheets, coils of wire, lumps of stuff, and dead machines from the world that was. </description>
+    <iconPath>Temporary/Icons/GenericResource</iconPath>
+  </ResourceBlue>
+  <ResourceBlue label="Stone">
+    <value>5</value>
+    <edible>false</edible>
+    <description>It's a rock. I bet you've seen one before. What do you want explaining?</description>
+    <iconPath>Temporary/Icons/GenericResource</iconPath>
+  </ResourceBlue>
+  <ResourceBlue label="Food">
+    <value>5</value>
+    <edible>true</edible>
+    <description>One food, two foods, many foods!</description>
+    <iconPath>Temporary/Icons/GenericResource</iconPath>
+  </ResourceBlue>
+</Resources>

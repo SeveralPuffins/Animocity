@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Resources>
+  <ResourceBlue label="Ammo">
+    <value>1</value>
+    <edible>false</edible>
+    <description>Nothing fancy about this, just a sharpened hunk of metal. </description>
+    <iconPath>Temporary/Icons/GenericResource</iconPath>
+  </ResourceBlue>
+</Resources>

@@ -24,9 +24,11 @@ namespace BlueprintSystem
 		public TMP_Text displayOutput;
 
 		public delegate void DataLoaderEvent(PlayerProfile profile, DataLoader.LoadStatus Status);
-		public static event DataLoaderEvent OnDataLoaded;
+		public static event DataLoaderEvent OnDataLoadedEarly;
+        public static event DataLoaderEvent OnDataLoaded;
+        public static event DataLoaderEvent OnDataCleared;
 
-		public void HotReaload()
+        public void HotReload()
 		{
 			Clear();
 			Setup();
@@ -35,8 +37,9 @@ namespace BlueprintSystem
 		public void Clear()
 		{
 			XMLToBlueprint.ClearCoreNamespaces();
-			// Possibly more clearing needed?
-		}
+            OnDataCleared?.Invoke(PlayerProfile.Current, DataLoader.Status);
+            // Possibly more clearing needed?
+        }
 
         // Use this for initialization
         public void Setup () {
@@ -67,6 +70,7 @@ namespace BlueprintSystem
 
         private void OnLoaded()
         {
+            OnDataLoadedEarly?.Invoke(PlayerProfile.Current, DataLoader.Status); 
 			OnDataLoaded?.Invoke(PlayerProfile.Current, DataLoader.Status);
 			UpdateDisplayString("");
         }
