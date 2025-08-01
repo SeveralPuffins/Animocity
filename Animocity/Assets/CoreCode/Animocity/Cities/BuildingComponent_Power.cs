@@ -22,17 +22,7 @@ namespace Animocity.Cities
             base.OnBuild();
         }
 
-        public override float ModifyEfficiency(float efficiency)
-        {
-            if (connectedGrid.HasPower && IsPowered)
-            {
-                return efficiency;
-            }
-            else
-            {
-                return 0f;
-            }
-        }
+        
 
 
         // THIS REALLY WANTS CHANGING TO A CHECK WITH THE POWER GRID MANAGER FOR WHICH GRID THE BUILDING SQUARE IS ON

@@ -11,11 +11,13 @@ namespace Animocity.UI
     {
         public Rect rect;
         public Color clr;
+        public float zDepth;
 
-        public RectHighlight(Rect rect, Color clr)
+        public RectHighlight(Rect rect, Color clr, float zDepth)
         {
             this.rect = rect;
             this.clr = clr;
+            this.zDepth = zDepth;
         }
     }
 }

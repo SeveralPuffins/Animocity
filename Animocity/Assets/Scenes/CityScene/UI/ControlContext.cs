@@ -18,12 +18,7 @@ namespace Animocity.UI
             Current = this;
         }
 
-        protected static Vector2 GetCurrentMousePosition()
-        {
-            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            return (Vector2)mouseRay.GetPoint(-Camera.main.transform.position.z);
-        }
-
+       
         public virtual void Release()
         {
             Current = _default;

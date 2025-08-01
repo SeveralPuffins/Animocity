@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Processes>
+  <ProcessBlueprint label="CornFarming">
+    <displayName>Corn Farming</displayName>
+    <description>Growing this weird mutant grass with GAINT edible grains.</description>
+    <productivityCost>60.0</productivityCost>
+    <inputs></inputs>
+    <outputs>
+      <di>
+        <dk>Food</dk>
+        <dv>1.0</dv>
+      </di>
+    </outputs>
+  </ProcessBlueprint>
+</Processes>

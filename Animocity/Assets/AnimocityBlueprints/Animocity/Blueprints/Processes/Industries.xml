@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Processes>
+  
+  <ProcessBlueprint label="SmeltingIron">
+    <displayName>Smelting Iron</displayName>
+    <description>Sorting and smelting pure Iron from scrap.</description>
+    <productivityCost>60.0</productivityCost>
+    <inputs>
+      <di>
+        <dk>Scrap</dk>
+        <dv>4.0</dv>
+      </di>
+    </inputs>
+    <outputs>
+      <di>
+        <dk>Iron</dk>
+        <dv>2.0</dv>
+      </di>
+    </outputs>
+  </ProcessBlueprint>
+
+  <ProcessBlueprint label="SmeltingCopper">
+    <displayName>Smelting Iron</displayName>
+    <description>Sorting and smelting copper from scrap.</description>
+    <productivityCost>90.0</productivityCost>
+    <inputs>
+      <di>
+        <dk>Scrap</dk>
+        <dv>2.0</dv>
+      </di>
+    </inputs>
+    <outputs>
+      <di>
+        <dk>Copper</dk>
+        <dv>1.0</dv>
+      </di>
+    </outputs>
+  </ProcessBlueprint>
+
+  <ProcessBlueprint label="BasicAmmo">
+    <displayName>Basic Ammo</displayName>
+    <description>Making rounds from Copper and Iron.</description>
+    <productivityCost>90.0</productivityCost>
+    <inputs>
+      <di>
+        <dk>Copper</dk>
+        <dv>1.0</dv>
+      </di>
+      <di>
+        <dk>Iron</dk>
+        <dv>2.0</dv>
+      </di>
+    </inputs>
+    <outputs>
+      <di>
+        <dk>Ammo</dk>
+        <dv>4.0</dv>
+      </di>
+    </outputs>
+  </ProcessBlueprint>
+
+</Processes>

@@ -16,15 +16,15 @@
     <startingResources>
       <di>
         <dk>Scrap</dk>
-        <dv>20</dv>
+        <dv>200</dv>
       </di>
       <di>
         <dk>Stone</dk>
-        <dv>20</dv>
+        <dv>200</dv>
       </di>
       <di>
         <dk>Food</dk>
-        <dv>50</dv>
+        <dv>500</dv>
       </di>
     </startingResources>
   </ScenarioBlue>

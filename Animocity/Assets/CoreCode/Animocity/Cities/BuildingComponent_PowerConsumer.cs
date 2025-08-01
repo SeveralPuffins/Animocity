@@ -23,5 +23,18 @@ namespace Animocity.Cities
             return base.Tick(building);
         }
 
+
+        public override float ModifyEfficiency(float efficiency)
+        {
+            if (connectedGrid.HasPower && IsPowered)
+            {
+                return efficiency;
+            }
+            else
+            {
+                return 0f;
+            }
+        }
+
     }
 }

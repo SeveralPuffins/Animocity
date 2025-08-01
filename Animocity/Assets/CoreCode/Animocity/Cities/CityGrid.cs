@@ -26,12 +26,21 @@ namespace Animocity.Cities
         public Color highlightPositive = new Color(0.2f, 0.2f, 1f, 1f);
         public Color highlightNegative = new Color(1f, 0.2f, 0.2f, 1f);
         public Color highlightNeutral = new Color(0.6f, 0.6f, 0.65f, 1f);
+        private bool _focused = false;
+
+        public void Focus()
+        {
+            _focused = true;
+        }
+        public void Unfocus()
+        {
+            _focused = false;
+        }
 
         private void Awake()
         {
             bounds = new Polygon(polygonPoints);
             tileContents = new();
-
             var context = new ControlContext_Inspector();
             context.Activate();
         }
@@ -147,11 +156,14 @@ namespace Animocity.Cities
             return false;
         }
 
-        private Vector2 GetMousePosition()
+        private Vector3 GetMousePosition()
         {
-            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            return (Vector2)mouseRay.GetPoint(1f*(this.transform.position-Camera.main.transform.position).z);
+            var pt =  Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane + 3.5f));
+            var offset = (Vector3)cellSize * 0.5f;
 
+            return pt - offset;
+            //Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition, Camera.MonoOrStereoscopicEye.Mono);
+            //return (Vector2)mouseRay.GetPoint(1f*(this.transform.position-Camera.main.transform.position).z);
         }
 
         private Vector2Int GetMouseCell()
@@ -163,7 +175,7 @@ namespace Animocity.Cities
         float _minDragDist = 0.2f;
         Vector2 _dragStartLocation;
 
-        public void Update()
+        private void CheckMouseInteractions()
         {
             var pos = GetMousePosition();
             if (Input.GetMouseButtonDown(0))
@@ -172,19 +184,28 @@ namespace Animocity.Cities
                 _dragStartLocation = pos;
             }
 
-            var drag = _dragging && ((pos - _dragStartLocation).sqrMagnitude >= _minDragDist * _minDragDist);
+            var drag = _dragging && (((Vector2)pos - _dragStartLocation).sqrMagnitude >= _minDragDist * _minDragDist);
 
-            if (Input.GetMouseButtonUp(0)) {
+            if (Input.GetMouseButtonUp(0))
+            {
                 ControlContext.Current.OnInteract(this, pos, drag, _dragStartLocation);
                 _dragging = false;
             }
-            else if(Input.GetMouseButtonDown(1)) {
+            else if (Input.GetMouseButtonDown(1))
+            {
                 ControlContext.Current.OnInspect(this, pos);
                 _dragging = false;
             }
             else
             {
                 ControlContext.Current.OnHover(this, pos, drag, _dragStartLocation);
+            }
+        }
+
+        public void Update()
+        {
+            if (_focused) { 
+               CheckMouseInteractions();
             }
         }
 
@@ -216,7 +237,7 @@ namespace Animocity.Cities
         private void DrawGrid()
         {
 
-            var minCell = WorldToCell(bounds.BoundingBox.min + (Vector2)transform.position);
+            var minCell = WorldToCell(transform.position+new Vector3(bounds.BoundingBox.min.x, bounds.BoundingBox.min.y, 0f));
             var size = bounds.BoundingBox.size;
             
             for(int i = minCell.x; i< minCell.x+size.x; i++)
@@ -241,7 +262,7 @@ namespace Animocity.Cities
 
             Rect hr = new Rect(min, max - min);
 
-            ghm.PushHighlight(new RectHighlight(hr, clr));
+            ghm.PushHighlight(new RectHighlight(hr, clr, this.transform.position.z));
         }
 
 
@@ -251,10 +272,10 @@ namespace Animocity.Cities
 
             var points = new Vector3[4]
             {
-                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, 0),
-                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, 0),
-                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, 0),
-                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, 0)
+                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, transform.position.z),
+                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, transform.position.z),
+                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, transform.position.z),
+                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, transform.position.z)
             };
 
             Gizmos.DrawLineStrip(points, true);
@@ -262,33 +283,39 @@ namespace Animocity.Cities
         #endregion
 
         #region Converting to and from cell co-ordinates
-        public Vector2Int WorldToCell(Vector2 worldLocation)
+        public Vector2 WorldToFloatCell(Vector3 worldLocation)
         {
-            var relative = worldLocation - (Vector2)transform.position;
+            var relative = worldLocation - transform.position;
             return new Vector2Int((int)Math.Round(relative.x / cellSize.x), (int)Math.Round(relative.y / cellSize.y));
         }
+        public Vector2Int WorldToCell(Vector3 worldLocation)
+        {
+            var relative = worldLocation - transform.position;
+            return new Vector2Int((int)Math.Round(relative.x / cellSize.x), (int)Math.Round(relative.y / cellSize.y));
+        }
+
         public Vector2Int WorldToCell(float wx, float wy)
         {
             var relative = (new Vector2(wx - transform.position.x, wy - transform.position.y));
             return new Vector2Int((int)(relative.x / cellSize.x), (int)(relative.y / cellSize.y));
         }
-        public Vector2 WorldFromCell(Vector2Int cell)
+        public Vector3 WorldFromCell(Vector2Int cell)
         {
             var x = cell.x * cellSize.x + transform.position.x;
             var y = cell.y * cellSize.y + transform.position.y;
 
-            return new Vector2(x, y);
+            return new Vector3(x, y, this.transform.position.z);
         }
         public Vector2 WorldFromCell(int i, int j)
         {
             return WorldFromCell(new Vector2Int(i, j));
         }
-        public Vector2 WorldFromCell(float x, float y)
+        public Vector3 WorldFromCell(float x, float y)
         {
             var wx = x * cellSize.x + transform.position.x;
             var wy = y * cellSize.y + transform.position.y;
 
-            return new Vector2(wx, wy);
+            return new Vector3(wx, wy, transform.position.z);
         }
 
 

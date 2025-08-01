@@ -166,4 +166,26 @@ public class CityInventory : MonoBehaviour
     {
         return _resources.Keys.Where((k)=>pred(k)).Sum((k) => GetResourceAmount(k));
     }
+
+    internal bool HasResources(Dictionary<ResourceBlue, float> inputs)
+    {
+        foreach(var resource in inputs.Keys)
+        {
+            if (_resources[resource] < inputs[resource])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    internal void TakeResource(Vector2Int gridLocation, ResourceBlue resource, float v)
+    {
+        _resources[resource] -= v;
+    }
+
+    internal void PushResource(Vector2Int gridLocation, ResourceBlue resource,  float v)
+    {
+        _resources[resource] += v;
+    }
 }

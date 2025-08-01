@@ -10,12 +10,9 @@ namespace Animocity.Cities
     {
         public BuildingComponent_PowerSupplier(BuildingComponentData data, Building building) : base(data, building){}
 
+
         protected override bool Tick(Building building)
         {
-            //connectedGrid.TryStorePower(this);
-            
-            //connectedGrid.Resupply(this);
-
             return base.Tick(building);
         }
     }

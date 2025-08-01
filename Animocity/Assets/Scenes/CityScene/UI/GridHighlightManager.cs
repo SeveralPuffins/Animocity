@@ -36,10 +36,10 @@ namespace Animocity.UI
             RenderPipelineManager.endCameraRendering -= this.DrawHighlights;
         }
 
-        private Vector2[] ScreenSpaceCorners(Camera cam, Rect worldspaceRect)
+        private Vector2[] ScreenSpaceCorners(Camera cam, Rect worldspaceRect, float z)
         {
-            var sMin = cam.WorldToViewportPoint(worldspaceRect.min);
-            var sMax = cam.WorldToViewportPoint(worldspaceRect.max);
+            var sMin = cam.WorldToViewportPoint(new Vector3(worldspaceRect.min.x, worldspaceRect.min.y, z));
+            var sMax = cam.WorldToViewportPoint(new Vector3(worldspaceRect.max.x, worldspaceRect.max.y, z));
 
             //print($"Drawing from {sMin} to {sMax}");
 
@@ -70,7 +70,7 @@ namespace Animocity.UI
             while(worldspaceHighlights.Count>0)
             {
                 var highlight = worldspaceHighlights.Dequeue();
-                var verts = ScreenSpaceCorners(cam, highlight.rect);
+                var verts = ScreenSpaceCorners(cam, highlight.rect, highlight.zDepth);
 
                 GL.Color(highlight.clr);
                 GL.Vertex3(verts[0].x, verts[0].y, 0);

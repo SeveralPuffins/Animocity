@@ -32,9 +32,6 @@ namespace Animocity.Cities
         public List<BuildRequirementBlueprint> buildRequirements;
         public List<BuildingComponentData> components;
 
-        public Dictionary<ResourceBlueprint, float> resourceInputs;
-        public Dictionary<ResourceBlueprint, float> resourceOutputs;
-
         public bool CanBuildAtLocation(Vector2Int loc, CityGrid grid)
         {
             if(buildRequirements == null || buildRequirements.Count  == 0)
