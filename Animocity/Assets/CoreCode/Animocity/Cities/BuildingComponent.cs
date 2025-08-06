@@ -26,7 +26,7 @@ namespace Animocity.Cities
 
         protected virtual void OnBuild()
         {
-            MonoBehaviour.print($"Initialising component {this.GetType()} on {Building.Blue.DisplayName}");
+            //MonoBehaviour.print($"Initialising component {this.GetType()} on {Building.Blue.DisplayName}");
         }
 
         public virtual float ModifyEfficiency(float efficiency)

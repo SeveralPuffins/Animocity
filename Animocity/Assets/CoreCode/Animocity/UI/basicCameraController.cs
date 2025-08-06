@@ -4,23 +4,54 @@ using UnityEngine;
 using Animocity.Cities;
 using System;
 using System.Linq;
+using BlueprintSystem;
+using Animocity.Cities.CityGen;
 
 public class basicCameraController : MonoBehaviour
 {
     private int _gridIndex;
-    public List<CityGrid> grids;
+    private List<CityGrid> grids
+    {
+        get
+        {
+            return CityInventory.Current.cityGrids;
+        }
+    }
     public float baseSpeed = 5f;
     public Rect maxBounds=  new Rect(-20,20,20,20);
     public float maxZoom = -16f;
     public float minZoom = -160f;
     Camera camera;
 
+    private bool _firstGen = true;
+
     // Start is called before the first frame update
     void Awake()
     {
+        DataLoader.OnDataLoaded += this.RunGenSteps;
         camera = GetComponent<Camera>();
         _gridIndex = 0;
         ChangeGrid(_gridIndex, _gridIndex);
+    }
+
+    private void RunGenSteps(PlayerProfile profile, DataLoader.LoadStatus Status)
+    {
+        if (_firstGen)
+        {
+            var steps = BlueprintDatabase<CityGeneratorStepBlue>.FetchAll();
+            print($"Initialising city with {steps.Count()} steps");
+            _firstGen = false;
+            foreach (var item in steps)
+            {
+                print($"Running worker {item.displayName}..");
+                item.Worker.Run(grids);
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        DataLoader.OnDataLoaded -= RunGenSteps;
     }
 
     // Update is called once per frame

@@ -14,7 +14,9 @@ namespace Animocity.Cities
         public const int TICKS_TO_LONGTICKS = 20;
 
         public BuildingBlueprint Blue { get; private set; }
+        public CityGrid Grid { get; private set; }
         public Vector2Int GridLocation { get; private set; }
+
         protected List<BuildingComponent> Components { get; private set; }
         private float _time;
         private int _ticks;
@@ -33,10 +35,11 @@ namespace Animocity.Cities
             }
         }
 
-        public static Building AddToGameObject(GameObject go, BuildingBlueprint blue, Vector2Int loc)
+        public static Building AddToGameObject(GameObject go, BuildingBlueprint blue, CityGrid grid, Vector2Int loc)
         {
             var building = go.AddComponent<Building>();
             building.Blue = blue;
+            building.Grid = grid;
             building.GridLocation = loc;
             building.FillComponents();
 
@@ -55,7 +58,7 @@ namespace Animocity.Cities
                 {
                     var worker = data.GetWorker(this);
                     Components.Add(worker);
-                    print($"Making Building Component of type {data.GetType().ToString()} with worker type {worker.GetType().ToString()}");
+                    //print($"Making Building Component of type {data.GetType().ToString()} with worker type {worker.GetType().ToString()}");
                 }
             }
         }
@@ -65,16 +68,16 @@ namespace Animocity.Cities
             var found = Components.OfType<T>().ToList();
             if (found != null)
             {
-                MonoBehaviour.print($"Found {found.Count()} comps");
+                //MonoBehaviour.print($"Found {found.Count()} comps");
             }
 
             foreach ( var component in Components)
             {
-                MonoBehaviour.print($"Comp {component.GetType().Name} found on {this.Blue.label}");
+                //MonoBehaviour.print($"Comp {component.GetType().Name} found on {this.Blue.label}");
 
                 bool isAssignable = typeof(T).IsAssignableFrom(component.GetType());
 
-                MonoBehaviour.print($"{typeof(T).Name} is assignable from {component.GetType().Name} ? -> {isAssignable}");
+                //MonoBehaviour.print($"{typeof(T).Name} is assignable from {component.GetType().Name} ? -> {isAssignable}");
             }
 
             return found;

@@ -20,23 +20,16 @@
     <buildRequirements>
       <li>BuildRequirementBlue_IsOnCoil</li>
     </buildRequirements>
-  </BuildingBlueprint>
-
-
-  <BuildingBlueprint label="PowerCoil">
-    <displayName>Power Coil</displayName>
-    <category>bcb_Utility</category>
-    <prefabPath>Main/Buildings/Prefabs/PowerCoil</prefabPath>
-    <description>Exposed meta-alloy conduits allow us to tap a small amount of power from the mech's chassis.</description>
-    <grantsSupport>false</grantsSupport>
-    <autoRow>false</autoRow>
-    <tilesNeeded>
-      <li>0,0</li>
-    </tilesNeeded>
-    <buildRequirements>
-      <li>BuildRequirementBlue_Fits</li>
-      <li>BuildRequirementBlue_IsSupported</li>
-    </buildRequirements>
+    <resourceCosts>
+      <di>
+        <dk>Iron</dk>
+        <dv>18.0</dv>
+      </di>
+      <di>
+        <dk>Copper</dk>
+        <dv>12.0</dv>
+      </di>
+    </resourceCosts>
   </BuildingBlueprint>
 
   <BuildingBlueprint label="Gantry">
@@ -52,6 +45,12 @@
     <buildRequirements>
       <li>BuildRequirementBlue_Fits</li>
     </buildRequirements>
+    <resourceCosts>
+      <di>
+        <dk>Scrap</dk>
+        <dv>1.0</dv>
+      </di>
+    </resourceCosts>
     <components>
       <li Class="BuildingComponentData_Transport">
         <componentClass>Animocity.Cities.BuildingComponent_Transport</componentClass>

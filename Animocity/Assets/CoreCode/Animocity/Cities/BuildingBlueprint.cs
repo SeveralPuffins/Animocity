@@ -18,7 +18,6 @@ namespace Animocity.Cities
         public BuildingCategoryBlueprint category;
         public string prefabPath;
 
-
         public float powerUse;
         public int workersNeeded;
 
@@ -26,9 +25,8 @@ namespace Animocity.Cities
         public bool grantsSupport;
         public bool autoRow;
 
-
         public List<Vector2Int> tilesNeeded;
-
+        public Dictionary<ResourceBlue, float> resourceCosts;
         public List<BuildRequirementBlueprint> buildRequirements;
         public List<BuildingComponentData> components;
 

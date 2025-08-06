@@ -6,6 +6,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ namespace Animocity.Cities
         [SerializeField] private List<Vector2> polygonPoints;
         public PowerGrid powerGrid;
         public TransportGrid transportGrid;
+        public List<string> gridTags;
         public Polygon bounds { get; private set; }
         private Dictionary<Vector2Int, Building> tileContents;
         public Vector2 cellSize;
@@ -54,6 +56,39 @@ namespace Animocity.Cities
         public bool IsInBounds(Vector2Int tile)
         {
             return bounds.Contains(new Vector2(tile.x*cellSize.x, tile.y*cellSize.y));
+        }
+        public RectInt TileBounds
+        {
+            get
+            {
+                return new RectInt(
+                            (int)(bounds.BoundingBox.xMin   / cellSize.x), 
+                            (int)(bounds.BoundingBox.yMin   / cellSize.y),
+                            (int)(bounds.BoundingBox.width  / cellSize.x), 
+                            (int)(bounds.BoundingBox.height / cellSize.y)
+                        );
+            }
+        }
+
+        public List<Vector2Int> GetBaseTiles()
+        {
+            List<Vector2Int> tiles = new List<Vector2Int>();
+            for(float fi = bounds.BoundingBox.xMin; fi <= bounds.BoundingBox.xMax; fi += cellSize.x)
+            {
+                for (float fj = bounds.BoundingBox.yMin; fj <= bounds.BoundingBox.yMax; fj += cellSize.y)
+                {
+                    var psn = new Vector2(fi, fj);
+                    if (bounds.Contains(psn))
+                    {
+                        //MonoBehaviour.print($"Adding base tile position {psn}");
+                        var intPsn = new Vector2Int((int)(fi/cellSize.x), (int)(fj/cellSize.y));
+                        tiles.Add(intPsn);
+                        break;
+                    }
+                }
+            }
+
+           return tiles;
         }
         public bool IsOccupied(Vector2Int tile)
         {
@@ -135,7 +170,7 @@ namespace Animocity.Cities
             }
         }
 
-        public bool TryBuildAtLocation(BuildingBlueprint blue, Vector2Int loc, out Building newBuilding)
+        public bool TryBuildAtLocation(BuildingBlueprint blue, Vector2Int loc, out Building newBuilding, bool isFree = false)
         {
             if (!IsInBounds(loc))
             {
@@ -145,15 +180,33 @@ namespace Animocity.Cities
 
             if(blue.CanBuildAtLocation(loc, this))
             {
-                var newBuildingTransform = Instantiate<Transform>(blue.GetPrefab(), WorldFromCell(loc), Quaternion.identity);
-                newBuildingTransform.SetParent(this.transform);
-                newBuilding = Building.AddToGameObject(newBuildingTransform.gameObject, blue, loc);
+                if (CanAfford(blue) || isFree)
+                {
+                    var newBuildingTransform = Instantiate<Transform>(blue.GetPrefab(), WorldFromCell(loc), Quaternion.identity);
+                    newBuildingTransform.SetParent(this.transform);
+                    newBuilding = Building.AddToGameObject(newBuildingTransform.gameObject, blue, this, loc);
 
-                PushBuilding(newBuilding);
-                return true;
+                    PushBuilding(newBuilding);
+                    if(!isFree) PayResources(blue, loc);
+
+                    return true;
+                }
             }
             newBuilding = null;
             return false;
+        }
+
+        private void PayResources(BuildingBlueprint blue, Vector2Int tile)
+        {
+            foreach (var key in blue.resourceCosts.Keys) 
+            {
+                CityInventory.Current.TakeResource(tile, key, blue.resourceCosts[key]);
+            }
+        }
+
+        private bool CanAfford(BuildingBlueprint blue)
+        {
+            return CityInventory.Current.HasResources(blue.resourceCosts);
         }
 
         private Vector3 GetMousePosition()

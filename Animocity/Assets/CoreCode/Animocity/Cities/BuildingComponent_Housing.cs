@@ -21,11 +21,30 @@ namespace Animocity.Cities
             base.OnBuild();
         }
 
+        public int RoomsAvailable
+        {
+            get
+            {
+                return HousingData.capacity - NumCurrentResidents;
+            }
+        }
+
+        public int NumCurrentResidents { get; private set; }
+
+        public void AddResidents(int numResidents)
+        {
+            NumCurrentResidents += numResidents;
+        }
+        
+        public void ResetResidents()
+        {
+            NumCurrentResidents = 0;
+        }
+
         public float CurrentSatisfaction
         {
             get
             {
-                
                 float currentSatisfaction = HousingData.minSatisfaction + ((HousingData.maxSatisfaction - HousingData.minSatisfaction) * this.Building.BuildingEfficiency);
 
                 return currentSatisfaction;

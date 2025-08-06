@@ -15,6 +15,16 @@
     <displayName>Wee tenement</displayName>
     <prefabPath>Main/Buildings/Prefabs/Tenement</prefabPath>
     <description>A small residential building that can house up to 24 people.</description>
+    <resourceCosts>
+      <di>
+        <dk>Stone</dk>
+        <dv>10.0</dv>
+      </di>
+      <di>
+        <dk>Iron</dk>
+        <dv>2.0</dv>
+      </di>
+    </resourceCosts>
     <grantsSupport>false</grantsSupport>
     <tilesNeeded>
       <li> 0,0</li>
@@ -61,6 +71,12 @@
     <prefabPath>Temporary/Flat_Style_Vehicles/Prefabs/Buildings/FlatsMedium</prefabPath>
     <description>A residential building that can house up to 60 people.</description>
     <grantsSupport>true</grantsSupport>
+    <resourceCosts>
+      <di>
+        <dk>Stone</dk>
+        <dv>16.0</dv>
+      </di>
+    </resourceCosts>
     <tilesNeeded>
       <li>-1,0</li>
       <li> 0,0</li>
@@ -96,6 +112,12 @@
     <prefabPath>Temporary/Flat_Style_Vehicles/Prefabs/Buildings/FlatsLarge</prefabPath>
     <description>A residential building that can house up to 120 people.</description>
     <grantsSupport>true</grantsSupport>
+    <resourceCosts>
+      <di>
+        <dk>Stone</dk>
+        <dv>26.0</dv>
+      </di>
+    </resourceCosts>
     <tilesNeeded>
       <li>-1,0</li>
       <li> 0,0</li>

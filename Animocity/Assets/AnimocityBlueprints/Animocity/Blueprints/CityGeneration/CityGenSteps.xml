@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<GenSteps>
+  <CityGeneratorStepBlue label="AddGantries">
+    <displayName>Add Random Gantries</displayName>
+    <genStepWorker>Animocity.Cities.CityGen.CityGenStepWorker_AddGantries</genStepWorker>
+    <paramA>6.0</paramA>
+    <paramB>4.0</paramB>
+    <paramC>1.0</paramC>
+    <paramD>1.0</paramD>
+  </CityGeneratorStepBlue>
+  
+  <CityGeneratorStepBlue label="SeedPowerCoils">
+    <displayName>Add Random Gantries</displayName>
+    <genStepWorker>Animocity.Cities.CityGen.CityGenStepWorker_AddBuilding</genStepWorker>
+    <paramA>3.0</paramA>
+    <paramB>1.0</paramB>
+    <paramC>1.0</paramC>
+    <paramD>1.0</paramD>
+    <stringA>PowerCoil</stringA>
+    <stringB>MainBody</stringB>
+    <stringC></stringC>
+  </CityGeneratorStepBlue>
+
+  <CityGeneratorStepBlue label="SeedScrapHeaps">
+    <displayName>Add Random Gantries</displayName>
+    <genStepWorker>Animocity.Cities.CityGen.CityGenStepWorker_AddBuilding</genStepWorker>
+    <paramA>3.0</paramA>
+    <paramB>1.0</paramB>
+    <paramC>1.0</paramC>
+    <paramD>1.0</paramD>
+    <stringA>ScrapHeap</stringA>
+    <stringB>MainBody</stringB>
+    <stringC></stringC>
+  </CityGeneratorStepBlue>
+</GenSteps>
+

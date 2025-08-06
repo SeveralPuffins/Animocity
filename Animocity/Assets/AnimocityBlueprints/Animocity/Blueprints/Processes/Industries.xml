@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Processes>
+
+  <ProcessBlueprint label="ScrapMining">
+    <displayName>Scrap Mining</displayName>
+    <description>Sorting out scrap that could still be repurposed from the rusty nails.</description>
+    <productivityCost>60.0</productivityCost>
+    <inputs></inputs>
+    <outputs>
+      <di>
+        <dk>Scrap</dk>
+        <dv>1.0</dv>
+      </di>
+    </outputs>
+  </ProcessBlueprint>
   
   <ProcessBlueprint label="SmeltingIron">
     <displayName>Smelting Iron</displayName>

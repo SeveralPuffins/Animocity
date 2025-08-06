@@ -212,13 +212,13 @@ namespace BlueprintSystem
 			// Check for alternative derived class to parse...
 			if(node.Attributes!=null && node.Attributes["Class"]!=null && node.Attributes["Class"].Value!=null){
 				//#if DEBUG
-				MonoBehaviour.print("CLASS specified for field type "+fieldType.Name);
+				//MonoBehaviour.print("CLASS specified for field type "+fieldType.Name);
 				//#endif
 				Type newType = ParseType(node.Attributes["Class"].Value);
 				if(newType!=null && newType.IsSubclassOf(fieldType)){
 					fieldType = newType;
 					//#if DEBUG
-					MonoBehaviour.print("New parsing as type "+fieldType.Name);
+					//MonoBehaviour.print("New parsing as type "+fieldType.Name);
 					//#endif
 				}
 			}
@@ -232,13 +232,13 @@ namespace BlueprintSystem
 
 			if(node.Attributes!=null && node.Attributes["Class"]!=null && node.Attributes["Class"].Value!=null){
 				//#if DEBUG
-				MonoBehaviour.print("CLASS specified for field type " + type.Name);
+				//MonoBehaviour.print("CLASS specified for field type " + type.Name);
 				//#endif
 				Type newType = ParseType(node.Attributes["Class"].Value);
 				if(newType!=null && newType.IsSubclassOf(type)){
 					type = newType;
 					#if DEBUG
-					MonoBehaviour.print("New parsing as type "+type.Name);
+					//MonoBehaviour.print("New parsing as type "+type.Name);
 					#endif
 				}
 			}

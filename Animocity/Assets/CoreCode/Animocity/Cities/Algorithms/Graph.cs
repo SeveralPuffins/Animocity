@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEditor.SearchService;
@@ -11,10 +13,22 @@ namespace Animocity.Cities.Algorithms
 {
     public class Graph<T>
     {
-        public Graph() { }
+        public Graph() 
+        {
+            _edgeCosts = new();
+            _edges = new();
+            _cachedQueries = new();
+        }
 
+
+        private Dictionary<PathQuery<T>, List<Path<T>>> _cachedQueries;
         private Dictionary<T, T[]> _edges;
         private Dictionary<T, float[]> _edgeCosts;
+
+        public void ClearCache()
+        {
+            this._cachedQueries.Clear();
+        }
 
         /// <summary>
         /// Tries to find paths from start to all of the T ends. Because there is no one set direction to this,
@@ -24,8 +38,22 @@ namespace Animocity.Cities.Algorithms
         /// <param name="start">The start location for the paths</param>
         /// <param name="ends">The list of end locations to find paths to</param>
         /// <param name="paths">The paths are returned in ascending cost order here.</param>
+        /// <param name="maxDistance"> Paths can be at most maxDistance cost..</param>
         /// <returns></returns>
-        public bool TryFindPaths(T start, IEnumerable<T> ends, out List<Path<T>> paths, float maxCost = float.MaxValue)
+        /// 
+        public bool TryFindPaths(T start, IEnumerable<T> ends, out List<Path<T>> paths, float maxDistance)
+        {
+            var query = new PathQuery<T>(start, ends, maxDistance);
+            return TryFindPaths(query, out paths);
+        }
+        public bool TryFindPaths(T startLocation, IEnumerable<T> endpoints, out List<Path<T>> paths)
+        {
+            var query = new PathQuery<T>(startLocation, endpoints);
+            return TryFindPaths(query, out paths);
+        }
+
+
+        private bool TryFindPaths(PathQuery<T> query, out List<Path<T>> paths)
         {
             paths = new List<Path<T>>();
             if (_edges == null || _edges.Count() == 0)
@@ -40,22 +68,22 @@ namespace Animocity.Cities.Algorithms
 
             AffinityColumn<T> minDistanceHeap = new(size);
             Dictionary<T, T> parents = new();
-            minDistances.Add(start, 0f);
-            minDistanceHeap.Add(start, 0f);
+            minDistances.Add(query.start, 0f);
+            minDistanceHeap.Add(query.start, 0f);
 
 
 
-            while (paths.Count() < ends.Count() && minDistanceHeap.Count > 0)
+            while (paths.Count() < query.endpoints.Count() && minDistanceHeap.Count > 0)
             {
                 var current = minDistanceHeap.Pop(out var currentCost);
-                if (currentCost > maxCost) break;
+                if (currentCost > query.maxCost) break;
 
                 // Terminate early if all ends have been discovered and if the minimum distance to an end is less than the heap minimum
                 // because this means that the cheapest way of getting to an unexplored node is already more expensive than getting to 
                 // each end point
-                if (ends.All((end) => minDistances.ContainsKey(end)))
+                if (query.endpoints.All((end) => minDistances.ContainsKey(end)))
                 {
-                    float mostExpensiveEnd = ends.Max(end => minDistances[end]);
+                    float mostExpensiveEnd = query.endpoints.Max(end => minDistances[end]);
 
                     if (mostExpensiveEnd < currentCost) break;
                 }
@@ -82,7 +110,7 @@ namespace Animocity.Cities.Algorithms
                 }
             }
 
-            foreach(var end in ends)
+            foreach(var end in query.endpoints)
             {
                 if (minDistances.TryGetValue(end, out float cost)){
                     paths.Add(TraversePath(end, parents, minDistances));

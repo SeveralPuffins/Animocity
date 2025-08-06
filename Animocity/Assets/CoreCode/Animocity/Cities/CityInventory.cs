@@ -14,6 +14,7 @@ public class CityInventory : MonoBehaviour
 
     public PowerGrid PowerGrid { get; private set; }
     public HousingManager HousingManager { get; private set; }
+    public WorkforceManager WorkforceManager { get; private set; }
 
     public static CityInventory Current;
 
@@ -23,6 +24,8 @@ public class CityInventory : MonoBehaviour
 
     private Dictionary<PopulationBlue, int> _population;
     private Dictionary<ResourceBlue, float> _resources;
+
+    public List<CityGrid> cityGrids;
 
     private float _fractionalPopulationGrowth = 0f;
 
@@ -39,7 +42,9 @@ public class CityInventory : MonoBehaviour
         this._population = new Dictionary<PopulationBlue, int>();
         this._resources = new Dictionary<ResourceBlue, float>();
         this.PowerGrid = new(new(), new(), new(), new());
-        this.HousingManager = new HousingManager();
+        this.HousingManager = new HousingManager(cityGrids);
+        this.WorkforceManager = new();
+
         Current = this;
     }
 
@@ -83,10 +88,17 @@ public class CityInventory : MonoBehaviour
         }
     }
 
+    int ticks = 0;
     private void Update()
     {
         if(! _init) return;
         UpdatePopulation();
+        ticks++;
+        if(ticks >= 100)
+        {
+            ticks = 0;
+            WorkforceManager.UpdateWorkforceCommutes();
+        }
 
         readout.text = $"Population :: ({TotalPopulation}), Satisfaction :: ({GetSatisfaction()}), Housing Capacity :: ({HousingManager.GetHousingCapacity()}), Power ({PowerSupply})/({PowerDemand})";
     }
@@ -150,6 +162,10 @@ public class CityInventory : MonoBehaviour
             return population;
         }
         return 0;
+    }
+    public Dictionary<PopulationBlue, int> GetPopulationsByClass()
+    {
+        return new(_population);
     }
 
     public float GetResourceAmount(ResourceBlue blue)

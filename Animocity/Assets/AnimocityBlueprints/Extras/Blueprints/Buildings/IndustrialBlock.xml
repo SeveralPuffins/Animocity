@@ -30,6 +30,20 @@
       <li>BuildRequirementBlue_Fits</li>
       <li>BuildRequirementBlue_IsSupported</li>
     </buildRequirements>
+    <resourceCosts>
+      <di>
+        <dk>Stone</dk>
+        <dv>18.0</dv>
+      </di>
+      <di>
+        <dk>Iron</dk>
+        <dv>8.0</dv>
+      </di>
+      <di>
+        <dk>Copper</dk>
+        <dv>12.0</dv>
+      </di>
+    </resourceCosts>
     <components>
       <li Class="BuildingComponentData_StaffRequirement">
         <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
@@ -82,6 +96,16 @@
       <li>BuildRequirementBlue_Fits</li>
       <li>BuildRequirementBlue_IsSupported</li>
     </buildRequirements>
+    <resourceCosts>
+      <di>
+        <dk>Stone</dk>
+        <dv>18.0</dv>
+      </di>
+      <di>
+        <dk>Scrap</dk>
+        <dv>16.0</dv>
+      </di>
+    </resourceCosts>
     <components>
       <li Class="BuildingComponentData_Power">
         <componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>

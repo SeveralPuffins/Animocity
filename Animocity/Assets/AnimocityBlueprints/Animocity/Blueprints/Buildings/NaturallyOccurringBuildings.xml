@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Buildings>
+
+  <BuildingBlueprint label="PowerCoil">
+    <displayName>Power Coil</displayName>
+    <category>bcb_Utility</category>
+    <prefabPath>Main/Buildings/Prefabs/PowerCoil</prefabPath>
+    <description>Exposed meta-alloy conduits allow us to tap a small amount of power from the mech's chassis.</description>
+    <grantsSupport>false</grantsSupport>
+    <autoRow>false</autoRow>
+    <resourceCosts></resourceCosts>
+    <tilesNeeded>
+      <li>0,0</li>
+    </tilesNeeded>
+    <buildRequirements>
+      <li>BuildRequirementBlue_Fits</li>
+      <li>BuildRequirementBlue_IsSupported</li>
+    </buildRequirements>
+  </BuildingBlueprint>
+
+  <BuildingBlueprint label="ScrapHeap">
+    <displayName>Scrap Heap</displayName>
+    <category>bcb_Industrial</category>
+    <prefabPath>Main/Buildings/Prefabs/ScrapHeap</prefabPath>
+    <description>A heap O' Scrap</description>
+    <resourceCosts></resourceCosts>
+    <grantsSupport>false</grantsSupport>
+    <tilesNeeded>
+      <li>-2,0</li>
+      <li>-1,0</li>
+      <li> 0,0</li>
+      <li> 1,0</li>
+      <li> 2,0</li>
+      <li> 3,0</li>
+      <li>-2,1</li>
+      <li>-1,1</li>
+      <li> 0,1</li>
+      <li> 1,1</li>
+      <li> 2,1</li>
+      <li> 3,1</li>
+      <li>-2,2</li>
+      <li>-1,2</li>
+      <li> 0,2</li>
+      <li> 1,2</li>
+      <li> 2,2</li>
+      <li> 3,2</li>
+      <li> 0,3</li>
+      <li> 1,3</li>
+      <li> 2,3</li>
+      <li> 3,3</li>
+    </tilesNeeded>
+    <buildRequirements>
+      <li>BuildRequirementBlue_Fits</li>
+      <li>BuildRequirementBlue_IsSupported</li>
+    </buildRequirements>
+    <components>
+      <li Class="BuildingComponentData_StaffRequirement">
+        <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
+        <maxStaff>40</maxStaff>
+        <minStaff>20</minStaff>
+        <efficiencyAtMax>1.0</efficiencyAtMax>
+        <efficiencyAtMin>0.35</efficiencyAtMin>
+        <populationTypesAccepted>
+          <li>Pioneers</li>
+          <li>Labourers</li>
+          <li>Mechanists</li>
+        </populationTypesAccepted>
+      </li>
+      <li Class="BuildingComponentData_Production">
+        <componentClass>Animocity.Cities.BuildingComponent_Production</componentClass>
+        <supportedProcesses>
+          <li>ScrapMining</li>
+        </supportedProcesses>
+      </li>
+    </components>
+  </BuildingBlueprint>
+</Buildings>

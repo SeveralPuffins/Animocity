@@ -19,6 +19,28 @@ namespace Animocity.Cities
             }
         }
 
+        protected override void OnBuild()
+        {
+            CityInventory.Current.WorkforceManager.AddWorkplace(this);
+        }
+
+        public void ClearStaffForReassignment()
+        {
+            this.CurrentStaff = 0;
+        }
+
+        public void AddStaff(int numToAdd)
+        {
+            this.CurrentStaff += numToAdd;
+        }
+
+        public int CurrentStaff { get; private set; }
+
+        public override float ModifyEfficiency(float efficiency)
+        {
+            return base.ModifyEfficiency(efficiency);
+        }
+
         protected override bool Tick(Building building)
         {
             /*string staffTypes = "";
