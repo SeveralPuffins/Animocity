@@ -2544,6 +2544,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   readout: {fileID: 1454711719}
+  cityGrids:
+  - {fileID: 828618759}
+  - {fileID: 53573000}
+  - {fileID: 1078326885}
+  - {fileID: 1875315912}
 --- !u!1 &1390157316
 GameObject:
   m_ObjectHideFlags: 0
@@ -2868,11 +2873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4eb9c65f19be724bb74fffd3ad2cbd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grids:
-  - {fileID: 828618759}
-  - {fileID: 53573000}
-  - {fileID: 1078326885}
-  - {fileID: 1875315912}
   baseSpeed: 5
   maxBounds:
     serializedVersion: 2
