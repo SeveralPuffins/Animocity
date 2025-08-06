@@ -35,6 +35,15 @@ public partial class @BattleControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Primary Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""d2baaa42-0e22-4fb1-bcf1-80f18dc4e766"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -169,6 +178,28 @@ public partial class @BattleControls: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d00f5731-5091-43cb-845f-6674c04ec668"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Primary Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d3d5b57-5c6c-4957-b551-3599dd39d998"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Primary Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -178,6 +209,7 @@ public partial class @BattleControls: IInputActionCollection2, IDisposable
         // BattleActions
         m_BattleActions = asset.FindActionMap("BattleActions", throwIfNotFound: true);
         m_BattleActions_Movement = m_BattleActions.FindAction("Movement", throwIfNotFound: true);
+        m_BattleActions_PrimaryWeapon = m_BattleActions.FindAction("Primary Weapon", throwIfNotFound: true);
     }
 
     ~@BattleControls()
@@ -245,11 +277,13 @@ public partial class @BattleControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_BattleActions;
     private List<IBattleActionsActions> m_BattleActionsActionsCallbackInterfaces = new List<IBattleActionsActions>();
     private readonly InputAction m_BattleActions_Movement;
+    private readonly InputAction m_BattleActions_PrimaryWeapon;
     public struct BattleActionsActions
     {
         private @BattleControls m_Wrapper;
         public BattleActionsActions(@BattleControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_BattleActions_Movement;
+        public InputAction @PrimaryWeapon => m_Wrapper.m_BattleActions_PrimaryWeapon;
         public InputActionMap Get() { return m_Wrapper.m_BattleActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -262,6 +296,9 @@ public partial class @BattleControls: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @PrimaryWeapon.started += instance.OnPrimaryWeapon;
+            @PrimaryWeapon.performed += instance.OnPrimaryWeapon;
+            @PrimaryWeapon.canceled += instance.OnPrimaryWeapon;
         }
 
         private void UnregisterCallbacks(IBattleActionsActions instance)
@@ -269,6 +306,9 @@ public partial class @BattleControls: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @PrimaryWeapon.started -= instance.OnPrimaryWeapon;
+            @PrimaryWeapon.performed -= instance.OnPrimaryWeapon;
+            @PrimaryWeapon.canceled -= instance.OnPrimaryWeapon;
         }
 
         public void RemoveCallbacks(IBattleActionsActions instance)
@@ -289,5 +329,6 @@ public partial class @BattleControls: IInputActionCollection2, IDisposable
     public interface IBattleActionsActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnPrimaryWeapon(InputAction.CallbackContext context);
     }
 }
