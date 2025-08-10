@@ -15,8 +15,8 @@ namespace Animocity.UI
         private Transform panel = null;
         public override string GetDisplayText()
         {
-            float stored = CityInventory.Current.GetTotalWhere((b) => true);
-            float edible = CityInventory.Current.GetTotalWhere((b) => b.edible);
+            float stored = CityOverview.Current.GetTotalWhere((b) => true);
+            float edible = CityOverview.Current.GetTotalWhere((b) => b.edible);
 
             return String.Format("{0:0.0} :: {1:0.0}", stored,edible);
         }
@@ -34,7 +34,7 @@ namespace Animocity.UI
                 foreach (var blue in BlueprintDatabase<ResourceBlue>.FetchAll())
                 {
                     var entry = GetInventoryEntryForBlue(blue);
-                    entry.textUpdateFunc = () => { return String.Format("{0} :: {1:0.0}", blue.DisplayName, CityInventory.Current.GetResourceAmount(blue)); };
+                    entry.textUpdateFunc = () => { return String.Format("{0} :: {1:0.0}", blue.DisplayName, CityOverview.Current.GetResourceAmount(blue)); };
                     entry.transform.SetParent(panel);
                 }
             }

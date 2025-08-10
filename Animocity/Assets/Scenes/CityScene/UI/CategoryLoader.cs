@@ -31,7 +31,7 @@ public class CategoryLoader : MonoBehaviour
     private void LoadAllCategories(PlayerProfile profile, DataLoader.LoadStatus status)
     {
         print($"Trigged LoadAllcategories!");
-        foreach (var cat in BlueprintDatabase<BuildingCategoryBlueprint>.FetchAll())
+        foreach (var cat in BlueprintDatabase<BuildingCategoryBlueprint>.FetchAllWhere((blue) => blue.visibleCategory))
         {
             print($"Category {cat.label} loading!");
             var t = Transform.Instantiate(ButtonPrefab, this.transform);

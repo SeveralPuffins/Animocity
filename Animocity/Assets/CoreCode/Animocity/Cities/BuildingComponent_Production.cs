@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Animocity.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Animocity.Cities
 {
@@ -11,7 +15,7 @@ namespace Animocity.Cities
     {
         public BuildingComponent_Production(BuildingComponentData data, Building building) : base(data, building)
         {
-            this.selectedProcess = ProductionData.supportedProcesses.FirstOrDefault();
+            this.SelectedProcess = ProductionData.supportedProcesses.FirstOrDefault();
         }
 
         public BuildingComponentData_Production ProductionData
@@ -23,16 +27,16 @@ namespace Animocity.Cities
         }
 
 
-        protected ProcessBlueprint selectedProcess;
-        protected float currentProgress = 0f;
+        public ProcessBlueprint SelectedProcess { get; protected set; }
+        public float CurrentProgress { get; protected set; } = 0f;
 
         protected override bool Tick(Building building)
         {
             
-            if (CityInventory.Current.HasResources(selectedProcess.inputs))
+            if (CityOverview.Current.HasResources(SelectedProcess.inputs))
             {
-                currentProgress += this.Building.BuildingEfficiency*Building.SECONDS_PER_TICK;
-                if (currentProgress >= selectedProcess.productivityCost)
+                CurrentProgress += this.Building.BuildingEfficiency*Building.SECONDS_PER_TICK;
+                if (CurrentProgress >= SelectedProcess.productivityCost)
                 {
                     FinishProcess();
                 }
@@ -44,15 +48,39 @@ namespace Animocity.Cities
 
         protected void FinishProcess()
         {
-            foreach (var key in selectedProcess.inputs.Keys)
+            foreach (var key in SelectedProcess.inputs.Keys)
             {
-                CityInventory.Current.TakeResource(this.Building.GridLocation, key, selectedProcess.inputs[key]);
+                CityOverview.Current.TakeResource(this.Building.GridLocation, key, SelectedProcess.inputs[key]);
             }
-            foreach (var key in selectedProcess.outputs.Keys)
+            foreach (var key in SelectedProcess.outputs.Keys)
             {
-                CityInventory.Current.PushResource(this.Building.GridLocation, key, selectedProcess.outputs[key]);
+                CityOverview.Current.PushResource(this.Building.GridLocation, key, SelectedProcess.outputs[key]);
             }
-            currentProgress = 0f;
+            CurrentProgress = 0f;
+        }
+
+        public override void AddInspectorInfo(BuildingInspectorComp inspector, bool select = false)
+        {
+            base.AddInspectorInfo(inspector);
+
+            Button tabButton = UIPrefabHelpers.Current.GetInspectorButton();
+
+            tabButton.onClick.AddListener(() => {
+                inspector.ClearContentPane();
+                this.populateInspectorPane(inspector.contentPane);
+            });
+            tabButton.transform.SetParent(inspector.tabPane);
+            inspector.ClearContentPane();
+            this.populateInspectorPane(inspector.contentPane);
+        }
+
+        private void populateInspectorPane(Transform contentPane)
+        {
+            var txt = contentPane.GetComponentInChildren<TMP_Text>();
+            txt.text = $"Current job: {SelectedProcess.DisplayName}.";
+
+            var panel = UIPrefabHelpers.Current.GetProductionTimerPanel(this);
+            panel.transform.SetParent(contentPane);
         }
     }
 }

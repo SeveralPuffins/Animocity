@@ -8,7 +8,7 @@ namespace Animocity.Cities
 {
     public class HousingManager
     {
-        public const float MAX_COMMUTE_COST = 30.0f;
+        public const float MAX_COMMUTE_COST = 7.0f;
         private List<BuildingComponent_Housing> _houses;
         private Dictionary<CityGrid, TransportGrid> transportGrids;
         public IEnumerable<BuildingComponent_Housing> Houses
@@ -32,6 +32,14 @@ namespace Animocity.Cities
             }
 
             return _houses.Sum((house) => house.HousingData.capacity);
+        }
+
+        public void ResetResidences()
+        {
+            foreach (var house in this._houses)
+            {
+                house.ResetResidents();
+            }
         }
 
         public float GetHousingSatisfaction(int population)

@@ -3,7 +3,7 @@
 
   <BuildingBlueprint label="PowerCoil">
     <displayName>Power Coil</displayName>
-    <category>bcb_Utility</category>
+    <category>bcb_Natural</category>
     <prefabPath>Main/Buildings/Prefabs/PowerCoil</prefabPath>
     <description>Exposed meta-alloy conduits allow us to tap a small amount of power from the mech's chassis.</description>
     <grantsSupport>false</grantsSupport>
@@ -16,11 +16,14 @@
       <li>BuildRequirementBlue_Fits</li>
       <li>BuildRequirementBlue_IsSupported</li>
     </buildRequirements>
+    <tagRequirements>
+      <li>MainBody</li>
+    </tagRequirements>
   </BuildingBlueprint>
 
   <BuildingBlueprint label="ScrapHeap">
     <displayName>Scrap Heap</displayName>
-    <category>bcb_Industrial</category>
+    <category>bcb_Natural</category>
     <prefabPath>Main/Buildings/Prefabs/ScrapHeap</prefabPath>
     <description>A heap O' Scrap</description>
     <resourceCosts></resourceCosts>
@@ -57,5 +60,8 @@
         </supportedProcesses>
       </li>
     </components>
+    <tagRequirements>
+      <li>MainBody</li>
+    </tagRequirements>
   </BuildingBlueprint>
 </Buildings>

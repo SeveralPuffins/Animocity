@@ -23,8 +23,8 @@ namespace Animocity.Cities
 
         protected override void OnBuild()
         {
-            var location = Building.GridLocation;
-            CityInventory.Current.HousingManager.AddTransport(this, this.Building.Grid, location);
+            var location = Building.GridLocation + Vector2Int.up;
+            CityOverview.Current.HousingManager.AddTransport(this, this.Building.Grid, location);
             base.OnBuild();
         }
     }

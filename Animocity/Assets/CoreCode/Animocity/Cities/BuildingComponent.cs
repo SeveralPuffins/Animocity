@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Animocity.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -42,6 +43,11 @@ namespace Animocity.Cities
         protected virtual bool LongTick(Building building)
         {
             return true;
+        }
+
+        public virtual void AddInspectorInfo(BuildingInspectorComp inspector, bool select = false)
+        {
+            
         }
     }
 }

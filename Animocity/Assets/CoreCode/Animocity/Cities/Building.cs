@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
+using UnityEngine.UI;
 
 namespace Animocity.Cities
 {
@@ -16,6 +16,8 @@ namespace Animocity.Cities
         public BuildingBlueprint Blue { get; private set; }
         public CityGrid Grid { get; private set; }
         public Vector2Int GridLocation { get; private set; }
+
+        public bool IsPlan { get; private set; }
 
         protected List<BuildingComponent> Components { get; private set; }
         private float _time;
@@ -35,7 +37,7 @@ namespace Animocity.Cities
             }
         }
 
-        public static Building AddToGameObject(GameObject go, BuildingBlueprint blue, CityGrid grid, Vector2Int loc)
+        public static Building AddToGameObject(GameObject go, BuildingBlueprint blue, CityGrid grid, Vector2Int loc, bool isPlan = false)
         {
             var building = go.AddComponent<Building>();
             building.Blue = blue;
@@ -45,6 +47,16 @@ namespace Animocity.Cities
 
             building._time = Random.Range(0f, SECONDS_PER_TICK);
             building._ticks = Random.Range(0, TICKS_TO_LONGTICKS);
+
+            building.IsPlan = isPlan;
+            if (isPlan)
+            {
+                building.gameObject.layer = 7;
+                foreach(Transform t in building.GetComponentsInChildren<Transform>())
+                {
+                    t.gameObject.layer = 7;
+                }
+            }
 
             return building;
         }
@@ -61,6 +73,12 @@ namespace Animocity.Cities
                     //print($"Making Building Component of type {data.GetType().ToString()} with worker type {worker.GetType().ToString()}");
                 }
             }
+        }
+
+        public void OpenInspector()
+        {
+            GameObject go = new GameObject("Inspection Panel");
+            go.AddComponent<Image>();
         }
 
         public List<T> GetComps<T>() where T : BuildingComponent
@@ -82,6 +100,7 @@ namespace Animocity.Cities
 
             return found;
         }
+
 
 
         // Update is called once per frame

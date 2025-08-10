@@ -67,57 +67,5 @@
   </BuildingBlueprint>
 
 
-  <BuildingBlueprint label="Smelter">
-    <displayName>Mrs Smelter</displayName>
-    <category>bcb_Industrial</category>
-    <prefabPath>Temporary/Flat_Style_Vehicles/Prefabs/Buildings/Manufactury</prefabPath>
-    <description>Smelty melty metal!</description>
-    <grantsSupport>true</grantsSupport>
-    <tilesNeeded>
-      <li>-2,0</li>
-      <li>-1,0</li>
-      <li> 0,0</li>
-      <li> 1,0</li>
-      <li> 2,0</li>
-      <li>-2,1</li>
-      <li>-1,1</li>
-      <li> 0,1</li>
-      <li> 1,1</li>
-      <li> 2,1</li>
-      <li>-2,2</li>
-      <li>-1,2</li>
-      <li> 0,2</li>
-      <li> 1,2</li>
-      <li>-2,3</li>
-      <li>-1,3</li>
-      <li> 0,3</li>
-    </tilesNeeded>
-    <buildRequirements>
-      <li>BuildRequirementBlue_Fits</li>
-      <li>BuildRequirementBlue_IsSupported</li>
-    </buildRequirements>
-    <resourceCosts>
-      <di>
-        <dk>Stone</dk>
-        <dv>18.0</dv>
-      </di>
-      <di>
-        <dk>Scrap</dk>
-        <dv>16.0</dv>
-      </di>
-    </resourceCosts>
-    <components>
-      <li Class="BuildingComponentData_Power">
-        <componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
-        <powerAmount>30.0</powerAmount>
-      </li>
-      <li Class="BuildingComponentData_Production">
-        <componentClass>Animocity.Cities.BuildingComponent_Production</componentClass>
-        <supportedProcesses>
-          <li>SmeltingIron</li>
-          <li>SmeltingCopper</li>
-        </supportedProcesses>
-      </li>
-    </components>
-  </BuildingBlueprint>
+
 </Buildings>

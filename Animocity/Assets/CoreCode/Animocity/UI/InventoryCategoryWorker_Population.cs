@@ -15,7 +15,7 @@ namespace Animocity.UI
         private Transform panel = null;
         public override string GetDisplayText()
         {
-            float pop = CityInventory.Current.TotalPopulation;
+            float pop = CityOverview.Current.TotalPopulation;
             return $" {pop} : (-)";
         }
 
@@ -32,7 +32,7 @@ namespace Animocity.UI
                 foreach (var blue in BlueprintDatabase<PopulationBlue>.FetchAll())
                 {
                     var entry = GetInventoryEntryForBlue(blue);
-                    entry.textUpdateFunc = () => { return $"{blue.DisplayName} :: {CityInventory.Current.GetPopulationByClass(blue)}"; };
+                    entry.textUpdateFunc = () => { return $"{blue.DisplayName} :: {CityOverview.Current.GetPopulationByClass(blue)}"; };
                     entry.transform.SetParent(panel);
                 }
             }

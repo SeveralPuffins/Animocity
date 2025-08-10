@@ -51,6 +51,7 @@ namespace Animocity.Cities
             if(_newGridSquares.Count > 0)
             {
                 UpdateGrid();
+                MonoBehaviour.print("UpdateGrid!");
             }
             return graph.TryFindPaths(startLocation, endpoints, out paths, maxDistance);
         }

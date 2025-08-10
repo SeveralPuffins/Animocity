@@ -33,7 +33,7 @@
   </BuildingBlueprint>
   
   
-  <BuildingBlueprint label="WindMill">
+  <BuildingBlueprint label="Windmill">
     <displayName>Windmill</displayName>
     <category>bcb_Utility</category>
     <prefabPath>Main/Buildings/Prefabs/Windmill</prefabPath>
@@ -60,6 +60,9 @@
       <li>BuildRequirementBlue_Fits</li>
       <li>BuildRequirementBlue_IsSupported</li>
     </buildRequirements>
+    <tagRequirements>
+      <li>Surface</li>
+    </tagRequirements>
     <resourceCosts>
       <di>
         <dk>Scrap</dk>

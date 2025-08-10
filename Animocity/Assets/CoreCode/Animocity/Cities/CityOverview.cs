@@ -9,14 +9,14 @@ using System;
 using UnityEditorInternal;
 using Animocity;
 
-public class CityInventory : MonoBehaviour
+public class CityOverview : MonoBehaviour
 {
 
     public PowerGrid PowerGrid { get; private set; }
     public HousingManager HousingManager { get; private set; }
     public WorkforceManager WorkforceManager { get; private set; }
 
-    public static CityInventory Current;
+    public static CityOverview Current;
 
     public TMP_Text readout;
 

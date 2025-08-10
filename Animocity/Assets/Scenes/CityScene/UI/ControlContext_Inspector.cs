@@ -32,7 +32,10 @@ namespace Animocity.UI
 
         public override void OnInteract(CityGrid grid, Vector3 positionWorld, bool drag, Vector3 dragStartWorldPos)
         {
-
+            if(grid.TryGetBuildingAt(grid.WorldToCell(positionWorld), out var building))
+            {
+                var bi = UIPrefabHelpers.Current.PopulateInspector(building);
+            }
         }
 
         public override void OnInspect(CityGrid grid, Vector3 positionWorld)

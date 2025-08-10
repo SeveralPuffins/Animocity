@@ -29,9 +29,12 @@ namespace Animocity.Cities
         public Dictionary<ResourceBlue, float> resourceCosts;
         public List<BuildRequirementBlueprint> buildRequirements;
         public List<BuildingComponentData> components;
+        public List<string> tagRequirements;
 
         public bool CanBuildAtLocation(Vector2Int loc, CityGrid grid)
         {
+            if(tagRequirements != null && (tagRequirements.Count > 0 && tagRequirements.Any((tag) => !grid.gridTags.Contains(tag)))) return false;
+
             if(buildRequirements == null || buildRequirements.Count  == 0)
             {
                 return true;

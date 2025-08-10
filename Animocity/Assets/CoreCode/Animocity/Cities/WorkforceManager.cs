@@ -31,6 +31,7 @@ namespace Animocity.Cities
 
         public void UpdateWorkforceCommutes()
         {
+            CityOverview.Current.HousingManager.ResetResidences();
             ResetAssignments();
            
             if(_priorityWorkplaces.Count()>0) BulkAssignWorkers(_priorityWorkplaces);
@@ -106,7 +107,7 @@ namespace Animocity.Cities
             {
                 int assignedPopMax = Math.Min(demandRemaining, unassignedWorkers[pop]);
 
-                if (CityInventory.Current.HousingManager.TryFindHousing(workplace.Building.Grid, workplace.Building.GridLocation, assignedPopMax, out int popsSuccessfullyHoused))
+                if (CityOverview.Current.HousingManager.TryFindHousing(workplace.Building.Grid, workplace.Building.GridLocation, assignedPopMax, out int popsSuccessfullyHoused))
                 {
                     demandRemaining -= popsSuccessfullyHoused;
                     unassignedWorkers[pop] -= popsSuccessfullyHoused;
@@ -127,8 +128,8 @@ namespace Animocity.Cities
         private void ResetAssignments()
         {
             unassignedWorkers.Clear();
-            unassignedWorkers = CityInventory.Current.GetPopulationsByClass();
-            unassignedHousing = CityInventory.Current.HousingManager.GetHousingCapacity();
+            unassignedWorkers = CityOverview.Current.GetPopulationsByClass();
+            unassignedHousing = CityOverview.Current.HousingManager.GetHousingCapacity();
             foreach (var workplace in _activeWorkplaces)
             {
                 workplace.ClearStaffForReassignment();
@@ -167,7 +168,7 @@ namespace Animocity.Cities
         private Dictionary<PopulationBlue, float> MaxAchievableSpecialistStaffLevels(List<BuildingComponent_StaffRequirement> workplaces)
         {
             var fractionAvailable = new Dictionary<PopulationBlue, float>();
-            var specialistSupply = CityInventory.Current.GetPopulationsByClass();
+            var specialistSupply = CityOverview.Current.GetPopulationsByClass();
             var specialistDemand = GetSpecialistDemand(workplaces);
 
             foreach(var pop in specialistDemand.Keys)

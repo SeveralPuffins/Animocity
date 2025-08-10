@@ -26,5 +26,19 @@ namespace Animocity.Cities.Algorithms
             this.start = start;
             this.maxCost = maxCost;
         }
+
+        public override bool Equals(object obj)
+        {
+            PathQuery<T> other = obj as PathQuery<T>;
+
+            if (other != null)
+            {
+                return
+                    other.endpoints.SetEquals(endpoints)
+                 && other.start.Equals(start)
+                 && other.maxCost == maxCost;
+            }
+            return false;
+        }
     }
 }

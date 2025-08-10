@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor.Search;
 using UnityEditor.SearchService;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
@@ -56,26 +57,41 @@ namespace Animocity.Cities.Algorithms
         private bool TryFindPaths(PathQuery<T> query, out List<Path<T>> paths)
         {
             paths = new List<Path<T>>();
+
             if (_edges == null || _edges.Count() == 0)
             {
                 return false;
             }
 
             Dictionary<T, float> minDistances = new Dictionary<T, float>();
-
             int size = (int) Math.Pow(2, Math.Ceiling(Math.Log(_edges.Count(), 2)));
-
 
             AffinityColumn<T> minDistanceHeap = new(size);
             Dictionary<T, T> parents = new();
             minDistances.Add(query.start, 0f);
             minDistanceHeap.Add(query.start, 0f);
 
+            if (!_edges.Keys.Contains(query.start))
+            {
+                MonoBehaviour.print($"START LOCATION NOT IN EDGES!");
+            }
+            foreach (var end in query.endpoints)
+            {
+                if (!_edges.Any((edge)=>edge.Value.Contains(end)))
+                {
+                    MonoBehaviour.print($"AN END LOCATION NOT IN EDGES!");
+                }
+            }
+
+            //MonoBehaviour.print($"Trying to find path from {query.start} to up to {query.endpoints.Count()} ends, in a graph with {_edges.Count()} edges.");
 
 
             while (paths.Count() < query.endpoints.Count() && minDistanceHeap.Count > 0)
             {
                 var current = minDistanceHeap.Pop(out var currentCost);
+
+                //MonoBehaviour.print($"Iterating from {current} with cost {currentCost}.");
+
                 if (currentCost > query.maxCost) break;
 
                 // Terminate early if all ends have been discovered and if the minimum distance to an end is less than the heap minimum
@@ -85,27 +101,39 @@ namespace Animocity.Cities.Algorithms
                 {
                     float mostExpensiveEnd = query.endpoints.Max(end => minDistances[end]);
 
-                    if (mostExpensiveEnd < currentCost) break;
+                    if (mostExpensiveEnd < currentCost)
+                    {
+                        //MonoBehaviour.print($"All ends found, most expensive end costs {mostExpensiveEnd}, less than next min cost {currentCost}.");
+                        break;
+                    }
+              
                 }
 
 
 
                 if (!_edges.TryGetValue(current, out var currentEdges)) continue;
 
-                for(int i = 0; i < currentEdges.Count(); i++)
+                //MonoBehaviour.print($"Iterating {currentEdges.Count()} linkes from current node.");
+                for (int i = 0; i < currentEdges.Count(); i++)
                 {
                     var edgeNode = currentEdges[i];
                     var edgeCost = _edgeCosts[current][i] + currentCost;
 
                     
-                    if (!minDistances.TryGetValue(edgeNode, out var oldEdgeCost) 
-                    ||   oldEdgeCost > edgeCost)
-                    { 
+                    if (!minDistances.TryGetValue(edgeNode, out var oldEdgeCost))
+                    {
+                        //MonoBehaviour.print($"Updating cost to get to {currentEdges[i]} to {edgeCost}.");
+                        minDistances[edgeNode] = edgeCost;
+                        parents.Add(edgeNode, current);
+                        minDistanceHeap.Add(edgeNode, edgeCost);
                         
+                    }
+                    else if(oldEdgeCost > edgeCost)
+                    {
+                        //MonoBehaviour.print($"Updating cost to get to {currentEdges[i]} to {edgeCost}.");
                         minDistances[edgeNode] = edgeCost;
                         parents.Add(edgeNode, current);
                         minDistanceHeap.UpdateValue(edgeNode, edgeCost);
-                        
                     }
                 }
             }
@@ -181,6 +209,36 @@ namespace Animocity.Cities.Algorithms
             gridGraph._edges = edges;
 
             return gridGraph;
+        }
+
+        internal bool TryCheckPath(List<T> path, out float cost)
+        {
+            cost = 0;
+            for(int i=0; i<path.Count-1; i++)
+            {
+                T o = path[i];
+                T d = path[i+1];
+
+                if (_edges.TryGetValue(o, out var edgeList))
+                {
+                    bool foundEdge = false;
+                    for(int n=0; n<edgeList.Length; n++)
+                    {
+                        if (edgeList[n].Equals(d))
+                        {
+                            foundEdge = true;
+                            cost += _edgeCosts[o][n];
+                            break;
+                        }
+                    }
+                    if (!foundEdge)
+                    {
+                        return false;
+                    }
+                }
+                else return false;
+            }
+            return true;
         }
     }
 }

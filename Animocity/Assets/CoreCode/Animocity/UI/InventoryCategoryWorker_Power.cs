@@ -15,7 +15,7 @@ namespace Animocity.UI
         public override string GetDisplayText()
         {
             float stored = 0f;
-            float prod = CityInventory.Current.PowerSupply - CityInventory.Current.PowerDemand;
+            float prod = CityOverview.Current.PowerSupply - CityOverview.Current.PowerDemand;
 
             return String.Format("{0:0.0} :: {1:0.0}", stored, prod);
         }

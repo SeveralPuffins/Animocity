@@ -10,6 +10,8 @@ namespace Animocity.UI
     {
         public string iconPath;
         public string description;
+        public bool visibleCategory;
+
         public Color categoryColour;
 
         public Sprite GetSprite()

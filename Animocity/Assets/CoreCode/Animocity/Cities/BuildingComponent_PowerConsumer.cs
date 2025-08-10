@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 namespace Animocity.Cities
@@ -23,6 +24,12 @@ namespace Animocity.Cities
             return base.Tick(building);
         }
 
+        protected override void populateInspectorPane(Transform contentPane)
+        {
+            var txt = contentPane.GetComponentInChildren<TMP_Text>();
+            txt.text = $"Consuming {this.PowerData.powerAmount}MW";
+            base.populateInspectorPane(contentPane);
+        }
 
         public override float ModifyEfficiency(float efficiency)
         {

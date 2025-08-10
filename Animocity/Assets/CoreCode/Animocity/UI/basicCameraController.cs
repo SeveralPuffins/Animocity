@@ -14,7 +14,7 @@ public class basicCameraController : MonoBehaviour
     {
         get
         {
-            return CityInventory.Current.cityGrids;
+            return CityOverview.Current.cityGrids;
         }
     }
     public float baseSpeed = 5f;

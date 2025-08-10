@@ -180,17 +180,17 @@ namespace Animocity.Cities
 
             if(blue.CanBuildAtLocation(loc, this))
             {
-                if (CanAfford(blue) || isFree)
-                {
-                    var newBuildingTransform = Instantiate<Transform>(blue.GetPrefab(), WorldFromCell(loc), Quaternion.identity);
-                    newBuildingTransform.SetParent(this.transform);
-                    newBuilding = Building.AddToGameObject(newBuildingTransform.gameObject, blue, this, loc);
+                bool isPlan = !(CanAfford(blue) || isFree);
 
-                    PushBuilding(newBuilding);
-                    if(!isFree) PayResources(blue, loc);
+                var newBuildingTransform = Instantiate<Transform>(blue.GetPrefab(), WorldFromCell(loc), Quaternion.identity);
+                newBuildingTransform.SetParent(this.transform);
+                newBuilding = Building.AddToGameObject(newBuildingTransform.gameObject, blue, this, loc, isPlan);
 
-                    return true;
-                }
+                PushBuilding(newBuilding);
+                if(!isFree && !isPlan) PayResources(blue, loc);
+
+                return true;
+                
             }
             newBuilding = null;
             return false;
@@ -200,13 +200,13 @@ namespace Animocity.Cities
         {
             foreach (var key in blue.resourceCosts.Keys) 
             {
-                CityInventory.Current.TakeResource(tile, key, blue.resourceCosts[key]);
+                CityOverview.Current.TakeResource(tile, key, blue.resourceCosts[key]);
             }
         }
 
         private bool CanAfford(BuildingBlueprint blue)
         {
-            return CityInventory.Current.HasResources(blue.resourceCosts);
+            return CityOverview.Current.HasResources(blue.resourceCosts);
         }
 
         private Vector3 GetMousePosition()
