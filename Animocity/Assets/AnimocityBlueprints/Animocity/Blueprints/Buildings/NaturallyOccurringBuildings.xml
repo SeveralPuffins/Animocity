@@ -16,9 +16,6 @@
       <li>BuildRequirementBlue_Fits</li>
       <li>BuildRequirementBlue_IsSupported</li>
     </buildRequirements>
-    <tagRequirements>
-      <li>MainBody</li>
-    </tagRequirements>
   </BuildingBlueprint>
 
   <BuildingBlueprint label="ScrapHeap">
@@ -60,8 +57,5 @@
         </supportedProcesses>
       </li>
     </components>
-    <tagRequirements>
-      <li>MainBody</li>
-    </tagRequirements>
   </BuildingBlueprint>
 </Buildings>

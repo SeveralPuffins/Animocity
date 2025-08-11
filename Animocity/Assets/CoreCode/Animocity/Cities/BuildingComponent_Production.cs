@@ -59,28 +59,16 @@ namespace Animocity.Cities
             CurrentProgress = 0f;
         }
 
-        public override void AddInspectorInfo(BuildingInspectorComp inspector, bool select = false)
+
+        protected override bool HasInspector() => true;
+
+        protected override void PopulateInspectorContentPane(Transform inspectorPane)
         {
-            base.AddInspectorInfo(inspector);
-
-            Button tabButton = UIPrefabHelpers.Current.GetInspectorButton();
-
-            tabButton.onClick.AddListener(() => {
-                inspector.ClearContentPane();
-                this.populateInspectorPane(inspector.contentPane);
-            });
-            tabButton.transform.SetParent(inspector.tabPane);
-            inspector.ClearContentPane();
-            this.populateInspectorPane(inspector.contentPane);
-        }
-
-        private void populateInspectorPane(Transform contentPane)
-        {
-            var txt = contentPane.GetComponentInChildren<TMP_Text>();
+            var txt = inspectorPane.GetComponentInChildren<TMP_Text>();
             txt.text = $"Current job: {SelectedProcess.DisplayName}.";
 
             var panel = UIPrefabHelpers.Current.GetProductionTimerPanel(this);
-            panel.transform.SetParent(contentPane);
+            panel.transform.SetParent(inspectorPane);
         }
     }
 }

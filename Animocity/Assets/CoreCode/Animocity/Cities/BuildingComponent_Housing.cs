@@ -55,7 +55,7 @@ namespace Animocity.Cities
                 return currentSatisfaction;
             }
         }
-
+        
         public override void AddInspectorInfo(BuildingInspectorComp inspector, bool select = false)
         {
             base.AddInspectorInfo(inspector);

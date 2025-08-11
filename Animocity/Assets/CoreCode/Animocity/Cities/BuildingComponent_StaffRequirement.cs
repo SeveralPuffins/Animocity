@@ -14,10 +14,13 @@ namespace Animocity.Cities
 {
     public class BuildingComponent_StaffRequirement : BuildingComponent
     {
-        public BuildingComponent_StaffRequirement(BuildingComponentData data, Building building) : base(data, building) { }
+        public BuildingComponent_StaffRequirement(BuildingComponentData data, Building building) : base(data, building) 
+        {
+            this.Priority = StaffData.defaultPriority;
+        }
 
         private List<Commute<Vector2Int>> _commutes = new();
-        private Dictionary<BuildingComponent_Housing, Path<T>> _connectedHouses = new();
+        private Dictionary<BuildingComponent_Housing, Path<Vector2Int>> _connectedHouses = new();
 
         public BuildingComponentData_StaffRequirement StaffData
         {
@@ -50,46 +53,32 @@ namespace Animocity.Cities
             return efficiency * Math.Max(0f, (this.CurrentStaff - StaffData.minStaff) * 1f / (1f* (StaffData.maxStaff - StaffData.minStaff)));
         }
 
-        public override void AddInspectorInfo(BuildingInspectorComp inspector, bool select = false)
+        protected override bool HasInspector() => true;
+
+        protected override void PopulateInspectorContentPane(Transform inspectorPane)
         {
-            base.AddInspectorInfo(inspector);
-
-            Button tabButton = UIPrefabHelpers.Current.GetInspectorButton();
-
-            tabButton.onClick.AddListener(() => {
-                inspector.ClearContentPane();
-                this.populateInspectorPane(inspector.contentPane);
-            });
-            tabButton.transform.SetParent(inspector.tabPane);
-            inspector.ClearContentPane();
-            this.populateInspectorPane(inspector.contentPane);
-        }
-
-        private void populateInspectorPane(Transform contentPane)
-        {
-            var txt = contentPane.GetComponentInChildren<TMP_Text>();
-
+            var txt = inspectorPane.GetComponentInChildren<TMP_Text>();
             string msg = $"Current staff: {CurrentStaff}/{StaffData.maxStaff}";
-
             txt.text = msg;
+
+            var pc =  UIPrefabHelpers.Current.GetPriorityControl(this);
+            pc.transform.SetParent(inspectorPane.transform);
         }
+
+        public int Priority { get; protected set; }
+        public void UpdatePriority(int priority)
+        {
+            this.Priority = priority;
+        }
+
         protected override bool Tick(Building building)
         {
-            /*string staffTypes = "";
-            
-            foreach(var pop in StaffData.populationTypesAccepted)
-            {
-                staffTypes += $"{pop.label}, ";
-            }
-
-            MonoBehaviour.print($"BUILDING {building.Blue.DisplayName} WANTS {StaffData.maxStaff} from {staffTypes}");
-            */
             return base.Tick(building);
         }
 
         protected override bool LongTick(Building building)
         {
-            CityOverview.Current.
+            return base.LongTick(building);
         }
 
     }

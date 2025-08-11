@@ -64,7 +64,7 @@ namespace Animocity.Cities.CityGen
             for (int j = seed.y; j > bounds.yMin; j--)
             {
                 var loc = new Vector2Int(seed.x, j);
-                if (buildingBlue.CanBuildAtLocation(loc, cityGrid))
+                if (buildingBlue.CanBuildAtLocation(loc, cityGrid, out var msg))
                 {
                     cityGrid.TryBuildAtLocation(buildingBlue, loc, out var newBuilding, isFree: true);
                     return true;

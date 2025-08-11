@@ -5,7 +5,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Animocity.Cities
 {
@@ -24,6 +26,8 @@ namespace Animocity.Cities
             Building.LongTick += this.Tick;
             OnBuild();
         }
+
+        protected virtual bool HasInspector () => false;
 
         protected virtual void OnBuild()
         {
@@ -47,7 +51,29 @@ namespace Animocity.Cities
 
         public virtual void AddInspectorInfo(BuildingInspectorComp inspector, bool select = false)
         {
-            
+            if (HasInspector())
+            {
+                Button tabButton = UIPrefabHelpers.Current.GetInspectorButton();
+
+                tabButton.onClick.AddListener(() =>
+                {
+                    OnSelectInspectorTab(inspector);
+                });
+                tabButton.transform.SetParent(inspector.tabPane);
+
+                OnSelectInspectorTab(inspector);
+            }
+        }
+
+        protected virtual void OnSelectInspectorTab(BuildingInspectorComp inspector)
+        {
+            inspector.ClearContentPane();
+            this.PopulateInspectorContentPane(inspector.contentPane);
+        }
+
+        protected virtual void PopulateInspectorContentPane(Transform inspectorPane)
+        {
+
         }
     }
 }

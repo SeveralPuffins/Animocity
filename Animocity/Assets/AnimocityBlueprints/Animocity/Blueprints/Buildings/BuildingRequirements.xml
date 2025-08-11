@@ -2,15 +2,24 @@
 <BuildingRequirements>
   <BuildRequirementBlueprint label="BuildRequirementBlue_Fits">
     <requirementCheckWorker>BuildRequirementWorker_Fits</requirementCheckWorker>
+    <failMessage>Location occupied!</failMessage>
   </BuildRequirementBlueprint>
   <BuildRequirementBlueprint label="BuildRequirementBlue_IsSupported">
     <requirementCheckWorker>BuildRequirementWorker_Supported</requirementCheckWorker>
+    <failMessage>Building is unsupported</failMessage>
   </BuildRequirementBlueprint>
   <BuildRequirementBlueprint label="BuildRequirementBlue_IsOnCoil">
     <requirementCheckWorker>BuildRequirementWorker_IsOnCoil</requirementCheckWorker>
+    <failMessage>Must be placed on exposed power coil</failMessage>
   </BuildRequirementBlueprint>
   <BuildRequirementBlueprint label="BuildRequirementBlue_Accessible">
     <requirementCheckWorker>BuildRequirementWorker_Accessible</requirementCheckWorker>
+    <failMessage>No Building Access</failMessage>
   </BuildRequirementBlueprint>
+  <BuildRequirementBlueprint_GridTag label="BuildRequirementBlue_IsSurfaceGrid">
+    <tag>Surface</tag>
+    <requirementCheckWorker>BuildRequirementWorker_GridHasTag</requirementCheckWorker>
+    <failMessage>Must be built on {0} grid</failMessage>
+  </BuildRequirementBlueprint_GridTag>
   
 </BuildingRequirements>

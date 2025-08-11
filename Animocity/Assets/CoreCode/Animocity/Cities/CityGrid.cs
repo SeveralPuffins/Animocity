@@ -5,11 +5,14 @@ using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Pool;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Animocity.Cities
 {
@@ -25,10 +28,13 @@ namespace Animocity.Cities
         public Vector2 cellSize;
         [Header("Highlight Style")]
         public GridHighlightManager ghm;
-        public Color highlightPositive = new Color(0.2f, 0.2f, 1f, 1f);
-        public Color highlightNegative = new Color(1f, 0.2f, 0.2f, 1f);
-        public Color highlightNeutral = new Color(0.6f, 0.6f, 0.65f, 1f);
+        public Color highlightPositive = new Color(0.2f, 0.2f, 1f, 0.5f);
+        public Color highlightNegative = new Color(1f, 0.2f, 0.2f, 0.5f);
+        public Color highlightNeutral = new Color(0.6f, 0.6f, 0.65f, 0.5f);
+        public Color highlightInformational = new Color(0.8f, 0.8f, 0.25f, 0.5f);
         private bool _focused = false;
+
+        public TMP_Text errorText;
 
         public void Focus()
         {
@@ -45,6 +51,7 @@ namespace Animocity.Cities
             tileContents = new();
             var context = new ControlContext_Inspector();
             context.Activate();
+            uiMask = LayerMask.NameToLayer("UI");
         }
         private void OnValidate()
         {
@@ -178,7 +185,7 @@ namespace Animocity.Cities
                 return false;
             }
 
-            if(blue.CanBuildAtLocation(loc, this))
+            if (blue.CanBuildAtLocation(loc, this, out var msg))
             {
                 bool isPlan = !(CanAfford(blue) || isFree);
 
@@ -187,13 +194,17 @@ namespace Animocity.Cities
                 newBuilding = Building.AddToGameObject(newBuildingTransform.gameObject, blue, this, loc, isPlan);
 
                 PushBuilding(newBuilding);
-                if(!isFree && !isPlan) PayResources(blue, loc);
+                if (!isFree && !isPlan) PayResources(blue, loc);
 
+                errorText.text = "";
                 return true;
-                
+
             }
-            newBuilding = null;
-            return false;
+            else
+            {
+                newBuilding = null;
+                return false;
+            }
         }
 
         private void PayResources(BuildingBlueprint blue, Vector2Int tile)
@@ -228,11 +239,33 @@ namespace Animocity.Cities
         float _minDragDist = 0.2f;
         Vector2 _dragStartLocation;
 
+        int uiMask;
+        private bool IsPointerOverUI()
+        {
+            PointerEventData eventData = new PointerEventData(EventSystem.current);
+            eventData.position = Input.mousePosition;
+            List<RaycastResult> raycastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, raycastResults);
+     
+            for (int index = 0; index < raycastResults.Count; index++)
+            {
+                RaycastResult curRaysastResult = raycastResults[index];
+                if (curRaysastResult.gameObject.layer == uiMask)
+                    return true;
+            }
+            return false;
+        }
+
+
         private void CheckMouseInteractions()
         {
             var pos = GetMousePosition();
-            if (Input.GetMouseButtonDown(0))
+
+            bool isOverUI = IsPointerOverUI();
+
+            if (Input.GetMouseButtonDown(0) && !isOverUI)
             {
+                
                 _dragging = true;
                 _dragStartLocation = pos;
             }
@@ -241,15 +274,15 @@ namespace Animocity.Cities
 
             if (Input.GetMouseButtonUp(0))
             {
-                ControlContext.Current.OnInteract(this, pos, drag, _dragStartLocation);
+                if(!isOverUI) ControlContext.Current.OnInteract(this, pos, drag, _dragStartLocation);
                 _dragging = false;
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (Input.GetMouseButtonDown(1) && !isOverUI)
             {
                 ControlContext.Current.OnInspect(this, pos);
                 _dragging = false;
             }
-            else
+            else if(!isOverUI)
             {
                 ControlContext.Current.OnHover(this, pos, drag, _dragStartLocation);
             }

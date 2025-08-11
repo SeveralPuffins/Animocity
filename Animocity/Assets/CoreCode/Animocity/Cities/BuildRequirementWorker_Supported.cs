@@ -10,6 +10,7 @@ namespace Animocity.Cities
 {
     public class BuildRequirementWorker_Supported : BuildRequirementWorker
     {
+        public BuildRequirementWorker_Supported(BuildRequirementBlueprint blue) : base(blue) { }
         private List<Vector2Int> GetAllTilesNeedingSupport(BuildingBlueprint buildingBlue)
         {
             return buildingBlue.tilesNeeded.Where(el => el.y <= 0).ToList();

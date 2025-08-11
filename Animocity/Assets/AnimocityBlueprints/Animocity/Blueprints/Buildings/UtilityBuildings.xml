@@ -59,10 +59,8 @@
     <buildRequirements>
       <li>BuildRequirementBlue_Fits</li>
       <li>BuildRequirementBlue_IsSupported</li>
+      <li Class="BuildRequirementBlueprint_GridTag">BuildRequirementBlue_IsSurfaceGrid</li>
     </buildRequirements>
-    <tagRequirements>
-      <li>Surface</li>
-    </tagRequirements>
     <resourceCosts>
       <di>
         <dk>Scrap</dk>

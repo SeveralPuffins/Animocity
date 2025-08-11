@@ -24,7 +24,7 @@ namespace Animocity.Cities
         protected override void OnBuild()
         {
             var location = Building.GridLocation + Vector2Int.up;
-            CityOverview.Current.HousingManager.AddTransport(this, this.Building.Grid, location);
+            TransportManager.Current.AddTransport(this.Building.Grid, this.TransportData.transitCost, location);
             base.OnBuild();
         }
     }

@@ -9,6 +9,7 @@ namespace Animocity.Cities
 {
     public class BuildRequirementWorker_Fits : BuildRequirementWorker
     {
+        public BuildRequirementWorker_Fits(BuildRequirementBlueprint blue) : base(blue) { }
         public override bool CanBuildAtLocation(Vector2Int location, BuildingBlueprint buildingBlue, CityGrid buildingGrid)
         {
             if(buildingBlue.tilesNeeded==null) return false;

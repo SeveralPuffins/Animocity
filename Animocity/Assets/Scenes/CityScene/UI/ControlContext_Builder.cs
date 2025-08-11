@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections.Generic;
 using static UnityEngine.RuleTile.TilingRuleOutput;
+using TMPro;
 
 namespace Animocity.UI
 {
@@ -13,9 +14,11 @@ namespace Animocity.UI
     {
         private const int HIGHLIGHT_DIST = 5;
         private BuildingBlueprint _selected;
+        private TMP_Text errorText;
         public ControlContext_Builder(BuildingBlueprint selectedBuilding)
         { 
             this._selected = selectedBuilding;
+            this.errorText = GameObject.FindGameObjectWithTag("BuildErrorString").GetComponent<TMP_Text>();
         }
 
         public override void Activate()
@@ -90,9 +93,11 @@ namespace Animocity.UI
         {
             float alpha = 0.5f;
 
-            Color hClr = _selected.CanBuildAtLocation(pt, grid) 
+            Color hClr = _selected.CanBuildAtLocation(pt, grid, out var msg) 
                             ? grid.highlightPositive.WithAlpha(alpha)
                             : grid.highlightNegative.WithAlpha(alpha);
+
+            errorText.text = msg;
 
             foreach (var tileOffset in _selected.tilesNeeded)
             {

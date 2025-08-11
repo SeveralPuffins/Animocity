@@ -12,7 +12,9 @@ namespace Animocity.Cities
         public int minStaff;
         public float efficiencyAtMax;
         public float efficiencyAtMin;
+        public int defaultPriority;
 
         public List<PopulationBlue> populationTypesAccepted;
+
     }
 }

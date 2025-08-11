@@ -9,15 +9,16 @@ namespace Animocity.Cities
 {
     public class BuildRequirementBlueprint : Blueprint
     {
-        private BuildRequirementWorker worker;
+        protected BuildRequirementWorker worker;
         public BuildRequirementWorker Worker
         {
             get
             {
-                if (worker == null) worker = (BuildRequirementWorker)Activator.CreateInstance(this.requirementCheckWorker);
+                if (worker == null) worker = (BuildRequirementWorker)Activator.CreateInstance(this.requirementCheckWorker, new object[]{this});
                 return worker;
             }
         }
         public Type requirementCheckWorker;
+        public string failMessage;
     }
 }

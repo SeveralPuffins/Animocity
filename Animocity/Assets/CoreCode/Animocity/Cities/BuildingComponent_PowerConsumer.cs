@@ -12,23 +12,12 @@ namespace Animocity.Cities
     {
         public BuildingComponent_PowerConsumer(BuildingComponentData data, Building building) : base(data, building) { }
 
-        protected override bool Tick(Building building)
+
+        protected override void PopulateInspectorContentPane(Transform inspectorPane)
         {
-           
-
-            //MonoBehaviour.print($"Building {building.Blue.DisplayName} demands {PowerData.powerConsumption} power!");
-            //this.IsPowered = 
-            //        connectedGrid!=null 
-            //        && connectedGrid.TryFindPower(this);
-
-            return base.Tick(building);
-        }
-
-        protected override void populateInspectorPane(Transform contentPane)
-        {
-            var txt = contentPane.GetComponentInChildren<TMP_Text>();
+            var txt = inspectorPane.GetComponentInChildren<TMP_Text>();
             txt.text = $"Consuming {this.PowerData.powerAmount}MW";
-            base.populateInspectorPane(contentPane);
+            base.PopulateInspectorContentPane(inspectorPane);
         }
 
         public override float ModifyEfficiency(float efficiency)

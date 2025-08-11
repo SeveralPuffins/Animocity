@@ -8,20 +8,15 @@ namespace Animocity.Cities
 {
     public class HousingManager
     {
-        public const float MAX_COMMUTE_COST = 7.0f;
+
         private List<BuildingComponent_Housing> _houses;
-        private Dictionary<CityGrid, TransportGrid> transportGrids;
+        
+
         public IEnumerable<BuildingComponent_Housing> Houses
         { get { return _houses; } }
 
         public HousingManager(IEnumerable<CityGrid> cityGrids) 
         { 
-            transportGrids = new();
-            foreach (CityGrid cityGrid in cityGrids)
-            {
-                transportGrids.Add(cityGrid, new TransportGrid());
-            }
-
             _houses = new List<BuildingComponent_Housing>();
         }
         public int GetHousingCapacity()
@@ -93,20 +88,8 @@ namespace Animocity.Cities
             _houses.Remove(oldHouse);
         }
 
-        public void AddTransport(BuildingComponent_Transport transport, CityGrid grid, Vector2Int location)
-        {
-            transportGrids[grid].AddSquare(location, transport.TransportData.transitCost);
-        }
-
-        public void RemoveTransport(BuildingComponent_Transport transport, CityGrid grid, Vector2Int location)
-        {
-
-        }
-
         internal bool TryFindHousing(CityGrid grid, Vector2Int gridLocation, int assignedPopMax, out int popsSuccessfullyHoused)
         {
-            TransportGrid transportGrid = transportGrids[grid];
-
             var gridHouses = _houses.Where(house => house.Building.Grid == grid && house.HousingData.capacity > house.NumCurrentResidents);
 
             if (gridHouses.Count() > 0) {
@@ -114,7 +97,7 @@ namespace Animocity.Cities
                 var endpoints = gridHouses.ToDictionary((house)=>house.Building.GridLocation,house=>house);
 
 
-                if (transportGrid.TryFindPaths(gridLocation, endpoints.Keys, MAX_COMMUTE_COST, out var paths))
+                if (TransportManager.Current.TryFindPaths(grid, gridLocation, endpoints.Keys, TransportManager.MAX_COMMUTE_COST, out var paths))
                 {
                     popsSuccessfullyHoused = 0;
                     foreach ( var path in paths)

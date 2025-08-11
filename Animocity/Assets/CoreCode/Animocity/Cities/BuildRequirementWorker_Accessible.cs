@@ -12,6 +12,7 @@ namespace Animocity.Cities
 {
     public class BuildRequirementWorker_Accessible : BuildRequirementWorker
     {
+        public BuildRequirementWorker_Accessible(BuildRequirementBlueprint blue) : base(blue) { }
         private List<Vector2Int> GetTilesAdjacentToRoot(Vector2Int location)
         {
             return new List<Vector2Int>
@@ -31,11 +32,14 @@ namespace Animocity.Cities
             {
                 if (buildingGrid.TryGetBuildingAt(tile, out var adjacentBuilding))
                 {
-                    MonoBehaviour.print($"Found adjacent building {adjacentBuilding.Blue.DisplayName}!");
                     var transportSquares = adjacentBuilding.GetComps<BuildingComponent_Transport>();
                     if(transportSquares!=null && transportSquares.Count() > 0)
                     {
-                        MonoBehaviour.print("Found a location providing access!");
+                        var tiles = TransportManager.Current.GetConnectedTiles(buildingGrid, location, TransportManager.MAX_COMMUTE_COST);
+                        foreach (var t in tiles) 
+                        {
+                            buildingGrid.Highlight(t, buildingGrid.highlightInformational);
+                        }
                         return true;
                     }
                 }

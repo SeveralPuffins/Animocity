@@ -29,14 +29,12 @@ namespace Animocity.Cities
         public Dictionary<ResourceBlue, float> resourceCosts;
         public List<BuildRequirementBlueprint> buildRequirements;
         public List<BuildingComponentData> components;
-        public List<string> tagRequirements;
 
-        public bool CanBuildAtLocation(Vector2Int loc, CityGrid grid)
+        public bool CanBuildAtLocation(Vector2Int loc, CityGrid grid, out string msg)
         {
-            if(tagRequirements != null && (tagRequirements.Count > 0 && tagRequirements.Any((tag) => !grid.gridTags.Contains(tag)))) return false;
-
             if(buildRequirements == null || buildRequirements.Count  == 0)
             {
+                msg = "";
                 return true;
             }
            
@@ -44,9 +42,11 @@ namespace Animocity.Cities
             {
                 if(!req.Worker.CanBuildAtLocation(loc, this, grid))
                 {
+                    msg = req.Worker.GetErrorMessage();
                     return false;
                 }
             }
+            msg = "";
             return true;
         }
 

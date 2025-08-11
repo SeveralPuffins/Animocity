@@ -10,7 +10,7 @@ namespace Animocity.Cities
 {
     public class BuildRequirementWorker_IsOnCoil : BuildRequirementWorker
     {
-       
+        public BuildRequirementWorker_IsOnCoil(BuildRequirementBlueprint blue) : base(blue) { }
 
         public override bool CanBuildAtLocation(Vector2Int location, BuildingBlueprint buildingBlue, CityGrid buildingGrid)
         {
@@ -25,9 +25,6 @@ namespace Animocity.Cities
                     return maybeACoil.Blue.label == "PowerCoil";
                 }
             }
-
-            
-
             return false;
         }
     }

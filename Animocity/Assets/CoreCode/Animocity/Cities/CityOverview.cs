@@ -15,10 +15,9 @@ public class CityOverview : MonoBehaviour
     public PowerGrid PowerGrid { get; private set; }
     public HousingManager HousingManager { get; private set; }
     public WorkforceManager WorkforceManager { get; private set; }
+    public TransportManager TransportManager { get; private set; }
 
     public static CityOverview Current;
-
-    public TMP_Text readout;
 
     private const float POPULATION_GROWTH_RATE_PER_MIN = 0.5f;
 
@@ -44,6 +43,7 @@ public class CityOverview : MonoBehaviour
         this.PowerGrid = new(new(), new(), new(), new());
         this.HousingManager = new HousingManager(cityGrids);
         this.WorkforceManager = new();
+        this.TransportManager = new TransportManager(this);
 
         Current = this;
     }
@@ -99,8 +99,6 @@ public class CityOverview : MonoBehaviour
             ticks = 0;
             WorkforceManager.UpdateWorkforceCommutes();
         }
-
-        readout.text = $"Population :: ({TotalPopulation}), Satisfaction :: ({GetSatisfaction()}), Housing Capacity :: ({HousingManager.GetHousingCapacity()}), Power ({PowerSupply})/({PowerDemand})";
     }
 
     private void UpdatePopulation()

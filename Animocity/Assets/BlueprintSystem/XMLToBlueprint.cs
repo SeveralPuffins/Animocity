@@ -232,7 +232,7 @@ namespace BlueprintSystem
 
 			if(node.Attributes!=null && node.Attributes["Class"]!=null && node.Attributes["Class"].Value!=null){
 				//#if DEBUG
-				//MonoBehaviour.print("CLASS specified for field type " + type.Name);
+				MonoBehaviour.print("CLASS specified for field type " + type.Name);
 				//#endif
 				Type newType = ParseType(node.Attributes["Class"].Value);
 				if(newType!=null && newType.IsSubclassOf(type)){

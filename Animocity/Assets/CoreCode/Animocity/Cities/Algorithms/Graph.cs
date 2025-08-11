@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditor.Search;
 using UnityEditor.SearchService;
 using UnityEngine;
@@ -239,6 +240,66 @@ namespace Animocity.Cities.Algorithms
                 else return false;
             }
             return true;
+        }
+
+        public HashSet<T> FindAllInRange(T startNode, float maxCost)
+        {
+            HashSet<T> nodes = new HashSet<T>();
+
+            if (_edges == null || _edges.Count() == 0)
+            {
+                return nodes;
+            }
+
+            Dictionary<T, float> minDistances = new Dictionary<T, float>();
+            int size = (int)Math.Pow(2, Math.Ceiling(Math.Log(_edges.Count(), 2)));
+
+            AffinityColumn<T> minDistanceHeap = new(size);
+            minDistances.Add(startNode, 0f);
+            minDistanceHeap.Add(startNode, 0f);
+
+            if (!_edges.Keys.Contains(startNode))
+            {
+                MonoBehaviour.print($"START LOCATION NOT IN EDGES!");
+            }
+        
+
+
+            while (minDistanceHeap.Count > 0)
+            {
+                var current = minDistanceHeap.Pop(out var currentCost);
+
+                if (currentCost > maxCost) break;
+                if (!_edges.TryGetValue(current, out var currentEdges)) continue;
+
+                for (int i = 0; i < currentEdges.Count(); i++)
+                {
+                    var edgeNode = currentEdges[i];
+                    var edgeCost = _edgeCosts[current][i] + currentCost;
+
+                    if (!minDistances.TryGetValue(edgeNode, out var oldEdgeCost))
+                    {
+                        //MonoBehaviour.print($"Adding {currentEdges[i]} at cost {edgeCost}.");
+                        minDistances[edgeNode] = edgeCost;
+                        minDistanceHeap.Add(edgeNode, edgeCost);
+
+                    }
+                    else if (oldEdgeCost > edgeCost)
+                    {
+                        //MonoBehaviour.print($"Updating {currentEdges[i]} to cost {edgeCost} from {current}.");
+                        minDistances[edgeNode] = edgeCost;
+                        minDistanceHeap.UpdateValue(edgeNode, edgeCost);
+                    }
+                }
+            }
+            foreach(T node in minDistances.Keys)
+            {
+                if (minDistances[node] < maxCost)
+                {
+                    nodes.Add(node);
+                }
+            }
+            return nodes;
         }
     }
 }

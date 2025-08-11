@@ -9,8 +9,6 @@
     </buildRequirements>
     <grantsSupport>true</grantsSupport>
     <autoRow>true</autoRow>
-    <tagRequirements>
-    </tagRequirements>
   </BuildingBlueprint>
   
   <BuildingBlueprint label="Tenement" parent ="BaseResidential">

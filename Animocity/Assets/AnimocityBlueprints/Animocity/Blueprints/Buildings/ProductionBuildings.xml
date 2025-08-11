@@ -63,9 +63,6 @@
         </populationTypesAccepted>
       </li>
     </components>
-    <tagRequirements>
-      <li>Surface</li>
-    </tagRequirements>
   </BuildingBlueprint>
 
   <BuildingBlueprint label="Smelter">

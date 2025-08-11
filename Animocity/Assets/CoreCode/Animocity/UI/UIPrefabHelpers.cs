@@ -16,6 +16,7 @@ namespace Animocity.UI
         public ProductionTimerPanel ProductionTimerPanel;
         public BuildingInspectorComp Inspector;
         public Button InspectorTabButton;
+        public PrioritySwitcher PrioritySwitcher;
         public static UIPrefabHelpers Current { get; private set; }
 
         public void Awake()
@@ -43,6 +44,14 @@ namespace Animocity.UI
             Inspector.SetBuilding(building);
             return Inspector;
         }
+        public PrioritySwitcher GetPriorityControl(BuildingComponent_StaffRequirement staffComp)
+        {
+            PrioritySwitcher switcher = Instantiate<PrioritySwitcher>(PrioritySwitcher);
+            switcher.PriorityChanged += staffComp.UpdatePriority;
+            switcher.ForceSetPriority(staffComp.Priority);
+            return switcher;
+        }
+
         public void DectivateInspector(Building building)
         {
             Inspector.Clear();
