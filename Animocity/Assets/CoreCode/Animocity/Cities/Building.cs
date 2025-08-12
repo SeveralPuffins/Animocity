@@ -27,6 +27,10 @@ namespace Animocity.Cities
         {
             get
             {
+                if (IsPlan)
+                {
+                    return 0;
+                }
                 float eff = 1f;
 
                 foreach (var component in Components)
@@ -37,26 +41,55 @@ namespace Animocity.Cities
             }
         }
 
-        public static Building AddToGameObject(GameObject go, BuildingBlueprint blue, CityGrid grid, Vector2Int loc, bool isPlan = false)
+        public bool CanAfford()
+        {
+            if (IsPlan)
+            {
+                return CityOverview.Current.HasResources(this.Blue.resourceCosts);
+            }
+            return true;
+        }
+
+        // "Ghosts" "Selected"
+        protected void SetBuildingLayer(string layerName)
+        {
+            int layer = LayerMask.NameToLayer(layerName);
+            gameObject.layer = layer;
+            foreach (Transform t in GetComponentsInChildren<Transform>())
+            {
+                t.gameObject.layer = layer;
+            }
+        }
+
+        public bool TryCommitBuild(bool isFree)
+        {
+            if (IsPlan)
+            {
+                if (isFree || CanAfford())
+                {
+                    IsPlan = false;
+                    InitialiseBuilding();
+                    SetBuildingLayer("Default");
+                }
+            }
+            return false;
+        }
+
+        private void InitialiseBuilding()
+        {
+            FillComponents();
+            _time = Random.Range(0f, SECONDS_PER_TICK);
+            _ticks = Random.Range(0, TICKS_TO_LONGTICKS);
+        }
+
+        public static Building AddToGameObject(GameObject go, BuildingBlueprint blue, CityGrid grid, Vector2Int loc)
         {
             var building = go.AddComponent<Building>();
             building.Blue = blue;
             building.Grid = grid;
             building.GridLocation = loc;
-            building.FillComponents();
-
-            building._time = Random.Range(0f, SECONDS_PER_TICK);
-            building._ticks = Random.Range(0, TICKS_TO_LONGTICKS);
-
-            building.IsPlan = isPlan;
-            if (isPlan)
-            {
-                building.gameObject.layer = 7;
-                foreach(Transform t in building.GetComponentsInChildren<Transform>())
-                {
-                    t.gameObject.layer = 7;
-                }
-            }
+            building.IsPlan = true;
+            building.SetBuildingLayer("Ghosts");
 
             return building;
         }
@@ -75,28 +108,17 @@ namespace Animocity.Cities
             }
         }
 
-        public void OpenInspector()
-        {
-            GameObject go = new GameObject("Inspection Panel");
-            go.AddComponent<Image>();
-        }
-
         public List<T> GetComps<T>() where T : BuildingComponent
         {
             var found = Components.OfType<T>().ToList();
-            if (found != null)
-            {
-                //MonoBehaviour.print($"Found {found.Count()} comps");
-            }
 
+            /*
             foreach ( var component in Components)
             {
-                //MonoBehaviour.print($"Comp {component.GetType().Name} found on {this.Blue.label}");
-
+                MonoBehaviour.print($"Comp {component.GetType().Name} found on {this.Blue.label}");
                 bool isAssignable = typeof(T).IsAssignableFrom(component.GetType());
-
-                //MonoBehaviour.print($"{typeof(T).Name} is assignable from {component.GetType().Name} ? -> {isAssignable}");
-            }
+                MonoBehaviour.print($"{typeof(T).Name} is assignable from {component.GetType().Name} ? -> {isAssignable}");
+            }*/
 
             return found;
         }
@@ -106,6 +128,7 @@ namespace Animocity.Cities
         // Update is called once per frame
         void Update()
         {
+            if (IsPlan) return;
             UpdateTicks();
         }
 

@@ -177,7 +177,7 @@ namespace Animocity.Cities
             }
         }
 
-        public bool TryBuildAtLocation(BuildingBlueprint blue, Vector2Int loc, out Building newBuilding, bool isFree = false)
+        public bool TryPlacePlanAtLocation(BuildingBlueprint blue, Vector2Int loc, out Building newBuilding)
         {
             if (!IsInBounds(loc))
             {
@@ -187,18 +187,12 @@ namespace Animocity.Cities
 
             if (blue.CanBuildAtLocation(loc, this, out var msg))
             {
-                bool isPlan = !(CanAfford(blue) || isFree);
-
                 var newBuildingTransform = Instantiate<Transform>(blue.GetPrefab(), WorldFromCell(loc), Quaternion.identity);
                 newBuildingTransform.SetParent(this.transform);
-                newBuilding = Building.AddToGameObject(newBuildingTransform.gameObject, blue, this, loc, isPlan);
-
+                newBuilding = Building.AddToGameObject(newBuildingTransform.gameObject, blue, this, loc);
                 PushBuilding(newBuilding);
-                if (!isFree && !isPlan) PayResources(blue, loc);
-
                 errorText.text = "";
                 return true;
-
             }
             else
             {
@@ -207,17 +201,29 @@ namespace Animocity.Cities
             }
         }
 
+        public bool TryBuildAtLocation(BuildingBlueprint blue, Vector2Int loc, out Building newBuilding, bool isFree = false)
+        {
+            if(TryPlacePlanAtLocation(blue, loc, out newBuilding))
+            {
+                if (newBuilding.TryCommitBuild(isFree))
+                {
+                    if(!isFree) PayResources(blue, loc);
+                }
+                else
+                {
+                    errorText.text = "Not enough resources!";
+                }
+                return true;
+            }
+            return false;
+        }
+
         private void PayResources(BuildingBlueprint blue, Vector2Int tile)
         {
             foreach (var key in blue.resourceCosts.Keys) 
             {
                 CityOverview.Current.TakeResource(tile, key, blue.resourceCosts[key]);
             }
-        }
-
-        private bool CanAfford(BuildingBlueprint blue)
-        {
-            return CityOverview.Current.HasResources(blue.resourceCosts);
         }
 
         private Vector3 GetMousePosition()

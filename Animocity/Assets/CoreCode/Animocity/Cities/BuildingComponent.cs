@@ -51,7 +51,12 @@ namespace Animocity.Cities
 
         public virtual void AddInspectorInfo(BuildingInspectorComp inspector, bool select = false)
         {
-            if (HasInspector())
+            if (Building.IsPlan)
+            {
+                MonoBehaviour.print("PLAN building should not have comps");
+                //PopulateBlueprintInspectorContentPane(inspector.contentPane);
+            }
+            else if (HasInspector())
             {
                 Button tabButton = UIPrefabHelpers.Current.GetInspectorButton();
 
@@ -74,6 +79,11 @@ namespace Animocity.Cities
         protected virtual void PopulateInspectorContentPane(Transform inspectorPane)
         {
 
+        }
+
+        protected virtual void PopulateBlueprintInspectorContentPane(Transform inspectorPane)
+        {
+            
         }
     }
 }

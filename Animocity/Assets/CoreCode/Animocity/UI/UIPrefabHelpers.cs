@@ -17,6 +17,8 @@ namespace Animocity.UI
         public BuildingInspectorComp Inspector;
         public Button InspectorTabButton;
         public PrioritySwitcher PrioritySwitcher;
+        public InfoBox InfoBox;
+        public PlanBox PlanBox;
         public static UIPrefabHelpers Current { get; private set; }
 
         public void Awake()
@@ -50,6 +52,23 @@ namespace Animocity.UI
             switcher.PriorityChanged += staffComp.UpdatePriority;
             switcher.ForceSetPriority(staffComp.Priority);
             return switcher;
+        }
+
+        public InfoBox GetInfoBox(Func<string> infoFunc)
+        {
+            InfoBox ib = Instantiate<InfoBox>(InfoBox);
+            ib.getInfoString = infoFunc;
+            return ib;
+        }
+        public PlanBox GetPlanBox(Building building)
+        {
+            if (building.IsPlan)
+            {
+                PlanBox ib = Instantiate<PlanBox>(PlanBox);
+                ib.SetBuilding(building);
+                return ib;
+            }
+            else return null;
         }
 
         public void DectivateInspector(Building building)

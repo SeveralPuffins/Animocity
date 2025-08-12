@@ -55,24 +55,13 @@ namespace Animocity.Cities
                 return currentSatisfaction;
             }
         }
-        
-        public override void AddInspectorInfo(BuildingInspectorComp inspector, bool select = false)
+
+        protected override bool HasInspector() => true;
+        protected override void PopulateInspectorContentPane(Transform inspectorPane)
         {
-            base.AddInspectorInfo(inspector);
-
-            Button tabButton = UIPrefabHelpers.Current.GetInspectorButton();
-
-            tabButton.onClick.AddListener(()=> {
-                inspector.ClearContentPane();
-                this.populateInspectorPane(inspector.contentPane);
-                });
-            tabButton.transform.SetParent(inspector.tabPane);
-        }
-
-        private void populateInspectorPane(Transform contentPane)
-        {
-            var txt = contentPane.GetComponentInChildren<TMP_Text>();
-            txt.text = $"{this.NumCurrentResidents}/{HousingData.capacity} residents.";
+            Func<string> genText = ()=>$"{this.NumCurrentResidents}/{HousingData.capacity} residents.";
+            var info = UIPrefabHelpers.Current.GetInfoBox(genText);
+            info.transform.SetParent(inspectorPane);
         }
 
 

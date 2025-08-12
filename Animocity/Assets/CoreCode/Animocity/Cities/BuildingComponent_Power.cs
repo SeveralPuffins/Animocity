@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Animocity.Cities
 {
@@ -28,8 +29,15 @@ namespace Animocity.Cities
 
         protected override void PopulateInspectorContentPane(Transform inspectorPane)
         {
-            var txt = inspectorPane.GetComponentInChildren<TMP_Text>();
-            if (!IsPowered) txt.text = "Off";
+            Func<string> genText = this.GetInfo;
+            var info = UIPrefabHelpers.Current.GetInfoBox(genText);
+            info.transform.SetParent(inspectorPane);
+        }
+
+        protected virtual string GetInfo()
+        {
+            if (!IsPowered) return "Off";
+            else return "";
         }
 
 

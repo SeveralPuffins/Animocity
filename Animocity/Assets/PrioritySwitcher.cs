@@ -46,5 +46,6 @@ namespace Animocity.UI
 
             PriorityChanged?.Invoke((int)f);
         }
+
     }
 }

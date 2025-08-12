@@ -33,7 +33,7 @@
     <resourceCosts>
       <di>
         <dk>Stone</dk>
-        <dv>18.0</dv>
+        <dv>12.0</dv>
       </di>
       <di>
         <dk>Iron</dk>
@@ -41,7 +41,7 @@
       </di>
       <di>
         <dk>Copper</dk>
-        <dv>12.0</dv>
+        <dv>4.0</dv>
       </di>
     </resourceCosts>
     <components>
@@ -51,6 +51,7 @@
         <minStaff>20</minStaff>
         <efficiencyAtMax>1.0</efficiencyAtMax>
         <efficiencyAtMin>0.35</efficiencyAtMin>
+        <defaultPriority>1</defaultPriority>
         <populationTypesAccepted>
           <li>Pioneers</li>
           <li>Labourers</li>

@@ -64,8 +64,9 @@ namespace Animocity.Cities
 
         protected override void PopulateInspectorContentPane(Transform inspectorPane)
         {
-            var txt = inspectorPane.GetComponentInChildren<TMP_Text>();
-            txt.text = $"Current job: {SelectedProcess.DisplayName}.";
+            Func<string> genText = () => $"Current job: {SelectedProcess.DisplayName}.";
+            var info = UIPrefabHelpers.Current.GetInfoBox(genText);
+            info.transform.SetParent(inspectorPane);
 
             var panel = UIPrefabHelpers.Current.GetProductionTimerPanel(this);
             panel.transform.SetParent(inspectorPane);

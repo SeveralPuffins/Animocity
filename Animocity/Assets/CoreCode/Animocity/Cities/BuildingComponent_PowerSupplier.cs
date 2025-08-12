@@ -12,13 +12,10 @@ namespace Animocity.Cities
     {
         public BuildingComponent_PowerSupplier(BuildingComponentData data, Building building) : base(data, building){}
 
-
-        protected override void PopulateInspectorContentPane(Transform inspectorPane)
+        protected override string GetInfo()
         {
-            var txt = inspectorPane.GetComponentInChildren<TMP_Text>();
-            txt.text = $"On: Produicing {this.PowerData.powerAmount}MW";
-            base.PopulateInspectorContentPane(inspectorPane);
-
+            if (!IsPowered) return "Off";
+            else return $"On: Producing {this.PowerData.powerAmount}MW";
         }
     }
 }

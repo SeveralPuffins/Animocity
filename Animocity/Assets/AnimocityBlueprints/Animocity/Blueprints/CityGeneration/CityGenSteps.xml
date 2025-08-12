@@ -3,8 +3,8 @@
   <CityGeneratorStepBlue label="AddGantries">
     <displayName>Add Random Gantries</displayName>
     <genStepWorker>Animocity.Cities.CityGen.CityGenStepWorker_AddGantries</genStepWorker>
-    <paramA>9.0</paramA>
-    <paramB>4.0</paramB>
+    <paramA>12.0</paramA>
+    <paramB>6.0</paramB>
     <paramC>1.0</paramC>
     <paramD>1.0</paramD>
   </CityGeneratorStepBlue>

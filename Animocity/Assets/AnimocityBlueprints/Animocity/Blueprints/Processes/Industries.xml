@@ -17,7 +17,7 @@
   <ProcessBlueprint label="SmeltingIron">
     <displayName>Smelting Iron</displayName>
     <description>Sorting and smelting pure Iron from scrap.</description>
-    <productivityCost>60.0</productivityCost>
+    <productivityCost>30.0</productivityCost>
     <inputs>
       <di>
         <dk>Scrap</dk>
@@ -28,6 +28,8 @@
       <di>
         <dk>Iron</dk>
         <dv>2.0</dv>
+        <dk>Copper</dk>
+        <dv>1.0</dv>
       </di>
     </outputs>
   </ProcessBlueprint>

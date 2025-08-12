@@ -44,6 +44,7 @@
         <minStaff>20</minStaff>
         <efficiencyAtMax>1.0</efficiencyAtMax>
         <efficiencyAtMin>0.35</efficiencyAtMin>
+        <defaultPriority>0</defaultPriority>
         <populationTypesAccepted>
           <li>Pioneers</li>
           <li>Labourers</li>

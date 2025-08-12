@@ -33,12 +33,29 @@ namespace Animocity.UI
             this.titleText.text = building.Blue.DisplayName;
             this.description.text = building.Blue.description;
 
-            var comps = building.GetComps<BuildingComponent>();
-
-            foreach (var comp in building.GetComps<BuildingComponent>())
+            if (building.IsPlan)
             {
-                comp.AddInspectorInfo(this);
+                FillContentPaneForPlanBuilding(building);
             }
+            else
+            {
+                var comps = building.GetComps<BuildingComponent>();
+
+                foreach (var comp in comps)
+                {
+                    comp.AddInspectorInfo(this);
+                }
+            }
+        }
+
+        private void FillContentPaneForPlanBuilding(Building building)
+        {
+            Func<string> genText = () => $"{building.Blue.DisplayName} plan";
+            var info = UIPrefabHelpers.Current.GetInfoBox(genText);
+            info.transform.SetParent(this.contentPane);
+
+            PlanBox pb = UIPrefabHelpers.Current.GetPlanBox(building);
+            pb.transform.SetParent(this.contentPane);
         }
 
         private void Unselect()
@@ -87,7 +104,6 @@ namespace Animocity.UI
                     Destroy(item.gameObject);
                 }
             }
-            contentPane.GetComponentInChildren<TMP_Text>().text = "";
         }
         internal void ClearTabPane()
         {

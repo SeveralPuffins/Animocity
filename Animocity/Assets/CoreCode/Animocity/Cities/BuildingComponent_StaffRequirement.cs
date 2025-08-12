@@ -65,9 +65,9 @@ namespace Animocity.Cities
 
         protected override bool HasInspector() => true;
 
-        protected override void PopulateInspectorContentPane(Transform inspectorPane)
+        protected virtual string GetInfoMsg()
         {
-            string msg; 
+            string msg;
             if (Priority == 0)
             {
                 msg = "Work Halted";
@@ -76,9 +76,14 @@ namespace Animocity.Cities
             {
                 msg = $"Current staff: {CurrentStaff}/{StaffData.maxStaff}";
             }
-            var txt = inspectorPane.GetComponentInChildren<TMP_Text>();
-            txt.text = msg;
+            return msg;
+        }
 
+        protected override void PopulateInspectorContentPane(Transform inspectorPane)
+        {
+            Func<string> genText = this.GetInfoMsg;
+            var info = UIPrefabHelpers.Current.GetInfoBox(genText);
+            info.transform.SetParent(inspectorPane);
             var pc = UIPrefabHelpers.Current.GetPriorityControl(this);
             pc.transform.SetParent(inspectorPane.transform);
         }

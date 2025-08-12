@@ -12,12 +12,10 @@ namespace Animocity.Cities
     {
         public BuildingComponent_PowerConsumer(BuildingComponentData data, Building building) : base(data, building) { }
 
-
-        protected override void PopulateInspectorContentPane(Transform inspectorPane)
+        protected override string GetInfo()
         {
-            var txt = inspectorPane.GetComponentInChildren<TMP_Text>();
-            txt.text = $"Consuming {this.PowerData.powerAmount}MW";
-            base.PopulateInspectorContentPane(inspectorPane);
+            if (!IsPowered) return "Off";
+            else return $"Consuming {this.PowerData.powerAmount}MW";
         }
 
         public override float ModifyEfficiency(float efficiency)
