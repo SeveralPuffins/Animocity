@@ -293,20 +293,32 @@ namespace BlueprintSystem
 				string[] allFiles = Directory.GetFiles(s,"*.wav",SearchOption.AllDirectories);
 				foreach(string file in allFiles){
 					string newKey = file.Substring(s.Length+1);
-					#if DEBUG
-					print("Importing wav at "+newKey);
-					#endif
+					//#if DEBUG
+					print("Importing wav at "+ newKey);
+					//#endif
 
 					//MonoBehaviour.print("Importing texture at "+completeTexturePath);
-    	 			UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(file, AudioType.WAV);
+    	 			UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file:///"+file, AudioType.WAV);
 
     	 			yield return www.SendWebRequest();
 
     	 			while(!www.isDone){
     	 				yield return 0;
     	 			}
+					if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.DataProcessingError)
+					{
+                        print("ERROR GETTING FILE VIA " + "file:///" + file);
+                    }
     	 			AudioClip clip = DownloadHandlerAudioClip.GetContent(www);
-					AudioClips.Add(newKey,clip);
+					if (clip != null)
+					{
+						clip.name = newKey;
+						AudioClips.Add(newKey, clip);
+					}
+					else
+					{
+                        print("FILE AT " + "file:///" + file + "RETURNED NULL");
+                    }
 				}
 			}
 		}

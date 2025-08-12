@@ -7,6 +7,8 @@ using System.IO;
 using System.Xml;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Networking;
+using System.Threading.Tasks;
 
 namespace BlueprintSystem
 {
@@ -226,7 +228,35 @@ namespace BlueprintSystem
 			return ParseByType(fieldType, node, current);
 		}
 
-		public static object ParseByType(Type type, XmlNode node, object obj = null){
+        private static async Task<AudioClip> ParseAudioClip(string path)
+        {
+			AudioClip clip = null;
+			using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(path, AudioType.WAV))
+			{
+				req.SendWebRequest();
+				try
+				{
+					while (!req.isDone)
+					{
+						await Task.Delay(5);
+					}
+
+					if (req.isNetworkError) Debug.Log(req.error);
+
+					else
+					{
+						clip = DownloadHandlerAudioClip.GetContent(req);
+					}
+				}
+				catch(Exception err)
+				{
+					Debug.Log(err.Message);
+				}
+			}
+			return clip;
+        }
+
+        public static object ParseByType(Type type, XmlNode node, object obj = null){
 
 			//MonoBehaviour.print(string.Format("Now parsing field {0} of type {1}", node.Name, type.Name));
 
@@ -317,12 +347,10 @@ namespace BlueprintSystem
 
 					if (File.Exists(completeSoundPath))
     	 			{
-    	 				//MonoBehaviour.print("Importing texture at "+completeTexturePath);
-    	 				WWW path = new WWW("file://"+completeSoundPath);
-    	 				AudioClip clip = WWWAudioExtensions.GetAudioClip(path);
-
-         				return clip;
-     				}
+    	 				MonoBehaviour.print("Importing sound at "+ completeSoundPath);
+    	 				string path = new string("file:///"+completeSoundPath);
+						return ParseAudioClip(path);
+                    }
      				else{
      					MonoBehaviour.print("No sound clip at "+completeSoundPath);
      				}

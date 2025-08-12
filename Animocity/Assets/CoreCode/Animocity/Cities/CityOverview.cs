@@ -97,7 +97,7 @@ public class CityOverview : MonoBehaviour
         if(ticks >= 100)
         {
             ticks = 0;
-            WorkforceManager.UpdateWorkforceCommutes();
+            WorkforceManager.UpdateWorkforceAssignments();
         }
     }
 

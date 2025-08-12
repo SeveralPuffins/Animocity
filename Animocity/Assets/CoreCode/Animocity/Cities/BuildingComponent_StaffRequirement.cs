@@ -17,6 +17,7 @@ namespace Animocity.Cities
         public BuildingComponent_StaffRequirement(BuildingComponentData data, Building building) : base(data, building) 
         {
             this.Priority = StaffData.defaultPriority;
+            this._acceptedWorkerPops = new(StaffData.populationTypesAccepted);
         }
 
         private List<Commute<Vector2Int>> _commutes = new();
@@ -27,6 +28,15 @@ namespace Animocity.Cities
             get
             {
                 return Data as BuildingComponentData_StaffRequirement;
+            }
+        }
+
+        private List<PopulationBlue> _acceptedWorkerPops;
+        public IEnumerable<PopulationBlue> AcceptedPops
+        {
+            get
+            {
+                return _acceptedWorkerPops;
             }
         }
 
@@ -57,11 +67,19 @@ namespace Animocity.Cities
 
         protected override void PopulateInspectorContentPane(Transform inspectorPane)
         {
+            string msg; 
+            if (Priority == 0)
+            {
+                msg = "Work Halted";
+            }
+            else
+            {
+                msg = $"Current staff: {CurrentStaff}/{StaffData.maxStaff}";
+            }
             var txt = inspectorPane.GetComponentInChildren<TMP_Text>();
-            string msg = $"Current staff: {CurrentStaff}/{StaffData.maxStaff}";
             txt.text = msg;
 
-            var pc =  UIPrefabHelpers.Current.GetPriorityControl(this);
+            var pc = UIPrefabHelpers.Current.GetPriorityControl(this);
             pc.transform.SetParent(inspectorPane.transform);
         }
 

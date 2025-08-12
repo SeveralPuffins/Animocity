@@ -30,6 +30,7 @@
       <li> 3,2</li>
     </tilesNeeded>
     <buildRequirements>
+      <li Class="BuildRequirementBlueprint_GridTag">BuildRequirementBlue_IsSurfaceGrid</li>
       <li>BuildRequirementBlue_Fits</li>
       <li>BuildRequirementBlue_IsSupported</li>
     </buildRequirements>

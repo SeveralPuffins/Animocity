@@ -21,5 +21,10 @@
     <requirementCheckWorker>BuildRequirementWorker_GridHasTag</requirementCheckWorker>
     <failMessage>Must be built on {0} grid</failMessage>
   </BuildRequirementBlueprint_GridTag>
-  
+  <BuildRequirementBlueprint_GridTag label="BuildRequirementBlue_IsArmGrid">
+    <tag>Arm</tag>
+    <requirementCheckWorker>BuildRequirementWorker_GridHasTag</requirementCheckWorker>
+    <failMessage>Must be built on {0} grid</failMessage>
+  </BuildRequirementBlueprint_GridTag>
+
 </BuildingRequirements>

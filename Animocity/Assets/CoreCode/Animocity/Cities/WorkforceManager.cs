@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Burst;
 using UnityEngine;
@@ -16,10 +17,7 @@ namespace Animocity.Cities
         {
             Current = this;
         }
-
-
-        private List<BuildingComponent_StaffRequirement> _activeWorkplaces = new();
-        private List<BuildingComponent_StaffRequirement> _priorityWorkplaces = new();
+        private List<BuildingComponent_StaffRequirement> _workplaces = new();
 
         public delegate void WorkforceChangeEvent(List<BuildingComponent_StaffRequirement> locationsWithChange);
 
@@ -29,108 +27,177 @@ namespace Animocity.Cities
         private Dictionary<PopulationBlue, int> unassignedWorkers = new();
         private int unassignedHousing = 0;
 
-        public void UpdateWorkforceCommutes()
+        public void UpdateWorkforceAssignments()
         {
-            CityOverview.Current.HousingManager.ResetResidences();
             ResetAssignments();
-           
-            if(_priorityWorkplaces.Count()>0) BulkAssignWorkers(_priorityWorkplaces);
-            var remainingWorkplaces = _activeWorkplaces.Except(_priorityWorkplaces).ToList();
-            if (remainingWorkplaces.Count() > 0) BulkAssignWorkers(remainingWorkplaces);
+
+            var workplacesInPriorityOrder = 
+
+                _workplaces.Where((wp) => wp.Priority > 0 && wp.AcceptedPops.Count() > 0)
+                       .GroupBy((wp) => wp.Priority)
+                       .OrderByDescending(group => group.Key)
+                       .Select(group=>group.AsEnumerable())
+                       .ToList();
+
+            foreach (var priorityWorkplaceGroup in workplacesInPriorityOrder)
+            {
+                if
+                (
+                    priorityWorkplaceGroup.Count() > 0
+                    && unassignedHousing > 0
+                    && unassignedWorkers.Values.Sum() > 0
+                )
+                {
+                    BulkAssignWorkers(priorityWorkplaceGroup.ToList());
+                }
+            }
         }
 
         public void AddWorkplace(BuildingComponent_StaffRequirement workplace)
         {
-            _activeWorkplaces.Add(workplace);
+            _workplaces.Add(workplace);
         }
         public void RemoveWorkplace(BuildingComponent_StaffRequirement workplace)
         {
-            _activeWorkplaces.Remove(workplace);
+            _workplaces.Remove(workplace);
         }
 
-        private int GetRemainingAvailableStaff()
+        private int GetTotalRemainingAvailableStaff()
         {
             return Math.Min(unassignedHousing, unassignedWorkers.Values.Sum());
         }
 
         private void BulkAssignWorkers(List<BuildingComponent_StaffRequirement> workplaces)
         {
-            int availableStaff = GetRemainingAvailableStaff();
-            if (availableStaff <= 0) return;
+            float totalStaffWanted = 1f * GetTotalStaffRequired(workplaces);
+            // Here, we iterate through specialist jobs, in order of possible satisfaction 
+            // so that those places that can't possibly meet the average due to a lack of specialists
+            // can let us increase the target worker number for other jobs later
 
-            int staffDemand = GetTotalStaffRequired(workplaces);
+            List<BuildingComponent_StaffRequirement> finalAssignments = new();
 
-            float approxAvgStaffingLevelGlobal = (1f * availableStaff) / (1f * staffDemand);
-            var populationTypes = BlueprintDatabase<PopulationBlue>.FetchAll();
+            var specialistWorkplaces = workplaces.Where((workplace) => workplace.AcceptedPops.Count() == 1 && unassignedWorkers[workplace.AcceptedPops.FirstOrDefault()] > 0).ToList();
 
-            MonoBehaviour.print($"Trying to assign {availableStaff} workers to {workplaces.Count()} workplaces (approx staffing level of {(int)(approxAvgStaffingLevelGlobal*100.0)}%).");
-            //
-            // First assign total specialists. If only one population type can do it, assign them.
-            //
-            var specialistWorkplaces = workplaces.Where((workplace) => workplace.StaffData.populationTypesAccepted.Count() == 1).ToList();
 
-            var specialistAvailability = MaxAchievableSpecialistStaffLevels(specialistWorkplaces);
-            foreach (var pop in specialistAvailability.Keys)
-            {
-                var targetWorkplaces = specialistWorkplaces.Where((workplace) => workplace.StaffData.populationTypesAccepted.Contains(pop));
-                AssignWorkersUpToPercentage(targetWorkplaces, Math.Clamp(Math.Min(approxAvgStaffingLevelGlobal, specialistAvailability[pop]), 0f, 1f));
+            var specialistJobDemand = GetSpecialistJobDemand(specialistWorkplaces);
+
+
+
+            var orderedSpecialistWorkplaces = specialistWorkplaces.OrderBy(wp =>
+                            {
+                                var pop = wp.AcceptedPops.FirstOrDefault();
+                                float jobCount = specialistJobDemand[pop];
+                                float workers = unassignedWorkers[pop];
+
+                                return workers / jobCount;
+                            }).ToList();
+
+            foreach( var wp in orderedSpecialistWorkplaces)
+            { 
+                float availableStaff = 1f * GetTotalRemainingAvailableStaff();
+
+                if (availableStaff <= 0f) break;
+
+                var pop = wp.AcceptedPops.FirstOrDefault();
+                float jobCount = 0;
+                if (specialistJobDemand.TryGetValue(pop, out var jobs))
+                {
+                    jobCount = 1f * jobs;
+                }
+                else continue;
+                    
+                    
+                float specialists = unassignedWorkers[pop];
+
+                if (specialists > 0)
+                {
+                    float maxSpecialistAvailability = specialists / jobCount;
+                    float maxGeneralAvailability = availableStaff / totalStaffWanted;
+
+                    float targetWorkerDensity = Math.Clamp(Math.Min(maxSpecialistAvailability, maxGeneralAvailability), 0, 1);
+                    int targetNumberOfEmployees = (int)Math.Round(wp.StaffData.maxStaff * targetWorkerDensity);
+
+                    if(AssignWorkers(wp, targetNumberOfEmployees, out int successes))
+                    {
+                        if(wp.CurrentStaff < wp.StaffData.maxStaff)
+                        {
+                            finalAssignments.Add(wp);
+                        }
+                    }
+                }
+
+                specialistJobDemand[pop] -= wp.StaffData.maxStaff;
+                totalStaffWanted -= wp.StaffData.maxStaff;
             }
+
             //
-            // Then assign next-most-specialised locations, in order
+            // Then assign remaining locations. We could try to order these.
             //
-            for (int i = 2; i <= populationTypes.Count(); i++)
+
+            var remainingWorkplaces = workplaces.Where((workplace) => workplace.AcceptedPops.Count() > 1).ToList();
+
+            foreach (var wp in remainingWorkplaces)
             {
-                //availableStaff = GetRemainingAvailableStaff();
-                //approxAvgStaffingLevelGlobal = (1f * availableStaff) / (1f * staffDemand);
+                float availableStaff = 1f * GetTotalRemainingAvailableStaff();
 
-                var nextMostSpecialisedWorkplaces = workplaces.Where((workplace) => workplace.StaffData.populationTypesAccepted.Count() == i);
+                if (availableStaff <= 0f) break;
+                
+                float targetDensity = Math.Clamp(availableStaff / totalStaffWanted, 0,1);
+                int targetNumberOfEmployees = (int)Math.Round(wp.StaffData.maxStaff * targetDensity);
 
-                AssignWorkersUpToPercentage(nextMostSpecialisedWorkplaces, Math.Clamp(approxAvgStaffingLevelGlobal, 0f, 1f));
+                if(AssignWorkers(wp, targetNumberOfEmployees, out int successes))
+                {
+                    if (wp.CurrentStaff < wp.StaffData.maxStaff)
+                    {
+                        finalAssignments.Add(wp);
+                    }
+                }
+
+                totalStaffWanted -= wp.StaffData.maxStaff;
+            }
+
+            foreach (var wp in finalAssignments)
+            {
+                AssignWorkers(wp, wp.StaffData.maxStaff - wp.CurrentStaff, out var assigned);
             }
         }
 
-        private void AssignWorkersUpToPercentage(IEnumerable<BuildingComponent_StaffRequirement> targetWorkplaces, float v)
-        {
-            foreach(var workplace in targetWorkplaces)
-            {
-                int targetNumberOfEmployees = (int) Math.Round(workplace.StaffData.maxStaff * v);
 
-                AssignWorkers(workplace, targetNumberOfEmployees);
-            }
-        }
-
-        private void AssignWorkers(BuildingComponent_StaffRequirement workplace, int targetNumberOfEmployees)
+        private bool AssignWorkers(BuildingComponent_StaffRequirement workplace, int targetNumberOfEmployees, out int successfullyAssigned)
         {
-            MonoBehaviour.print($"Trying to assign {targetNumberOfEmployees} workers to {workplace.Building.Blue.DisplayName}.");
+            //MonoBehaviour.print($"Trying to assign {targetNumberOfEmployees} workers to {workplace.Building.Blue.DisplayName}.");
             int demandRemaining = targetNumberOfEmployees;
+            successfullyAssigned = 0;
             foreach (var pop in workplace.StaffData.populationTypesAccepted.OrderByDescending((p) => unassignedWorkers[p]))
             {
                 int assignedPopMax = Math.Min(demandRemaining, unassignedWorkers[pop]);
+                if (assignedPopMax <= 0) break;
 
                 if (CityOverview.Current.HousingManager.TryFindHousing(workplace.Building.Grid, workplace.Building.GridLocation, assignedPopMax, out int popsSuccessfullyHoused))
                 {
+                    successfullyAssigned += popsSuccessfullyHoused;
                     demandRemaining -= popsSuccessfullyHoused;
                     unassignedWorkers[pop] -= popsSuccessfullyHoused;
                     unassignedHousing -= popsSuccessfullyHoused;
                     workplace.AddStaff(popsSuccessfullyHoused);
 
-                    MonoBehaviour.print($"Assigned {popsSuccessfullyHoused} {pop.DisplayName} class workers to {workplace.Building.Blue.DisplayName}.");
+                    //MonoBehaviour.print($"Assigned {popsSuccessfullyHoused} {pop.DisplayName} class workers to {workplace.Building.Blue.DisplayName}.");
                 }
                 else
                 {
                     //MonoBehaviour.print("Unable to find path to housing");
-                }
-                if (demandRemaining <= 0) break;
+                } 
             }
-            
+            return successfullyAssigned > 0;
         }
 
         private void ResetAssignments()
         {
+            CityOverview.Current.HousingManager.ResetResidences();
             unassignedWorkers.Clear();
             unassignedWorkers = CityOverview.Current.GetPopulationsByClass();
             unassignedHousing = CityOverview.Current.HousingManager.GetHousingCapacity();
-            foreach (var workplace in _activeWorkplaces)
+            foreach (var workplace in _workplaces)
             {
                 workplace.ClearStaffForReassignment();
             }
@@ -165,18 +232,23 @@ namespace Animocity.Cities
             return demands;
         }
 
-        private Dictionary<PopulationBlue, float> MaxAchievableSpecialistStaffLevels(List<BuildingComponent_StaffRequirement> workplaces)
+        private Dictionary<PopulationBlue, int> GetSpecialistJobDemand(List<BuildingComponent_StaffRequirement> specialistWorkplaces)
         {
-            var fractionAvailable = new Dictionary<PopulationBlue, float>();
-            var specialistSupply = CityOverview.Current.GetPopulationsByClass();
-            var specialistDemand = GetSpecialistDemand(workplaces);
+            Dictionary<PopulationBlue, int> specialistJobs = new Dictionary<PopulationBlue, int>();
 
-            foreach(var pop in specialistDemand.Keys)
+            foreach (var specialistJob in specialistWorkplaces)
             {
-                fractionAvailable.Add(pop, (1f * specialistSupply[pop]) / (1f * specialistDemand[pop]));
+                var pop = specialistJob.AcceptedPops.FirstOrDefault();
+                if (specialistJobs.TryGetValue(pop, out var jobCount))
+                {
+                    specialistJobs[pop] = jobCount + specialistJob.StaffData.maxStaff;
+                }
+                else
+                {
+                    specialistJobs.Add(pop, specialistJob.StaffData.maxStaff);
+                }
             }
-
-            return fractionAvailable;   
+            return specialistJobs;
         }
     }
 }
