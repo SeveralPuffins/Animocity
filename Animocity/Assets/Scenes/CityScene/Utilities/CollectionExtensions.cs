@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 
 namespace Animocity.Utilities
 {
     public static class CustomCollectionExtensions
     {
+        private static System.Random _random = new System.Random();
+
         public static IEnumerable<U> Map<T, U>(this IEnumerable<T> data, Func<T, U> map)
         {
             foreach (T t in data)
@@ -49,6 +52,26 @@ namespace Animocity.Utilities
                 if (!predicate(t)) return false;
             }
             return true;
+        }
+
+        public static T WeightedRandom<T>(this IEnumerable<T> opts, Func<T, float> weightFunc)
+        {
+            var weights = Map(opts, weightFunc);
+    
+            var totalWeight = weights.Sum();
+
+            var choiceWeight = _random.NextDouble()*totalWeight;
+
+            float cumSum = 0;
+            int choiceIndex = 0;
+            foreach (float w in weights) 
+            {
+                cumSum += w;
+                if (cumSum >= choiceWeight) break;
+                choiceIndex++;
+            }
+
+            return opts.ToArray()[choiceIndex];
         }
     }
 }

@@ -21,9 +21,10 @@ namespace Animocity.Cities
         public float powerUse;
         public int workersNeeded;
 
-        public bool needsSupport;
+        //public bool needsSupport;
         public bool grantsSupport;
         public bool autoRow;
+        public bool canBeDemolished;
 
         public List<Vector2Int> tilesNeeded;
         public Dictionary<ResourceBlue, float> resourceCosts;

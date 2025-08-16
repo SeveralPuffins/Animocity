@@ -1,3 +1,5 @@
+using Assets.CoreCode.Animocity.Cities;
+
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -5,6 +7,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Animocity.Utilities;
 
 namespace Animocity.Cities
 {
@@ -61,6 +64,21 @@ namespace Animocity.Cities
             }
         }
 
+        private void PayFor()
+        {
+            foreach (var key in Blue.resourceCosts.Keys)
+            {
+                CityOverview.Current.TakeResource(GridLocation, key, Blue.resourceCosts[key]);
+            }
+        }
+        private void Refund()
+        {
+            foreach (var key in Blue.resourceCosts.Keys)
+            {
+                CityOverview.Current.PushResource(GridLocation, key, Blue.resourceCosts[key]);
+            }
+        }
+
         public bool TryCommitBuild(bool isFree)
         {
             if (IsPlan)
@@ -70,6 +88,10 @@ namespace Animocity.Cities
                     IsPlan = false;
                     InitialiseBuilding();
                     SetBuildingLayer("Default");
+                    if (!isFree)
+                    {
+                        PayFor();
+                    }
                 }
             }
             return false;
@@ -90,7 +112,10 @@ namespace Animocity.Cities
             building.GridLocation = loc;
             building.IsPlan = true;
             building.SetBuildingLayer("Ghosts");
-
+            foreach(var req in building.Blue.buildRequirements)
+            {
+                req.Worker.OnBuildAtLocation(loc, building, grid);
+            }
             return building;
         }
 
@@ -147,6 +172,58 @@ namespace Animocity.Cities
             }
             _time = newTime;
         }
+
+        private void OnDisable()
+        {
+            Components.Clear();
+            Tick = null;
+            LongTick = null;
+            foreach(var b in supportBuildings)
+            {
+                b.CheckThreatenedBuildings -= this.ReportSupported;
+            }
+        }
+
+        private void ReportSupported(Building supporter, DemolitionEventArgs e)
+        {  
+            e.buildingsThreatened.Add(this);
+            this.CheckThreatenedBuildings?.Invoke(this, e);       
+        }
+
+        private HashSet<Building> supportBuildings = new();
+        public void SubscribeToSupporters(HashSet<Building> supporters)
+        {
+            supportBuildings.AddRange(supporters);
+            foreach(var supporter in supporters)
+            {
+                supporter.CheckThreatenedBuildings += this.ReportSupported;
+            }
+        }
+
+        internal void DemolishSelf(HashSet<Building> allDemolishedBuildings)
+        {
+            DemolitionEventArgs threatenedLocations = new DemolitionEventArgs();
+            CheckThreatenedBuildings?.Invoke(this, threatenedLocations);
+
+            if (threatenedLocations.buildingsThreatened.All(threatened => allDemolishedBuildings.Contains(threatened)))
+            {
+                MonoBehaviour.print("All supported buildings are contained in demolish list");
+                if (this.Grid.TryRemoveBuildingAt(this.GridLocation, this))
+                {
+                    this.Components.Clear();
+                    this.Refund();
+                    Destroy(this.gameObject);
+                }
+            }
+            else
+            {
+                MonoBehaviour.print("Some threatened buildings are not in demolish list");
+            }
+        }
+        public delegate void DemolitionCheckEvent(Building supporter, DemolitionEventArgs e);
+        public event DemolitionCheckEvent CheckThreatenedBuildings;
+
+
 
         public delegate bool TickEvent(Building building);
         public event TickEvent Tick;

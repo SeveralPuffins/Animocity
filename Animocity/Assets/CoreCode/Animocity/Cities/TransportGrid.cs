@@ -71,5 +71,10 @@ namespace Animocity.Cities
         {
             _removedGridSquares.Add(location);
         }
+
+        internal bool TryCheckRoute(List<Vector2Int> route, out float cost)
+        {
+            return this.graph.TryCheckRoute(route, out cost);
+        }
     }
 }

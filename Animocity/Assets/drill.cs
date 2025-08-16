@@ -5,7 +5,6 @@ using UnityEngine;
 public class drill : MonoBehaviour
 {
     public Transform attachmentPoint;
-    public Transform arm1;
     public Transform arm2;
     public Transform arm3;
     public Transform arm4;
@@ -21,8 +20,9 @@ public class drill : MonoBehaviour
 
     public float extendSpeed = 1;
 
-    private float distancetoGround;
+    //private float distancetoGround;
     private bool extending = false;
+    private bool extended = false;
 
     public float drillBitSpeed;
     // Start is called before the first frame update
@@ -35,25 +35,36 @@ public class drill : MonoBehaviour
     void Update()
     {
         drillBit.Rotate(0, 0, drillBitSpeed * Time.deltaTime);
-        RaycastHit hit;
-        Vector3 groundPoint = Vector3.zero ;
+        //RaycastHit hit;
+        //Vector3 groundPoint = Vector3.zero ;
 
-        if (Physics.Raycast(drillBit.position, drillBit.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+        //if (Physics.Raycast(drillBit.position, drillBit.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+        //{
+        //    groundPoint = hit.point;
+        //}
+
+        if(!extending && Input.GetKeyDown(KeyCode.LeftAlt)) 
         {
-            groundPoint = hit.point;
+            if (extended)
+            {
+                Retract();
+            }
+            else
+            {
+                Extend();
+            }
         }
-
-      
-
     }
 
     public void Extend()
     {
+        extending = true;
         StartCoroutine(Extend2());
     }
 
     public void Retract()
     {
+        extending = true;
         StartCoroutine(Retract2());
     }
 
@@ -126,6 +137,7 @@ public class drill : MonoBehaviour
             arm4.transform.localPosition = new Vector3(arm4.localPosition.x, arm4.localPosition.y, arm4current);
             yield return new WaitForEndOfFrame();
         }
+        extending = false;
     }
 
 }

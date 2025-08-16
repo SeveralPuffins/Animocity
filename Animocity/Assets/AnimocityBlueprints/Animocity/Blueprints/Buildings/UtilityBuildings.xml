@@ -7,6 +7,7 @@
     <prefabPath>Main/Buildings/Prefabs/PowerTapBuilding</prefabPath>
     <description>Extracts and transforms usable power from an exposed point in the mech.</description>
     <grantsSupport>false</grantsSupport>
+    <canBeDemolished>true</canBeDemolished>
     <autoRow>false</autoRow>
     <tilesNeeded>
       <li>0,0</li>
@@ -39,6 +40,7 @@
     <prefabPath>Main/Buildings/Prefabs/Windmill</prefabPath>
     <description>Wind in buzz out.</description>
     <grantsSupport>false</grantsSupport>
+    <canBeDemolished>true</canBeDemolished>
     <autoRow>false</autoRow>
     <tilesNeeded>
       <li>0,0</li>
@@ -75,6 +77,7 @@
     <prefabPath>Main/Buildings/Prefabs/Gantry</prefabPath>
     <description>Cheap, utilitarian transit. Grants support and access to buildings.</description>
     <grantsSupport>true</grantsSupport>
+    <canBeDemolished>true</canBeDemolished>
     <autoRow>true</autoRow>
     <tilesNeeded>
       <li>0,0</li>

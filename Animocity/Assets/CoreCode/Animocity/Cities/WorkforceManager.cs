@@ -24,7 +24,7 @@ namespace Animocity.Cities
         public event WorkforceChangeEvent WorkforceUpdated;
         public event WorkforceChangeEvent WorkforceInsufficient;
 
-        private Dictionary<PopulationBlue, int> unassignedWorkers = new();
+        public Dictionary<PopulationBlue, int> unassignedWorkers = new();
         private int unassignedHousing = 0;
 
         public void UpdateWorkforceAssignments()
@@ -165,7 +165,6 @@ namespace Animocity.Cities
 
         private bool AssignWorkers(BuildingComponent_StaffRequirement workplace, int targetNumberOfEmployees, out int successfullyAssigned)
         {
-            //MonoBehaviour.print($"Trying to assign {targetNumberOfEmployees} workers to {workplace.Building.Blue.DisplayName}.");
             int demandRemaining = targetNumberOfEmployees;
             successfullyAssigned = 0;
             foreach (var pop in workplace.StaffData.populationTypesAccepted.OrderByDescending((p) => unassignedWorkers[p]))
@@ -173,7 +172,7 @@ namespace Animocity.Cities
                 int assignedPopMax = Math.Min(demandRemaining, unassignedWorkers[pop]);
                 if (assignedPopMax <= 0) break;
 
-                if (CityOverview.Current.HousingManager.TryFindHousing(workplace.Building.Grid, workplace.Building.GridLocation, assignedPopMax, out int popsSuccessfullyHoused))
+                if (CityOverview.Current.HousingManager.TryFindAcceptableCommute(workplace.Building.Grid, workplace.Building.GridLocation, pop, assignedPopMax, out int popsSuccessfullyHoused))
                 {
                     successfullyAssigned += popsSuccessfullyHoused;
                     demandRemaining -= popsSuccessfullyHoused;
@@ -206,30 +205,6 @@ namespace Animocity.Cities
         private int GetTotalStaffRequired(List<BuildingComponent_StaffRequirement> workplaces)
         {
             return workplaces.Sum((wrk) => wrk.StaffData.maxStaff);
-        }
-
-        private Dictionary<PopulationBlue, int> GetSpecialistDemand(List<BuildingComponent_StaffRequirement> workplaces)
-        {
-            var demands = new Dictionary<PopulationBlue, int>();
-            foreach (var workplace in workplaces)
-            {
-                var pops = workplace.StaffData.populationTypesAccepted;
-
-                if(pops.Count() == 1)
-                {
-                    int additionalDemand = workplace.StaffData.maxStaff;
-
-                    if (demands.TryGetValue(pops[0], out var currentDemand))
-                    {
-                        demands[pops[0]] = currentDemand + additionalDemand;
-                    }
-                    else
-                    {
-                        demands.Add(pops[0], additionalDemand);
-                    }
-                }
-            }
-            return demands;
         }
 
         private Dictionary<PopulationBlue, int> GetSpecialistJobDemand(List<BuildingComponent_StaffRequirement> specialistWorkplaces)

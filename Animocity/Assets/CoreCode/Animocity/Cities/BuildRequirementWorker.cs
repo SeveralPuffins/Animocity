@@ -20,6 +20,11 @@ namespace Animocity.Cities
             return false;
         }
 
+        public virtual void OnBuildAtLocation(Vector2Int location, Building building, CityGrid buildingGrid)
+        {
+
+        }
+
         public virtual string GetErrorMessage()
         {
             return Blue.failMessage;

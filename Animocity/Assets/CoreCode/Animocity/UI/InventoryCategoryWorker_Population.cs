@@ -16,7 +16,8 @@ namespace Animocity.UI
         public override string GetDisplayText()
         {
             float pop = CityOverview.Current.TotalPopulation;
-            return $" {pop} : (-)";
+            float homeless = CityOverview.Current.Homeless.Values.Sum();
+            return $" {pop} : {homeless}";
         }
 
         public override void OnInventoryButtonClick(Button btn)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Animocity.Utilities;
+using Animocity.Cities.Algorithms;
 
 namespace Animocity.Cities
 {
@@ -10,13 +11,12 @@ namespace Animocity.Cities
     {
 
         private List<BuildingComponent_Housing> _houses;
-        
 
         public IEnumerable<BuildingComponent_Housing> Houses
         { get { return _houses; } }
 
         public HousingManager(IEnumerable<CityGrid> cityGrids) 
-        { 
+        {
             _houses = new List<BuildingComponent_Housing>();
         }
         public int GetHousingCapacity()
@@ -37,46 +37,25 @@ namespace Animocity.Cities
             }
         }
 
-        public float GetHousingSatisfaction(int population)
+        public float GetHousingSatisfaction(PopulationBlue population)
         {
             if (_houses == null || _houses.Count() == 0)
             {
                 return 0;
             }
 
-            _houses.Sort((house1, house2) => house2.CurrentSatisfaction.CompareTo(house1.CurrentSatisfaction));
-
-            int idx = _houses
-                        .CumulativeSum((house)=>house.HousingData.capacity)
-                        .ToList()
-                        .FindIndex((sum)=>sum>=population);
-
-            if(idx == -1)
+            float totalPop = 0;
+            float totalSatisfaction = 0;
+            foreach(var house in _houses)
             {
-                float housedSatisfaction =
-                      _houses
-                        .Sum((house) => house.HousingData.capacity * house.CurrentSatisfaction);
-                float capacity =
-                        _houses
-                        .Sum((house) => house.HousingData.capacity);
-
-                float homelessness = (1f*population - capacity) / (1f * population);
-
-                return Mathf.Max(0,(housedSatisfaction/capacity) * (1f - homelessness) * (1f - homelessness) - 2.0f * homelessness); 
+                totalPop += house.CurrentResidents(population);
+                totalSatisfaction += totalPop * house.CurrentSatisfaction;
             }
-            else // No homelessness
+            if(totalPop == 0)
             {
-                float totalSatisfaction =
-                      _houses
-                        .Take(idx)
-                        .Sum((house) => house.HousingData.capacity * house.CurrentSatisfaction);
-                float capacityOfOccupiedHouses =
-                        _houses
-                        .Take(idx)
-                        .Sum((house) => house.HousingData.capacity);
-
-                return totalSatisfaction/capacityOfOccupiedHouses;
+                return 0;
             }
+            return totalSatisfaction/totalPop;
         }
 
         public void AddHouse(BuildingComponent_Housing newHouse)
@@ -88,9 +67,9 @@ namespace Animocity.Cities
             _houses.Remove(oldHouse);
         }
 
-        internal bool TryFindHousing(CityGrid grid, Vector2Int gridLocation, int assignedPopMax, out int popsSuccessfullyHoused)
+        internal bool TryFindAcceptableCommute(CityGrid grid, Vector2Int gridLocation, PopulationBlue pop, int assignedPopMax, out int popsSuccessfullyHoused)
         {
-            var gridHouses = _houses.Where(house => house.Building.Grid == grid && house.HousingData.capacity > house.NumCurrentResidents);
+            var gridHouses = _houses.Where(house => house.Building.Grid == grid && house.HousingData.capacity > house.NumTotalResidents);
 
             if (gridHouses.Count() > 0) {
                 
@@ -109,8 +88,10 @@ namespace Animocity.Cities
                         int roomsAvailable = house.RoomsAvailable;
 
                         int roomsAssigned = Mathf.Min(roomsAvailable, roomsRequested);
-                        house.AddResidents(roomsAssigned);
+                        house.AddResidents(roomsAssigned, pop);
                         popsSuccessfullyHoused += roomsAssigned;
+
+                        house.AddCommute(new Commute(pop, roomsAssigned, path.GetNodes.Reverse().ToList(), TransportManager.Current.GetTransportGrid(grid)));
                     }
 
                     return true;
@@ -126,6 +107,38 @@ namespace Animocity.Cities
                 popsSuccessfullyHoused = 0;
                 return false;
             }
+        }
+
+        public Dictionary<PopulationBlue, int> GetHomelessAfterHousingUnemployed()
+        {
+            var unhousedWorkers = new Dictionary<PopulationBlue, int>(WorkforceManager.Current.unassignedWorkers);
+            int unhousedWorkersCount = unhousedWorkers.Values.Sum();
+
+
+            foreach (var pop in unhousedWorkers.Keys.ToArray())
+            {
+                if (unhousedWorkers[pop] == 0) continue;
+
+                var availableHousing =
+                    this._houses
+                        .Where((h) => h.RoomsAvailable > 0)
+                        .OrderBy((h) => h.CurrentSatisfaction)
+                        .ToList();
+
+                foreach (var house in availableHousing)
+                {
+                    int maxToHouse = System.Math.Min(unhousedWorkers[pop]   , house.RoomsAvailable);
+
+                    house.AddResidents(maxToHouse, pop);
+                    unhousedWorkersCount -= maxToHouse;
+                    unhousedWorkers[pop] -= maxToHouse;
+
+                    if (unhousedWorkers[pop] == 0) break;
+                }
+                if (unhousedWorkersCount == 0) break;
+            }
+
+            return unhousedWorkers;
         }
     }
 }

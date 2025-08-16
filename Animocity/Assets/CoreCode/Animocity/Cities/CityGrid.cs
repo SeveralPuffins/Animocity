@@ -1,4 +1,5 @@
 ﻿using Animocity.UI;
+using Animocity.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Animocity.Cities
         public TransportGrid transportGrid;
         public List<string> gridTags;
         public Polygon bounds { get; private set; }
-        private Dictionary<Vector2Int, Building> tileContents;
+        private MultiMap<Vector2Int, Building> tileContents;
         public Vector2 cellSize;
         [Header("Highlight Style")]
         public GridHighlightManager ghm;
@@ -173,7 +174,7 @@ namespace Animocity.Cities
             foreach(var offset in building.Blue.tilesNeeded)
             {
                 tileContents.Remove(offset + building.GridLocation);
-                tileContents.Add(offset+building.GridLocation, building);
+                tileContents.Add(offset + building.GridLocation, building);
             }
         }
 
@@ -207,7 +208,7 @@ namespace Animocity.Cities
             {
                 if (newBuilding.TryCommitBuild(isFree))
                 {
-                    if(!isFree) PayResources(blue, loc);
+   
                 }
                 else
                 {
@@ -216,14 +217,6 @@ namespace Animocity.Cities
                 return true;
             }
             return false;
-        }
-
-        private void PayResources(BuildingBlueprint blue, Vector2Int tile)
-        {
-            foreach (var key in blue.resourceCosts.Keys) 
-            {
-                CityOverview.Current.TakeResource(tile, key, blue.resourceCosts[key]);
-            }
         }
 
         private Vector3 GetMousePosition()
@@ -408,6 +401,19 @@ namespace Animocity.Cities
             var wy = y * cellSize.y + transform.position.y;
 
             return new Vector3(wx, wy, transform.position.z);
+        }
+
+        internal bool TryRemoveBuildingAt(Vector2Int gridLocation, Building building)
+        {
+            if(tileContents.TryGetValue(gridLocation, out var b))
+            {
+                if (b == building)
+                {
+                    tileContents.DeepRemove(gridLocation);
+                    return true;
+                }
+            }
+            return false;
         }
 
 

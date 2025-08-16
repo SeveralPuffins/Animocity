@@ -28,6 +28,17 @@ namespace Animocity.Cities.Algorithms
 
         public T Origin => _nodes[0];
         public T Destination => _nodes[_nodes.Length - 1];
-        public float TotalCost => _costs.Sum();
+        private float? _totalCost;
+        public float TotalCost
+        {
+            get
+            {
+                if (_totalCost == null)
+                {
+                    _totalCost = _costs.Sum();
+                }
+                return _totalCost.Value;
+            }
+        }
     }
 }

@@ -44,5 +44,10 @@ namespace Animocity.Cities
         {
             return _transportGrids[grid].GetConnectedTiles(startLocation, maxDistance);
         }
+
+        public TransportGrid GetTransportGrid(CityGrid grid)
+        {
+            return this._transportGrids[grid];
+        }
     }
 }

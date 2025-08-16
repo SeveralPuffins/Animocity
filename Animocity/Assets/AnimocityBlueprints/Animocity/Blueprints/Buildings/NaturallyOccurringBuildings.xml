@@ -7,6 +7,7 @@
     <prefabPath>Main/Buildings/Prefabs/PowerCoil</prefabPath>
     <description>Exposed meta-alloy conduits allow us to tap a small amount of power from the mech's chassis.</description>
     <grantsSupport>false</grantsSupport>
+    <canBeDemolished>false</canBeDemolished>
     <autoRow>false</autoRow>
     <resourceCosts></resourceCosts>
     <tilesNeeded>
@@ -25,6 +26,7 @@
     <description>A heap O' Scrap</description>
     <resourceCosts></resourceCosts>
     <grantsSupport>false</grantsSupport>
+    <canBeDemolished>false</canBeDemolished>
     <tilesNeeded>
       <li>-1,0</li>
       <li> 0,0</li>

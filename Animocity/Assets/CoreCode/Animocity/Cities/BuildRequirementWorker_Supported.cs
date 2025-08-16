@@ -20,5 +20,19 @@ namespace Animocity.Cities
         {
             return GetAllTilesNeedingSupport(buildingBlue).All((offset) => buildingGrid.IsSupported(offset+location));
         }
+
+        public override void OnBuildAtLocation(Vector2Int location, Building building, CityGrid buildingGrid)
+        {
+            var supportingBuildings = new HashSet<Building>();
+            foreach(var tile in GetAllTilesNeedingSupport(building.Blue))
+            {
+                if(buildingGrid.TryGetBuildingAt(tile+location+Vector2Int.down, out var supporter))
+                {
+                    supportingBuildings.Add(supporter);
+                }
+            }
+
+            building.SubscribeToSupporters(supportingBuildings);
+        }
     }
 }

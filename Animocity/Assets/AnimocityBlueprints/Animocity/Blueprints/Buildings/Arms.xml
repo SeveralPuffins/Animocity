@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Buildings>
 
-	<BuildingBlueprint label="DrillControl" >
+  <BuildingBlueprint label="BaseHardpoint" abstract="true">
+    <canBeDemolished>true</canBeDemolished>
+    <grantsSupport>true</grantsSupport>
+    <buildRequirements>
+      <li>BuildRequirementBlue_Fits</li>
+      <li>BuildRequirementBlue_IsSupported</li>
+      <li>BuildRequirementBlue_Accessible</li>
+      <li Class="BuildRequirementBlueprint_GridTag">BuildRequirementBlue_IsArmGrid</li>
+    </buildRequirements>
+  </BuildingBlueprint>
+  
+  <BuildingBlueprint label="DrillControl" >
 		<displayName>Drill Control Building</displayName>
 		<category>bcb_Utility</category>
-		<prefabPath>Main/Buildings/Prefabs/DrillControlBuilding</prefabPath>
+		<prefabPath>Main/Weapons/Prefabs/DrillControlBuilding</prefabPath>
 		<description>Drilly drillin</description>
 		<resourceCosts>
 			<di>
@@ -12,9 +23,19 @@
 				<dv>10.0</dv>
 			</di>
 		</resourceCosts>
-		<grantsSupport>true</grantsSupport>
 		<tilesNeeded>
-
+      <li>-4,0</li>
+      <li>-4,1</li>
+      <li>-4,2</li>
+      <li>-4,3</li>
+      <li>-4,4</li>
+      <li>-4,5</li>
+      <li>-4,6</li>
+      <li>-4,7</li>
+      <li>-4,8</li>
+      <li>-4,9</li>
+      <li>-4,10</li>
+      <li>-4,11</li>
       <li>-3,0</li>
       <li>-3,1</li>
       <li>-3,2</li>
@@ -23,6 +44,10 @@
       <li>-3,5</li>
       <li>-3,6</li>
       <li>-3,7</li>
+      <li>-3,8</li>
+      <li>-3,9</li>
+      <li>-3,10</li>
+      <li>-3,11</li>
       <li>-2,0</li>
       <li>-2,1</li>
       <li>-2,2</li>
@@ -31,6 +56,10 @@
       <li>-2,5</li>
       <li>-2,6</li>
       <li>-2,7</li>
+      <li>-2,8</li>
+      <li>-2,9</li>
+      <li>-2,10</li>
+      <li>-2,11</li>
       <li>-1,0</li>
       <li>-1,1</li>
       <li>-1,2</li>
@@ -39,6 +68,10 @@
       <li>-1,5</li>
       <li>-1,6</li>
       <li>-1,7</li>
+      <li>-1,8</li>
+      <li>-1,9</li>
+      <li>-1,10</li>
+      <li>-1,11</li>
       <li>0,0</li>
       <li>0,1</li>
       <li>0,2</li>
@@ -47,6 +80,10 @@
       <li>0,5</li>
       <li>0,6</li>
       <li>0,7</li>
+      <li>0,8</li>
+      <li>0,9</li>
+      <li>0,10</li>
+      <li>0,11</li>
       <li>1,0</li>
       <li>1,1</li>
       <li>1,2</li>
@@ -55,6 +92,10 @@
       <li>1,5</li>
       <li>1,6</li>
       <li>1,7</li>
+      <li>1,8</li>
+      <li>1,9</li>
+      <li>1,10</li>
+      <li>1,11</li>
       <li>2,0</li>
       <li>2,1</li>
       <li>2,2</li>
@@ -63,6 +104,10 @@
       <li>2,5</li>
       <li>2,6</li>
       <li>2,7</li>
+      <li>2,8</li>
+      <li>2,9</li>
+      <li>2,10</li>
+      <li>2,11</li>
       <li>3,0</li>
       <li>3,1</li>
       <li>3,2</li>
@@ -71,6 +116,10 @@
       <li>3,5</li>
       <li>3,6</li>
       <li>3,7</li>
+      <li>3,8</li>
+      <li>3,9</li>
+      <li>3,10</li>
+      <li>3,11</li>
       <li>4,0</li>
       <li>4,1</li>
       <li>4,2</li>
@@ -79,6 +128,10 @@
       <li>4,5</li>
       <li>4,6</li>
       <li>4,7</li>
+      <li>4,8</li>
+      <li>4,9</li>
+      <li>4,10</li>
+      <li>4,11</li>
       <li>5,0</li>
       <li>5,1</li>
       <li>5,2</li>
@@ -87,6 +140,10 @@
       <li>5,5</li>
       <li>5,6</li>
       <li>5,7</li>
+      <li>5,8</li>
+      <li>5,9</li>
+      <li>5,10</li>
+      <li>5,11</li>
       <li>6,0</li>
       <li>6,1</li>
       <li>6,2</li>
@@ -95,19 +152,153 @@
       <li>6,5</li>
       <li>6,6</li>
       <li>6,7</li>
+      <li>6,8</li>
+      <li>6,9</li>
+      <li>6,10</li>
+      <li>6,11</li>
 		</tilesNeeded>
 		<components>
 			<li Class="BuildingComponentData_Power">
 				<componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
 				<powerAmount>80.0</powerAmount>
 			</li>
-		</components>
-
-		<buildRequirements>
-			<li>BuildRequirementBlue_Fits</li>
-			<li>BuildRequirementBlue_IsSupported</li>
-			<li>BuildRequirementBlue_Accessible</li>
-      <li Class="BuildRequirementBlueprint_GridTag">BuildRequirementBlue_IsArmGrid</li>
-		</buildRequirements>
+      <li Class="BuildingComponentData_Drill">
+        <componentClass>Animocity.Cities.BuildingComponent_Drill</componentClass>
+        <motorSpeed>30</motorSpeed>
+        <maxExtensionDist>175</maxExtensionDist>
+      </li>
+    </components>
 	</BuildingBlueprint>
+  
+  <BuildingBlueprint label="GloveTreadmill" >
+    <displayName>Giant Glove Control Room.</displayName>
+    <category>bcb_Utility</category>
+    <prefabPath>Main/Weapons/Prefabs/GloveLauncher</prefabPath>
+    <description>Launch / recovery system for the deadly GGFS missile system (that's giant glove full of stuff, civvie).</description>
+    <resourceCosts>
+      <di>
+        <dk>Scrap</dk>
+        <dv>80.0</dv>
+      </di>
+    </resourceCosts>
+    <tilesNeeded>
+      <li>0,0</li>
+      <li>0,1</li>
+      <li>0,2</li>
+      <li>0,3</li>
+      <li>0,4</li>
+      <li>0,5</li>
+      <li>0,6</li>
+      <li>0,7</li>
+      <li>0,8</li>
+      <li>0,9</li>
+      <li>0,10</li>
+      <li>0,11</li>
+      <li>1,0</li>
+      <li>1,1</li>
+      <li>1,2</li>
+      <li>1,3</li>
+      <li>1,4</li>
+      <li>1,5</li>
+      <li>1,6</li>
+      <li>1,7</li>
+      <li>1,8</li>
+      <li>1,9</li>
+      <li>1,10</li>
+      <li>1,11</li>
+      <li>2,0</li>
+      <li>2,1</li>
+      <li>2,2</li>
+      <li>2,3</li>
+      <li>2,4</li>
+      <li>2,5</li>
+      <li>2,6</li>
+      <li>2,7</li>
+      <li>2,8</li>
+      <li>2,9</li>
+      <li>2,10</li>
+      <li>2,11</li>
+      <li>3,0</li>
+      <li>3,1</li>
+      <li>3,2</li>
+      <li>3,3</li>
+      <li>3,4</li>
+      <li>3,5</li>
+      <li>3,6</li>
+      <li>3,7</li>
+      <li>3,8</li>
+      <li>3,9</li>
+      <li>3,10</li>
+      <li>3,11</li>
+      <li>4,0</li>
+      <li>4,1</li>
+      <li>4,2</li>
+      <li>4,3</li>
+      <li>4,4</li>
+      <li>4,5</li>
+      <li>4,6</li>
+      <li>4,7</li>
+      <li>4,8</li>
+      <li>4,9</li>
+      <li>4,10</li>
+      <li>4,11</li>
+      <li>5,0</li>
+      <li>5,1</li>
+      <li>5,2</li>
+      <li>5,3</li>
+      <li>5,4</li>
+      <li>5,5</li>
+      <li>5,6</li>
+      <li>5,7</li>
+      <li>5,8</li>
+      <li>5,9</li>
+      <li>5,10</li>
+      <li>5,11</li>
+      <li>6,0</li>
+      <li>6,1</li>
+      <li>6,2</li>
+      <li>6,3</li>
+      <li>6,4</li>
+      <li>6,5</li>
+      <li>6,6</li>
+      <li>6,7</li>
+      <li>6,8</li>
+      <li>6,9</li>
+      <li>6,10</li>
+      <li>6,11</li>
+      <li>7,0</li>
+      <li>7,1</li>
+      <li>7,2</li>
+      <li>7,3</li>
+      <li>7,4</li>
+      <li>7,5</li>
+      <li>7,6</li>
+      <li>7,7</li>
+      <li>7,8</li>
+      <li>7,9</li>
+      <li>7,10</li>
+      <li>7,11</li>
+    </tilesNeeded>
+    <components>
+      <li Class="BuildingComponentData_StaffRequirement">
+        <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
+        <maxStaff>24</maxStaff>
+        <minStaff>5</minStaff>
+        <efficiencyAtMax>1.0</efficiencyAtMax>
+        <efficiencyAtMin>0.16</efficiencyAtMin>
+        <defaultPriority>1</defaultPriority>
+        <populationTypesAccepted>
+          <li>Pioneers</li>
+          <li>Labourers</li>
+          <li>Mechanists</li>
+        </populationTypesAccepted>
+      </li>
+      <li Class="BuildingComponentData_GiantGlove">
+        <componentClass>Animocity.Cities.BuildingComponent_GiantGlove</componentClass>
+        <baseReloadTime>4.5</baseReloadTime>
+        <launchVelocity>300.0</launchVelocity>
+        <maxDistance>300.0</maxDistance>
+      </li>
+    </components>
+  </BuildingBlueprint>
 </Buildings>

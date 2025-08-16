@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <PopulationTypes>
-  <PopulationBlue label="Pioneers">
+  <PopulationBlue label="basePop" abstract="true" >
+    <minComfort>0</minComfort>
+    <startingPopulation>0</startingPopulation>
+    <childType>Labourers</childType>
+    <housingSatisfactionForMinComfort>0.25</housingSatisfactionForMinComfort>
+    <housingSatisfactionForMaxComfort>1</housingSatisfactionForMaxComfort>
+  </PopulationBlue>
+    
+  <PopulationBlue label="Pioneers" parent ="basePop">
     <startingPopulation>100</startingPopulation>
-    <birthType>false</birthType>
     <description>Discoverers of the mech, with all-round talents. </description>
     <iconPath>Temporary/Icons/PopPioneer</iconPath>
+    <minComfort>0.25</minComfort>
+    <housingSatisfactionForMinComfort>0.25</housingSatisfactionForMinComfort>
+    <housingSatisfactionForMaxComfort>1</housingSatisfactionForMaxComfort>
+    <popWorker>Animocity.Cities.PopWorker</popWorker>
   </PopulationBlue>
-  <PopulationBlue label="Labourers">
-    <startingPopulation>0</startingPopulation>
-    <birthType>true</birthType>
+ 
+  <PopulationBlue label="Labourers" parent ="basePop">
     <description>Labourers for vertical farms and basic workshops. </description>
     <iconPath>Temporary/Icons/PopWorkers</iconPath>
+    <popWorker>Animocity.Cities.PopWorker</popWorker>
   </PopulationBlue>
-  <PopulationBlue label="Mechanists">
-    <startingPopulation>0</startingPopulation>
-    <birthType>false</birthType>
+  
+  <PopulationBlue label="Mechanists" parent ="basePop">
     <description>Mechizens with advanced practical skills. </description>
     <iconPath>Temporary/Icons/PopMechanist</iconPath>
+    <popWorker>Animocity.Cities.PopWorker</popWorker>
   </PopulationBlue>
-  <PopulationBlue label="Virtuosi">
-    <startingPopulation>0</startingPopulation>
-    <birthType>false</birthType>
+  
+  <PopulationBlue label="Virtuosi" parent ="basePop">
     <description>Mechizens whose efforts reveal the beauty and meaning inherent in life in a giant steel killing machine. </description>
     <iconPath>Temporary/Icons/PopVirtuosi</iconPath>
+    <popWorker>Animocity.Cities.PopWorker</popWorker>
   </PopulationBlue>
-  <PopulationBlue label="Technologists">
-    <startingPopulation>0</startingPopulation>
-    <birthType>false</birthType>
+  
+  <PopulationBlue label="Technologists" parent ="basePop">
     <description>Mechizens dedicated to the pure persuit of knowledge (that goes bang). </description>
     <iconPath>Temporary/Icons/PopTechnologist</iconPath>
+    <popWorker>Animocity.Cities.PopWorker</popWorker>
   </PopulationBlue>
 </PopulationTypes>

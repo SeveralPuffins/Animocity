@@ -20,7 +20,6 @@ namespace Animocity.Cities
             this._acceptedWorkerPops = new(StaffData.populationTypesAccepted);
         }
 
-        private List<Commute<Vector2Int>> _commutes = new();
         private Dictionary<BuildingComponent_Housing, Path<Vector2Int>> _connectedHouses = new();
 
         public BuildingComponentData_StaffRequirement StaffData
@@ -48,7 +47,6 @@ namespace Animocity.Cities
         public void ClearStaffForReassignment()
         {
             this.CurrentStaff = 0;
-            this._commutes.Clear();
         }
 
         public void AddStaff(int numToAdd)

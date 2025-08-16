@@ -72,7 +72,7 @@ namespace Animocity.Cities.Algorithms
             minDistances.Add(query.start, 0f);
             minDistanceHeap.Add(query.start, 0f);
 
-            if (!_edges.Keys.Contains(query.start))
+            /*if (!_edges.Keys.Contains(query.start))
             {
                 MonoBehaviour.print($"START LOCATION NOT IN EDGES!");
             }
@@ -82,7 +82,7 @@ namespace Animocity.Cities.Algorithms
                 {
                     MonoBehaviour.print($"AN END LOCATION NOT IN EDGES!");
                 }
-            }
+            }*/
 
             //MonoBehaviour.print($"Trying to find path from {query.start} to up to {query.endpoints.Count()} ends, in a graph with {_edges.Count()} edges.");
 
@@ -212,13 +212,13 @@ namespace Animocity.Cities.Algorithms
             return gridGraph;
         }
 
-        internal bool TryCheckPath(List<T> path, out float cost)
+        internal bool TryCheckRoute(List<T> route, out float cost)
         {
             cost = 0;
-            for(int i=0; i<path.Count-1; i++)
+            for(int i=0; i<route.Count-1; i++)
             {
-                T o = path[i];
-                T d = path[i+1];
+                T o = route[i];
+                T d = route[i+1];
 
                 if (_edges.TryGetValue(o, out var edgeList))
                 {
