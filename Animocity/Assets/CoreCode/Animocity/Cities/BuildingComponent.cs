@@ -23,7 +23,7 @@ namespace Animocity.Cities
             Data = data;
             Building = building;
             Building.Tick += this.Tick;
-            Building.LongTick += this.Tick;
+            Building.LongTick += this.LongTick;
             OnBuild();
         }
 

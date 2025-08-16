@@ -47,6 +47,7 @@ namespace Animocity.Cities
             this.HousingManager = new HousingManager(cityGrids);
             this.WorkforceManager = new();
             this.TransportManager = new TransportManager(this);
+            this.FleaCircusManager = new();
 
             Current = this;
         }

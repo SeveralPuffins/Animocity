@@ -89,6 +89,7 @@ namespace Animocity.Cities
 
         private void FireCommuter()
         {
+            MonoBehaviour.print("FIRE COMMUTER!");
             if(this._commutes.Count > 0)
             {
                 var selected = _commutes.WeightedRandom(com => com.CommuterCount);

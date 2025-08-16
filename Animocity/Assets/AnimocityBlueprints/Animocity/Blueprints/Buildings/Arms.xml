@@ -4,12 +4,6 @@
   <BuildingBlueprint label="BaseHardpoint" abstract="true">
     <canBeDemolished>true</canBeDemolished>
     <grantsSupport>true</grantsSupport>
-    <buildRequirements>
-      <li>BuildRequirementBlue_Fits</li>
-      <li>BuildRequirementBlue_IsSupported</li>
-      <li>BuildRequirementBlue_Accessible</li>
-      <li Class="BuildRequirementBlueprint_GridTag">BuildRequirementBlue_IsArmGrid</li>
-    </buildRequirements>
   </BuildingBlueprint>
   
   <BuildingBlueprint label="DrillControl" >
@@ -168,6 +162,12 @@
         <maxExtensionDist>175</maxExtensionDist>
       </li>
     </components>
+    <buildRequirements>
+      <li>BuildRequirementBlue_Fits</li>
+      <li>BuildRequirementBlue_IsSupported</li>
+      <li>BuildRequirementBlue_Accessible</li>
+      <li Class="BuildRequirementBlueprint_GridTag">BuildRequirementBlue_IsArmGrid</li>
+    </buildRequirements>
 	</BuildingBlueprint>
   
   <BuildingBlueprint label="GloveTreadmill" >
@@ -300,5 +300,11 @@
         <maxDistance>300.0</maxDistance>
       </li>
     </components>
+    <buildRequirements>
+      <li>BuildRequirementBlue_Fits</li>
+      <li>BuildRequirementBlue_IsSupported</li>
+      <li>BuildRequirementBlue_Accessible</li>
+      <li Class="BuildRequirementBlueprint_GridTag">BuildRequirementBlue_IsArmGrid</li>
+    </buildRequirements>
   </BuildingBlueprint>
 </Buildings>

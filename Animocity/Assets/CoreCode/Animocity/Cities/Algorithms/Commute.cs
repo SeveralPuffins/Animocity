@@ -15,24 +15,29 @@ namespace Animocity.Cities.Algorithms
         public int CommuterCount { get; private set; }
         public float TravelCost {  get; private set; }
 
-        private TransportGrid grid;
+        public CityGrid grid { get; set; }
 
-        public Commute(PopulationBlue populationType, int commuterCount, List<Vector2Int> route, TransportGrid grid)
+        public Commute(PopulationBlue populationType, int commuterCount, List<Vector2Int> route, CityGrid grid)
         {
             this.grid = grid;
             this.route = route;
             this.CommuterCount = commuterCount;
             this.PopulationType = populationType;
         }
+        public int Length => route.Count;
+        public Vector2Int GetNode(int index)
+        {
+            return route[index];
+        }
 
-        Vector2Int Origin
+        public Vector2Int Origin
         {
             get
             {
                 return route[0];
             }
         }
-        Vector2Int Destination
+        public Vector2Int Destination
         {
             get
             {
@@ -42,7 +47,7 @@ namespace Animocity.Cities.Algorithms
 
         public bool IsValid()
         {
-            if (grid.TryCheckRoute(this.route, out float cost))
+            if (TransportManager.Current.GetTransportGrid(grid).TryCheckRoute(this.route, out float cost))
             {
                 this.TravelCost = cost;
                 return true;

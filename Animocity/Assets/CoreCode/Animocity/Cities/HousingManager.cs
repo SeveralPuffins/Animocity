@@ -91,7 +91,7 @@ namespace Animocity.Cities
                         house.AddResidents(roomsAssigned, pop);
                         popsSuccessfullyHoused += roomsAssigned;
 
-                        house.AddCommute(new Commute(pop, roomsAssigned, path.GetNodes.Reverse().ToList(), TransportManager.Current.GetTransportGrid(grid)));
+                        house.AddCommute(new Commute(pop, roomsAssigned, path.GetNodes.Reverse().ToList(), grid));
                     }
 
                     return true;

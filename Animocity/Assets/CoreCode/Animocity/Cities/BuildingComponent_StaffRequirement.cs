@@ -91,16 +91,5 @@ namespace Animocity.Cities
         {
             this.Priority = priority;
         }
-
-        protected override bool Tick(Building building)
-        {
-            return base.Tick(building);
-        }
-
-        protected override bool LongTick(Building building)
-        {
-            return base.LongTick(building);
-        }
-
     }
 }
