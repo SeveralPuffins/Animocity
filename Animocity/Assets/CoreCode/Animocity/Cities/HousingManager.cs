@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Animocity.Utilities;
 using Animocity.Cities.Algorithms;
+using BlueprintSystem;
 
 namespace Animocity.Cities
 {
@@ -11,6 +12,7 @@ namespace Animocity.Cities
     {
 
         private List<BuildingComponent_Housing> _houses;
+        private List<BuildingComponent_NeedSource> _needsBuildings;
 
         public IEnumerable<BuildingComponent_Housing> Houses
         { get { return _houses; } }
@@ -18,6 +20,7 @@ namespace Animocity.Cities
         public HousingManager(IEnumerable<CityGrid> cityGrids) 
         {
             _houses = new List<BuildingComponent_Housing>();
+            _needsBuildings = new List<BuildingComponent_NeedSource>();
         }
         public int GetHousingCapacity()
         {
@@ -65,6 +68,14 @@ namespace Animocity.Cities
         public void RemoveHouse(BuildingComponent_Housing oldHouse)
         {
             _houses.Remove(oldHouse);
+        }
+        public void AddNeedsBuilding(BuildingComponent_NeedSource newSource)
+        {
+            _needsBuildings.Add(newSource);
+        }
+        public void RemoveNeedsBuilding(BuildingComponent_NeedSource oldSource)
+        {
+            _needsBuildings.Remove(oldSource);
         }
 
         internal bool TryFindAcceptableCommute(CityGrid grid, Vector2Int gridLocation, PopulationBlue pop, int assignedPopMax, out int popsSuccessfullyHoused)
@@ -139,6 +150,50 @@ namespace Animocity.Cities
             }
 
             return unhousedWorkers;
+        }
+
+        public void GetFoodNeedRoutes()
+        {
+            foreach(var needsBuilding in _needsBuildings)
+            {
+                needsBuilding.ClearNeedSubscriberResidences();
+            }
+
+            var sources = _needsBuildings.ToArray();
+
+            foreach(var house in this._houses) 
+            {
+                if (house.TryFindBestFoodSource(sources, out var source))
+                {
+                    source.AddSubscriber(house);
+                }
+            }
+        }
+
+        internal bool FeedTheHomeless(float timeInMinutes)
+        {
+            var foodPerPersonPerMinute = 0.02f;
+            var totalHomeless = CityOverview.Current.Homeless.Values.Sum();
+
+            if(totalHomeless > 0)
+            {
+                var food = BlueprintDatabase<ResourceBlue>.Fetch("Food");
+
+                float consumption = foodPerPersonPerMinute * timeInMinutes * totalHomeless;
+
+                if (CityOverview.Current.HasResource(food, consumption)) {
+                    CityOverview.Current.TakeResource(Vector2Int.zero, food, consumption);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

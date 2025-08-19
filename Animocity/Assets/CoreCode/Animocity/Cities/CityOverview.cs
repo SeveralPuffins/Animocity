@@ -22,6 +22,8 @@ namespace Animocity.Cities
 
         public static CityOverview Current;
 
+        public bool HomelessAreFed { get; private set; } = true;
+
         private Dictionary<PopulationBlue, int> _population;
         private Dictionary<ResourceBlue, float> _resources;
 
@@ -106,6 +108,16 @@ namespace Animocity.Cities
                 ticks = 0;
                 WorkforceManager.UpdateWorkforceAssignments();
                 this.Homeless = HousingManager.GetHomelessAfterHousingUnemployed();
+                HousingManager.GetFoodNeedRoutes();
+                
+            }
+        }
+
+        private void UpdatePopulationFedRate()
+        {
+            if (HousingManager.FeedTheHomeless(100f * Time.deltaTime / 60f))
+            {
+
             }
         }
 
@@ -197,6 +209,10 @@ namespace Animocity.Cities
                 }
             }
             return true;
+        }
+        internal bool HasResource(ResourceBlue resource, float val)
+        {
+            return (_resources[resource] >= val);
         }
 
         internal void TakeResource(Vector2Int gridLocation, ResourceBlue resource, float v)

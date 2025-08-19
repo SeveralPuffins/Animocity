@@ -33,6 +33,7 @@ namespace Animocity.Cities
         public Color highlightNegative = new Color(1f, 0.2f, 0.2f, 0.5f);
         public Color highlightNeutral = new Color(0.6f, 0.6f, 0.65f, 0.5f);
         public Color highlightInformational = new Color(0.8f, 0.8f, 0.25f, 0.5f);
+        public Color highlightInformational2 = new Color(0.8f, 0.25f, 0.8f, 0.5f);
         private bool _focused = false;
 
         public TMP_Text errorText;

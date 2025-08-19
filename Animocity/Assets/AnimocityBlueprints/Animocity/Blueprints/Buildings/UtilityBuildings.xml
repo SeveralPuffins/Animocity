@@ -71,6 +71,63 @@
     </resourceCosts>
   </BuildingBlueprint>
 
+  <BuildingBlueprint label="GastroCube">
+    <displayName>GastroCube</displayName>
+    <category>bcb_Utility</category>
+    <prefabPath>Main/Buildings/Prefabs/Gastro-Cube</prefabPath>
+    <description>Where Mechizens relax and chat over a hot, steaming corn-on-the-cob.</description>
+    <grantsSupport>true</grantsSupport>
+    <canBeDemolished>true</canBeDemolished>
+    <autoRow>false</autoRow>
+    <tilesNeeded>
+      <li>-1,0</li>
+      <li> 0,0</li>
+      <li> 1,0</li>
+      <li> 2,0</li>
+      <li>-1,1</li>
+      <li> 0,1</li>
+      <li> 1,1</li>
+      <li> 2,1</li>
+      <li>-1,2</li>
+      <li> 0,2</li>
+      <li> 1,2</li>
+      <li> 2,2</li>
+    </tilesNeeded>
+    <components>
+      <li Class="BuildingComponentData_StaffRequirement">
+        <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
+        <maxStaff>10</maxStaff>
+        <minStaff>4</minStaff>
+        <efficiencyAtMax>1.0</efficiencyAtMax>
+        <efficiencyAtMin>0.25</efficiencyAtMin>
+        <defaultPriority>2</defaultPriority>
+        <populationTypesAccepted>
+          <li>Pioneers</li>
+          <li>Labourers</li>
+          <li>Mechanists</li>
+        </populationTypesAccepted>
+      </li>
+      <li Class="BuildingComponentData_NeedSource">
+        <componentClass>Animocity.Cities.BuildingComponent_NeedSource</componentClass>
+        <consumable>Food</consumable>
+        <consumptionPerPersonPerMinute>0.01</consumptionPerPersonPerMinute>
+        <baseQuality>1</baseQuality>
+      </li>
+    </components>
+    <buildRequirements>
+      <li>BuildRequirementBlue_Fits</li>
+      <li>BuildRequirementBlue_IsSupported</li>
+      <li>BuildRequirementBlue_Accessible</li>
+      <li Class="BuildRequirementBlueprint_HighlightRange">HighlightFoodhallEffectRange</li>
+    </buildRequirements>
+    <resourceCosts>
+      <di>
+        <dk>Scrap</dk>
+        <dv>16.0</dv>
+      </di>
+    </resourceCosts>
+  </BuildingBlueprint>
+
   <BuildingBlueprint label="Gantry">
     <displayName>Gantry</displayName>
     <category>bcb_Utility</category>

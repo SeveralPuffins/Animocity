@@ -36,6 +36,7 @@ namespace Animocity.Cities
                     if(transportSquares!=null && transportSquares.Count() > 0)
                     {
                         var tiles = TransportManager.Current.GetConnectedTiles(buildingGrid, location, TransportManager.MAX_COMMUTE_COST);
+
                         foreach (var t in tiles) 
                         {
                             buildingGrid.Highlight(t, buildingGrid.highlightInformational);
