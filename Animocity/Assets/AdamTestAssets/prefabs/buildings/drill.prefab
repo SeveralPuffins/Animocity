@@ -64,6 +64,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 851bb2a405e723447b9b87116ee20346, type: 2}
+  - {fileID: 2100000, guid: bf0c8076d911dd345ae8026df693e513, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,7 +99,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachmentPoint: {fileID: 7881268646953080064}
-  arm1: {fileID: 6243276545009597216}
   arm2: {fileID: 1313595773266747942}
   arm3: {fileID: 8814949381493703455}
   arm4: {fileID: 1650330297755750749}
