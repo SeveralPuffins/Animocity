@@ -62,23 +62,25 @@ namespace Animocity.UI
         {
             if(building != null)
             {
-                building.gameObject.layer = layerOfOrigin;
-                foreach (Transform t in building.GetComponentsInChildren<Transform>(true))
-                {
-                    t.gameObject.layer = layerOfOrigin;
-                }
+                //building.gameObject.layer = layerOfOrigin;
+                //foreach (Transform t in building.GetComponentsInChildren<Transform>(true))
+                //{
+                //    t.gameObject.layer = layerOfOrigin;
+                //}
+                this.building.SetBuildingOutlined(false);
             }
         }
         private void SelectHighlight()
         {
             if (this.building != null)
             {
-                layerOfOrigin = this.building.gameObject.layer;
-                building.gameObject.layer = 8;
-                foreach (Transform t in building.GetComponentsInChildren<Transform>(true))
-                {
-                    t.gameObject.layer = 8;
-                }
+                this.building.SetBuildingOutlined(true);
+                //layerOfOrigin = this.building.gameObject.layer;
+                //building.gameObject.layer = 8;
+                //foreach (Transform t in building.GetComponentsInChildren<Transform>(true))
+                // {
+                //    t.gameObject.layer = 8;
+                //}
             }
         }
 

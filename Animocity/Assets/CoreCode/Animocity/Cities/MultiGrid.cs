@@ -9,7 +9,9 @@ namespace Animocity.Cities
 {
     internal class MultiGrid //: IGraphHeuristic
     {
-        public List<Grid> grids;
+        public List<Grid> activeGrids;
+
         public List<GridConnector> GridConnectors;
+
     }
 }

@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Animocity.Utilities;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Animocity.Cities
 {
@@ -54,10 +55,46 @@ namespace Animocity.Cities
         }
 
         // "Ghosts" "Selected"
+
+        public void SetBuildingOutlined(bool isOutlined)
+        {
+            /*int iOut = isOutlined ? 1 : 0;
+
+            MaterialPropertyBlock selectBlock = new MaterialPropertyBlock();
+
+            selectBlock.SetInt( "_OutlineOn", iOut);
+
+            foreach (MeshRenderer r in GetComponentsInChildren<MeshRenderer>())
+            {
+                r.SetPropertyBlock(selectBlock);
+            }*/
+
+            if (isOutlined) SetBuildingLayer("Selected");
+            else SetBuildingLayer("Default");
+
+        }
+
+        public void SetBuildingBlueprint(bool isBlueprint)
+        {
+            int iBlue = isBlueprint ? 1 : 0;
+
+            MaterialPropertyBlock selectBlock = new MaterialPropertyBlock();
+
+            selectBlock.SetInt("_Hologram", iBlue);
+
+            foreach (MeshRenderer r in GetComponentsInChildren<MeshRenderer>())
+            {
+                r.SetPropertyBlock(selectBlock);
+            }
+        }
+
         protected void SetBuildingLayer(string layerName)
         {
             int layer = LayerMask.NameToLayer(layerName);
             gameObject.layer = layer;
+
+            MonoBehaviour.print($"Setting layer to {layer}");
+
             foreach (Transform t in GetComponentsInChildren<Transform>())
             {
                 t.gameObject.layer = layer;
@@ -87,7 +124,7 @@ namespace Animocity.Cities
                 {
                     IsPlan = false;
                     InitialiseBuilding();
-                    SetBuildingLayer("Default");
+                    SetBuildingBlueprint(false);
                     if (!isFree)
                     {
                         PayFor();
@@ -111,7 +148,7 @@ namespace Animocity.Cities
             building.Grid = grid;
             building.GridLocation = loc;
             building.IsPlan = true;
-            building.SetBuildingLayer("Ghosts");
+            building.SetBuildingBlueprint(true);
             foreach(var req in building.Blue.buildRequirements)
             {
                 req.Worker.OnBuildAtLocation(loc, building, grid);
@@ -175,7 +212,10 @@ namespace Animocity.Cities
 
         private void OnDisable()
         {
-            Components.Clear();
+            if (Components != null)
+            {
+                Components.Clear();
+            }
             Tick = null;
             LongTick = null;
             foreach(var b in supportBuildings)

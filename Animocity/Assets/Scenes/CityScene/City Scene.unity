@@ -302,6 +302,7 @@ MonoBehaviour:
   highlightNegative: {r: 1, g: 0.2, b: 0.2, a: 1}
   highlightNeutral: {r: 0.6, g: 0.6, b: 0.65, a: 1}
   highlightInformational: {r: 0.8, g: 0.8, b: 0.25, a: 0.5}
+  highlightInformational2: {r: 0.8, g: 0.25, b: 0.8, a: 0.5}
   errorText: {fileID: 1454711719}
 --- !u!1 &253997111
 GameObject:
@@ -1806,6 +1807,7 @@ MonoBehaviour:
   highlightNegative: {r: 1, g: 0.2, b: 0.2, a: 1}
   highlightNeutral: {r: 0.6, g: 0.6, b: 0.65, a: 1}
   highlightInformational: {r: 0.8, g: 0.8, b: 0.25, a: 0.5}
+  highlightInformational2: {r: 0.8, g: 0.25, b: 0.8, a: 0.5}
   errorText: {fileID: 1454711719}
 --- !u!4 &828618760
 Transform:
@@ -2476,6 +2478,7 @@ MonoBehaviour:
   highlightNegative: {r: 1, g: 0.2, b: 0.2, a: 1}
   highlightNeutral: {r: 0.6, g: 0.6, b: 0.65, a: 1}
   highlightInformational: {r: 0.8, g: 0.8, b: 0.25, a: 0.5}
+  highlightInformational2: {r: 0.8, g: 0.25, b: 0.8, a: 0.5}
   errorText: {fileID: 1454711719}
 --- !u!1 &1102336133
 GameObject:
@@ -3896,6 +3899,7 @@ MonoBehaviour:
   highlightNegative: {r: 1, g: 0.2, b: 0.2, a: 1}
   highlightNeutral: {r: 0.6, g: 0.6, b: 0.65, a: 1}
   highlightInformational: {r: 0.8, g: 0.8, b: 0.25, a: 0.5}
+  highlightInformational2: {r: 0.8, g: 0.25, b: 0.8, a: 0.5}
   errorText: {fileID: 1454711719}
 --- !u!1 &1899306699
 GameObject:
