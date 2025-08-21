@@ -110,6 +110,7 @@ namespace Animocity.Cities
         }
         private void Refund()
         {
+            if (this.IsPlan) return;
             foreach (var key in Blue.resourceCosts.Keys)
             {
                 CityOverview.Current.PushResource(GridLocation, key, Blue.resourceCosts[key]);
@@ -250,7 +251,10 @@ namespace Animocity.Cities
                 MonoBehaviour.print("All supported buildings are contained in demolish list");
                 if (this.Grid.TryRemoveBuildingAt(this.GridLocation, this))
                 {
-                    this.Components.Clear();
+                    if (this.Components != null)
+                    {
+                        this.Components.Clear();
+                    }
                     this.Refund();
                     Destroy(this.gameObject);
                 }
