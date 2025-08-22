@@ -4,20 +4,15 @@ namespace Animocity.Cities
 {
     public class GridConnector
     {
-        public CityGrid FirstGrid { get; private set; }
-        public CityGrid SecondGrid { get; private set; }
-
-        public Vector2Int FirstGridConnectionPoint { get; private set; }
-        public Vector2Int SecondGridConnectionPoint { get; private set; }
+        public MultiPoint ConnectionEndA { get; private set; }
+        public MultiPoint ConnectionEndB { get; private set; }
 
         public float ConnectionTransitCost { get; private set; }
 
-        public GridConnector(CityGrid firstGrid, CityGrid secondGrid, Vector2Int firstConnectionPoint, Vector2Int secondConnectionPoint, float transitCost)
+        public GridConnector(int firstGrid, int secondGrid, Vector2Int firstConnectionPoint, Vector2Int secondConnectionPoint, float transitCost)
         {
-            this.FirstGrid = firstGrid;
-            this.SecondGrid = secondGrid;
-            this.FirstGridConnectionPoint = firstConnectionPoint;
-            this.SecondGridConnectionPoint = secondConnectionPoint;
+            this.ConnectionEndA = new MultiPoint(firstConnectionPoint, firstGrid);
+            this.ConnectionEndB = new MultiPoint(secondConnectionPoint, secondGrid);
             this.ConnectionTransitCost = transitCost;
         }
     }

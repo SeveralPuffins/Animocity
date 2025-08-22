@@ -38,6 +38,10 @@ namespace Animocity.Cities
 
         public TMP_Text errorText;
 
+        public List<CityGrid> externalConnections;
+        public List<Vector2Int> externalConnectionPoints;
+
+
         public void Focus()
         {
             _focused = true;
@@ -55,6 +59,7 @@ namespace Animocity.Cities
             context.Activate();
             uiMask = LayerMask.NameToLayer("UI");
         }
+     
         private void OnValidate()
         {
             bounds = new Polygon(polygonPoints);
@@ -333,7 +338,14 @@ namespace Animocity.Cities
                     Vector2 cellLocation = new Vector2(i * cellSize.x, j * cellSize.y);
                     if (bounds.Contains(cellLocation))
                     {
-                        DrawCellGizmo(WorldFromCell(i,j));
+                        if (externalConnectionPoints.Contains(new Vector2Int(i, j)))
+                        {
+                            DrawBridgeGizmo(WorldFromCell(i, j));
+                        }
+                        else 
+                        {
+                            DrawCellGizmo(WorldFromCell(i, j));
+                        }
                     }
                 }
             }
@@ -351,9 +363,26 @@ namespace Animocity.Cities
             ghm.PushHighlight(new RectHighlight(hr, clr, this.transform.position.z));
         }
 
+        private void DrawBridgeGizmo(Vector2 ctr)
+        {
+
+            Gizmos.color = new Color(1f, 0f, 0f, 0.7f);
+
+            var points = new Vector3[4]
+            {
+                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, transform.position.z),
+                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, transform.position.z),
+                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, transform.position.z),
+                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, transform.position.z)
+            };
+
+            Gizmos.DrawLineStrip(points, true);
+            Gizmos.DrawSphere(ctr, 0.5f);
+        }
 
         private void DrawCellGizmo(Vector2 ctr)
         {
+
             Gizmos.color = new Color(1f,1f,1f,0.3f);
 
             var points = new Vector3[4]
@@ -365,6 +394,7 @@ namespace Animocity.Cities
             };
 
             Gizmos.DrawLineStrip(points, true);
+
         }
         #endregion
 

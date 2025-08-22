@@ -20,6 +20,12 @@ namespace Animocity.Cities
         public BuildingBlueprint Blue { get; private set; }
         public CityGrid Grid { get; private set; }
         public Vector2Int GridLocation { get; private set; }
+        public MultiPoint MultiGridLocation {
+            get
+            {
+                return new MultiPoint(GridLocation, CityOverview.Current.CityMultiGrid.GetIndex(Grid));
+            } 
+        }
 
         public bool IsPlan { get; private set; }
 
@@ -58,17 +64,6 @@ namespace Animocity.Cities
 
         public void SetBuildingOutlined(bool isOutlined)
         {
-            /*int iOut = isOutlined ? 1 : 0;
-
-            MaterialPropertyBlock selectBlock = new MaterialPropertyBlock();
-
-            selectBlock.SetInt( "_OutlineOn", iOut);
-
-            foreach (MeshRenderer r in GetComponentsInChildren<MeshRenderer>())
-            {
-                r.SetPropertyBlock(selectBlock);
-            }*/
-
             if (isOutlined) SetBuildingLayer("Selected");
             else SetBuildingLayer("Default");
 
@@ -253,6 +248,10 @@ namespace Animocity.Cities
                 {
                     if (this.Components != null)
                     {
+                        foreach(var component in this.Components)
+                        {
+                            component.OnDemolish();
+                        }
                         this.Components.Clear();
                     }
                     this.Refund();

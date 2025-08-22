@@ -10,34 +10,31 @@ namespace Animocity.Cities.Algorithms
     //Used to be generic. Could try that again? May take some design thoguht to do.
     public class Commute
     {
-        private List<Vector2Int> route;
+        private List<MultiPoint> route;
         public PopulationBlue PopulationType { get; private set; }
         public int CommuterCount { get; private set; }
         public float TravelCost {  get; private set; }
 
-        public CityGrid grid { get; set; }
-
-        public Commute(PopulationBlue populationType, int commuterCount, List<Vector2Int> route, CityGrid grid)
+        public Commute(PopulationBlue populationType, int commuterCount, List<MultiPoint> route)
         {
-            this.grid = grid;
             this.route = route;
             this.CommuterCount = commuterCount;
             this.PopulationType = populationType;
         }
         public int Length => route.Count;
-        public Vector2Int GetNode(int index)
+        public MultiPoint GetNode(int index)
         {
             return route[index];
         }
 
-        public Vector2Int Origin
+        public MultiPoint Origin
         {
             get
             {
                 return route[0];
             }
         }
-        public Vector2Int Destination
+        public MultiPoint Destination
         {
             get
             {
@@ -47,7 +44,7 @@ namespace Animocity.Cities.Algorithms
 
         public bool IsValid()
         {
-            if (TransportManager.Current.GetTransportGrid(grid).TryCheckRoute(this.route, out float cost))
+            if (TransportManager.Current.TransportGrid.TryCheckRoute(this.route, out float cost))
             {
                 this.TravelCost = cost;
                 return true;

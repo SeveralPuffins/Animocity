@@ -6,58 +6,41 @@ using System;
 using System.Linq;
 using BlueprintSystem;
 using Animocity.Cities.CityGen;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class basicCameraController : MonoBehaviour
 {
-    private int _gridIndex;
-    private List<CityGrid> grids
-    {
-        get
-        {
-            return CityOverview.Current.cityGrids;
-        }
-    }
     public float baseSpeed = 5f;
     public Rect maxBounds=  new Rect(-20,20,20,20);
-    public float maxZoom = -16f;
+    public float maxZoom = -12f;
     public float minZoom = -160f;
     Camera camera;
+
+    private Dictionary<CityGrid, Vector3> cameraPositionForGrid;
 
     private bool _firstGen = true;
 
     // Start is called before the first frame update
     void Awake()
     {
-        DataLoader.OnDataLoaded += this.RunGenSteps;
+        cameraPositionForGrid = new();
+        
         camera = GetComponent<Camera>();
-        _gridIndex = 0;
-        ChangeGrid(_gridIndex, _gridIndex);
     }
 
-    private void RunGenSteps(PlayerProfile profile, DataLoader.LoadStatus Status)
+    private void Start()
     {
-        if (_firstGen)
-        {
-            var steps = BlueprintDatabase<CityGeneratorStepBlue>.FetchAll();
-            print($"Initialising city with {steps.Count()} steps");
-            _firstGen = false;
-            foreach (var item in steps)
-            {
-                print($"Running worker {item.displayName}..");
-                item.Worker.Run(grids);
-            }
-        }
-    }
-
-    private void OnDestroy()
-    {
-        DataLoader.OnDataLoaded -= RunGenSteps;
+        ChangeGrid();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!ChangingGrid())
+        if (ChangingGrid())
+        {
+            ChangeGrid();
+        }
+        else 
         { 
             PlayerMoveCamera();
         }
@@ -65,37 +48,54 @@ public class basicCameraController : MonoBehaviour
 
     private bool ChangingGrid()
     {
-        int newGridIndex = _gridIndex;
         if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
-            newGridIndex =  (_gridIndex + grids.Count - 1) % grids.Count;
+            CityOverview.Current.CityMultiGrid.FocusPrevious();
+            return true;
         }
         else if (Input.GetKeyUp(KeyCode.RightArrow))
         {
-            newGridIndex = (_gridIndex + grids.Count + 1) % grids.Count;
-        }
-        if (newGridIndex != _gridIndex)
-        {
-            ChangeGrid(_gridIndex, newGridIndex);
+            CityOverview.Current.CityMultiGrid.FocusNext();
             return true;
         }
-
         return false;
     }
-
-    public void ChangeGrid(int oldGridIndex, int newGridIndex)
+    private void SaveOldGridPosition()
     {
+        var oldGrid = transform.parent.GetComponent<CityGrid>();
+        if(oldGrid != null)
+        {
+            this.cameraPositionForGrid[oldGrid] = transform.localPosition;
+        }
+    }
 
-        grids[oldGridIndex].Unfocus();
-        grids[newGridIndex].Focus();
+    private void ChangeGrid()
+    {
+        SaveOldGridPosition();
 
-        _gridIndex = newGridIndex;
-        CityGrid newTargetGrid = grids[newGridIndex];
+        float currentZoom = transform.position.z;
 
-        var clp = transform.localPosition;
+        var newGrid = CityOverview.Current.CityMultiGrid.FocusedGrid;
+        transform.SetParent(newGrid.transform, false);
+        transform.localPosition = GetDefaultPosition();
 
-        transform.SetParent(newTargetGrid.transform, false);
-        transform.localPosition = clp;
+        Vector3 min = newGrid.WorldFromCell(newGrid.TileBounds.min-Vector2Int.one);
+        Vector3 max = newGrid.WorldFromCell(newGrid.TileBounds.max+Vector2Int.one);
+
+        MonoBehaviour.print($"Min: {min}, max: {max}");
+
+        Vector2 lmin = this.transform.InverseTransformPoint(min);
+        Vector2 lmax = this.transform.InverseTransformPoint(max);
+
+        this.maxBounds = new Rect(lmin, lmax-lmin);
+
+        if (this.cameraPositionForGrid.TryGetValue(newGrid, out var position))
+        {
+            transform.localPosition = position;
+        }
+
+    
+        UpdateClipping();
     }
 
     private void PlayerMoveCamera()
@@ -103,7 +103,7 @@ public class basicCameraController : MonoBehaviour
         Vector2 move = new Vector2();
         float zoom = 0;
 
-        float speed = baseSpeed * Mathf.Abs(transform.position.z) * 0.1f;
+        float speed = baseSpeed * Mathf.Abs(transform.localPosition.z) * 0.1f;
 
         if (Input.GetKey(KeyCode.W)) move += speed * Vector2.up;
         if (Input.GetKey(KeyCode.S)) move += speed * Vector2.down;
@@ -129,6 +129,14 @@ public class basicCameraController : MonoBehaviour
                 && target.z > minZoom && target.z < maxZoom;
 
         return inPsn;
+    }
+
+    public Vector3 GetDefaultPosition()
+    {
+        return new Vector3
+            (
+                0,0, maxZoom-20f
+            ); 
     }
 
     private void UpdateClipping()

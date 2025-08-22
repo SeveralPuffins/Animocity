@@ -12,8 +12,8 @@ namespace Animocity.Cities
     {
         private const float WALK_SPEED = 2.0f;
         public Commute commute {get;set;}
-        private Vector2Int currentOrigin;
-        private Vector2Int currentTarget;
+        private MultiPoint currentOrigin;
+        private MultiPoint currentTarget;
 
 
         Animator animController;
@@ -57,8 +57,8 @@ namespace Animocity.Cities
                     }
                 }
 
-                Vector3 o = commute.grid.WorldFromCell(currentOrigin);
-                Vector3 d = commute.grid.WorldFromCell(currentTarget);
+                Vector3 o = currentOrigin.ToWorldPoint();
+                Vector3 d = currentTarget.ToWorldPoint();
                 this.transform.position = Vector3.Lerp(o, d, tlerp) + new Vector3(0,0,-2);
 
                 if(d.y > o.y || d.y < o.y)
@@ -78,7 +78,7 @@ namespace Animocity.Cities
 
         private bool GetHasArrived()
         {
-            return commute.Destination == currentTarget && tlerp>=0.99;
+            return commute.Destination.Equals(currentTarget) && tlerp>=0.99;
         }
     }
 }

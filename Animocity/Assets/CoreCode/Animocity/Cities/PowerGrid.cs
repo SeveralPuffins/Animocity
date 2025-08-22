@@ -98,7 +98,7 @@ namespace Animocity.Cities
                 costs.Add(xy, COST_HV);
             }
 
-            this.graph = Graph<Vector2Int>.FromGridSquares(costs);
+            //this.graph = Graph<Vector2Int>.FromGridSquares(costs);
         }
 
         public void ConnectToGrid(BuildingComponent_Power buildingToConnect)

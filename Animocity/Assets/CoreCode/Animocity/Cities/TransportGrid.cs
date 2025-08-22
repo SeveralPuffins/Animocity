@@ -7,43 +7,45 @@ namespace Animocity.Cities
 {
     public class TransportGrid
     {
-        private Graph<Vector2Int> graph;
-        private Dictionary<Vector2Int, float> _gridSquares;
-        private Dictionary<Vector2Int, float> _newGridSquares;
-        private List<Vector2Int> _removedGridSquares;
+        private MultiGrid grid;
+        private Graph<MultiPoint> graph;
+        private Dictionary<MultiPoint, float> _transportSquares;
+        private Dictionary<MultiPoint, float> _newTransportSquares;
+        private List<MultiPoint> _removedTransportSquares;
 
-        public TransportGrid() 
+        public TransportGrid(MultiGrid grid) 
         {
-            _gridSquares = new();
-            _newGridSquares = new();
-            _removedGridSquares = new();
+            this.grid = grid;
+            _transportSquares = new();
+            _newTransportSquares = new();
+            _removedTransportSquares = new();
         }
 
-        public void AddSquare(Vector2Int square, float cost)
+        public void AddSquare(MultiPoint square, float cost)
         {
-            _newGridSquares.Add(square, cost);
+            _newTransportSquares.Add(square, cost);
         }
 
         private void UpdateGrid()
         {
             bool changed = false;
-            if(_removedGridSquares.Count > 0)
+            if(_removedTransportSquares.Count > 0)
             {
-                foreach(var s in _removedGridSquares)
+                foreach(var s in _removedTransportSquares)
                 {
-                    _gridSquares.Remove(s);
+                    _transportSquares.Remove(s);
                 }
-                _removedGridSquares.Clear();
+                _removedTransportSquares.Clear();
                 changed = true;
             }
 
-            if (_newGridSquares.Count > 0)
+            if (_newTransportSquares.Count > 0)
             {
-                foreach(var square in _newGridSquares.Keys)
+                foreach(var square in _newTransportSquares.Keys)
                 {
-                    _gridSquares[square] = _newGridSquares[square];
+                    _transportSquares[square] = _newTransportSquares[square];
                 }
-                _newGridSquares.Clear();
+                _newTransportSquares.Clear();
                 UpdateGraphRepresentation();
                 changed = true;
             }
@@ -52,27 +54,27 @@ namespace Animocity.Cities
 
         private void UpdateGraphRepresentation()
         {
-            this.graph = Graph<Vector2Int>.FromGridSquares(_gridSquares);
+            this.graph = grid.GraphFromMultipoints(_transportSquares);
         }
 
-        public bool TryFindPaths(Vector2Int startLocation, IEnumerable<Vector2Int> endpoints, float maxDistance, out List<Path<Vector2Int>> paths)
+        public bool TryFindPaths(MultiPoint startLocation, IEnumerable<MultiPoint> endpoints, float maxDistance, out List<Path<MultiPoint>> paths)
         {
             UpdateGrid();
             return graph.TryFindPaths(startLocation, endpoints, out paths, maxDistance);
         }
 
-        public HashSet<Vector2Int> GetConnectedTiles(Vector2Int startLocation, float maxDistance)
+        public HashSet<MultiPoint> GetConnectedTiles(MultiPoint startLocation, float maxDistance)
         {
             UpdateGrid();
             return graph.FindAllInRange(startLocation, maxDistance);
         }
 
-        internal void RemoveSquare(Vector2Int location)
+        internal void RemoveSquare(MultiPoint location)
         {
-            _removedGridSquares.Add(location);
+            _removedTransportSquares.Add(location);
         }
 
-        internal bool TryCheckRoute(List<Vector2Int> route, out float cost)
+        internal bool TryCheckRoute(List<MultiPoint> route, out float cost)
         {
             return this.graph.TryCheckRoute(route, out cost);
         }

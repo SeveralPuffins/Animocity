@@ -15,10 +15,17 @@ namespace Animocity.Cities.Algorithms
 {
     public class Graph<T>
     {
-        public Graph() 
+        private Graph() 
         {
             _edgeCosts = new();
             _edges = new();
+            _cachedQueries = new();
+        }
+
+        public Graph(Dictionary<T, T[]> edges, Dictionary<T, float[]> costs)
+        {
+            _edgeCosts = costs;
+            _edges = edges;
             _cachedQueries = new();
         }
 

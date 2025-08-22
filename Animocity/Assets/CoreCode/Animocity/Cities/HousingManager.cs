@@ -17,7 +17,7 @@ namespace Animocity.Cities
         public IEnumerable<BuildingComponent_Housing> Houses
         { get { return _houses; } }
 
-        public HousingManager(IEnumerable<CityGrid> cityGrids) 
+        public HousingManager() 
         {
             _houses = new List<BuildingComponent_Housing>();
             _needsBuildings = new List<BuildingComponent_NeedSource>();
@@ -78,16 +78,16 @@ namespace Animocity.Cities
             _needsBuildings.Remove(oldSource);
         }
 
-        internal bool TryFindAcceptableCommute(CityGrid grid, Vector2Int gridLocation, PopulationBlue pop, int assignedPopMax, out int popsSuccessfullyHoused)
+        internal bool TryFindAcceptableCommute(MultiPoint gridLocation, PopulationBlue pop, int assignedPopMax, out int popsSuccessfullyHoused)
         {
-            var gridHouses = _houses.Where(house => house.Building.Grid == grid && house.HousingData.capacity > house.NumTotalResidents);
+            var gridHouses = _houses.Where(house => house.HousingData.capacity > house.NumTotalResidents);
 
             if (gridHouses.Count() > 0) {
                 
-                var endpoints = gridHouses.ToDictionary((house)=>house.Building.GridLocation,house=>house);
+                var endpoints = gridHouses.ToDictionary((house)=>new MultiPoint(house.Building.GridLocation, CityOverview.Current.CityMultiGrid.GetIndex(house.Building.Grid)),house=>house);
 
 
-                if (TransportManager.Current.TryFindPaths(grid, gridLocation, endpoints.Keys, TransportManager.MAX_COMMUTE_COST, out var paths))
+                if (TransportManager.Current.TryFindPaths(gridLocation, endpoints.Keys, TransportManager.MAX_COMMUTE_COST, out var paths))
                 {
                     popsSuccessfullyHoused = 0;
                     foreach ( var path in paths)
@@ -102,7 +102,7 @@ namespace Animocity.Cities
                         house.AddResidents(roomsAssigned, pop);
                         popsSuccessfullyHoused += roomsAssigned;
 
-                        house.AddCommute(new Commute(pop, roomsAssigned, path.GetNodes.Reverse().ToList(), grid));
+                        house.AddCommute(new Commute(pop, roomsAssigned, path.GetNodes.Reverse().ToList()));
                     }
 
                     return true;

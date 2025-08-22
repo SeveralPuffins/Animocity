@@ -65,9 +65,9 @@ namespace Animocity.Cities
             var foodSources = 
                 allNeedSources
                 .Where(ns => ns.NeedData.consumable.edible)
-                .ToDictionary((ns) => ns.Building.GridLocation, ns=>ns);
+                .ToDictionary((ns) => ns.Building.MultiGridLocation, ns=>ns);
 
-            if(TransportManager.Current.TryFindPaths(Building.Grid, Building.GridLocation, foodSources.Keys, 2f, out var paths))
+            if(TransportManager.Current.TryFindPaths(Building.MultiGridLocation, foodSources.Keys, 2f, out var paths))
             {
                 var chosen =
                     paths

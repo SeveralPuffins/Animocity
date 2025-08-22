@@ -304,6 +304,10 @@ MonoBehaviour:
   highlightInformational: {r: 0.8, g: 0.8, b: 0.25, a: 0.5}
   highlightInformational2: {r: 0.8, g: 0.25, b: 0.8, a: 0.5}
   errorText: {fileID: 1454711719}
+  externalConnections:
+  - {fileID: 828618759}
+  externalConnectionPoints:
+  - {x: 0, y: 1}
 --- !u!1 &253997111
 GameObject:
   m_ObjectHideFlags: 0
@@ -1809,6 +1813,10 @@ MonoBehaviour:
   highlightInformational: {r: 0.8, g: 0.8, b: 0.25, a: 0.5}
   highlightInformational2: {r: 0.8, g: 0.25, b: 0.8, a: 0.5}
   errorText: {fileID: 1454711719}
+  externalConnections:
+  - {fileID: 53573000}
+  externalConnectionPoints:
+  - {x: -10, y: 67}
 --- !u!4 &828618760
 Transform:
   m_ObjectHideFlags: 0
@@ -2480,6 +2488,8 @@ MonoBehaviour:
   highlightInformational: {r: 0.8, g: 0.8, b: 0.25, a: 0.5}
   highlightInformational2: {r: 0.8, g: 0.25, b: 0.8, a: 0.5}
   errorText: {fileID: 1454711719}
+  externalConnections: []
+  externalConnectionPoints: []
 --- !u!1 &1102336133
 GameObject:
   m_ObjectHideFlags: 0
@@ -3901,6 +3911,8 @@ MonoBehaviour:
   highlightInformational: {r: 0.8, g: 0.8, b: 0.25, a: 0.5}
   highlightInformational2: {r: 0.8, g: 0.25, b: 0.8, a: 0.5}
   errorText: {fileID: 1454711719}
+  externalConnections: []
+  externalConnectionPoints: []
 --- !u!1 &1899306699
 GameObject:
   m_ObjectHideFlags: 0

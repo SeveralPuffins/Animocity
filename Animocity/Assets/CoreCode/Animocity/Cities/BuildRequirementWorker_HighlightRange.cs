@@ -24,11 +24,12 @@ namespace Animocity.Cities
 
         public override bool CanBuildAtLocation(Vector2Int location, BuildingBlueprint buildingBlue, CityGrid buildingGrid)
         {
-            var tiles = TransportManager.Current.GetConnectedTiles(buildingGrid, location, RangeBlue.highlightRange);
+            var mp = new MultiPoint(location, CityOverview.Current.CityMultiGrid.GetIndex(buildingGrid));
+            var tiles = TransportManager.Current.GetConnectedTiles(mp, RangeBlue.highlightRange);
 
                 foreach (var t in tiles)
                 {
-                    buildingGrid.Highlight(t, buildingGrid.highlightInformational2);
+                    CityOverview.Current.CityMultiGrid.Highlight(t, buildingGrid.highlightInformational2);
                 }
                 return true;
         }
