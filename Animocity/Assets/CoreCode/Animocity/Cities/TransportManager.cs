@@ -11,43 +11,39 @@ namespace Animocity.Cities
     public class TransportManager
     {
         public const float MAX_COMMUTE_COST = 3.0f;
-
-        private Dictionary<CityGrid, TransportGrid> _transportGrids;
+        private MultiGrid cityGrid;
+        public TransportGrid TransportGrid;
         public static TransportManager Current;
         public TransportManager(CityOverview city) 
         {
-            _transportGrids = new Dictionary<CityGrid, TransportGrid>();
-            foreach(var grid in city.cityGrids)
-            {
-                _transportGrids.Add(grid, new TransportGrid());
-            }
+            this.cityGrid = city.CityMultiGrid;
+            TransportGrid = new TransportGrid(cityGrid);
             Current = this;
         }
 
         public void AddTransport(CityGrid grid, float transitCost, Vector2Int location)
         {
-            _transportGrids[grid].AddSquare(location, transitCost);
+            var idx = cityGrid.GetIndex(grid);
+            var mp = new MultiPoint(location, idx);
+            TransportGrid.AddSquare(mp, transitCost);
         }
 
         public void RemoveTransport(CityGrid grid, Vector2Int location)
         {
-            _transportGrids[grid].RemoveSquare(location);
+            var idx = cityGrid.GetIndex(grid);
+            var mp = new MultiPoint(location, idx);
+            TransportGrid.RemoveSquare(mp);
         }
 
 
-        public bool TryFindPaths(CityGrid grid, Vector2Int startLocation, IEnumerable<Vector2Int> endpoints, float maxDistance, out List<Path<Vector2Int>> paths)
+        public bool TryFindPaths(MultiPoint startLocation, IEnumerable<MultiPoint> endpoints, float maxDistance, out List<Path<MultiPoint>> paths)
         {
-            return _transportGrids[grid].TryFindPaths(startLocation, endpoints, maxDistance, out paths);
+            return TransportGrid.TryFindPaths(startLocation, endpoints, maxDistance, out paths);
         }
 
-        public HashSet<Vector2Int> GetConnectedTiles(CityGrid grid, Vector2Int startLocation, float maxDistance)
+        public HashSet<MultiPoint> GetConnectedTiles(MultiPoint startLocation, float maxDistance)
         {
-            return _transportGrids[grid].GetConnectedTiles(startLocation, maxDistance);
-        }
-
-        public TransportGrid GetTransportGrid(CityGrid grid)
-        {
-            return this._transportGrids[grid];
+            return TransportGrid.GetConnectedTiles(startLocation, maxDistance);
         }
     }
 }

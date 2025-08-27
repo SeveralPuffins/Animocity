@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Animocity.Utilities;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Animocity.Cities
 {
@@ -19,6 +20,12 @@ namespace Animocity.Cities
         public BuildingBlueprint Blue { get; private set; }
         public CityGrid Grid { get; private set; }
         public Vector2Int GridLocation { get; private set; }
+        public MultiPoint MultiGridLocation {
+            get
+            {
+                return new MultiPoint(GridLocation, CityOverview.Current.CityMultiGrid.GetIndex(Grid));
+            } 
+        }
 
         public bool IsPlan { get; private set; }
 
@@ -54,10 +61,35 @@ namespace Animocity.Cities
         }
 
         // "Ghosts" "Selected"
+
+        public void SetBuildingOutlined(bool isOutlined)
+        {
+            if (isOutlined) SetBuildingLayer("Selected");
+            else SetBuildingLayer("Default");
+
+        }
+
+        public void SetBuildingBlueprint(bool isBlueprint)
+        {
+            int iBlue = isBlueprint ? 1 : 0;
+
+            MaterialPropertyBlock selectBlock = new MaterialPropertyBlock();
+
+            selectBlock.SetInt("_Hologram", iBlue);
+
+            foreach (MeshRenderer r in GetComponentsInChildren<MeshRenderer>())
+            {
+                r.SetPropertyBlock(selectBlock);
+            }
+        }
+
         protected void SetBuildingLayer(string layerName)
         {
             int layer = LayerMask.NameToLayer(layerName);
             gameObject.layer = layer;
+
+            MonoBehaviour.print($"Setting layer to {layer}");
+
             foreach (Transform t in GetComponentsInChildren<Transform>())
             {
                 t.gameObject.layer = layer;
@@ -73,6 +105,7 @@ namespace Animocity.Cities
         }
         private void Refund()
         {
+            if (this.IsPlan) return;
             foreach (var key in Blue.resourceCosts.Keys)
             {
                 CityOverview.Current.PushResource(GridLocation, key, Blue.resourceCosts[key]);
@@ -87,7 +120,7 @@ namespace Animocity.Cities
                 {
                     IsPlan = false;
                     InitialiseBuilding();
-                    SetBuildingLayer("Default");
+                    SetBuildingBlueprint(false);
                     if (!isFree)
                     {
                         PayFor();
@@ -111,7 +144,7 @@ namespace Animocity.Cities
             building.Grid = grid;
             building.GridLocation = loc;
             building.IsPlan = true;
-            building.SetBuildingLayer("Ghosts");
+            building.SetBuildingBlueprint(true);
             foreach(var req in building.Blue.buildRequirements)
             {
                 req.Worker.OnBuildAtLocation(loc, building, grid);
@@ -175,7 +208,10 @@ namespace Animocity.Cities
 
         private void OnDisable()
         {
-            Components.Clear();
+            if (Components != null)
+            {
+                Components.Clear();
+            }
             Tick = null;
             LongTick = null;
             foreach(var b in supportBuildings)
@@ -210,7 +246,14 @@ namespace Animocity.Cities
                 MonoBehaviour.print("All supported buildings are contained in demolish list");
                 if (this.Grid.TryRemoveBuildingAt(this.GridLocation, this))
                 {
-                    this.Components.Clear();
+                    if (this.Components != null)
+                    {
+                        foreach(var component in this.Components)
+                        {
+                            component.OnDemolish();
+                        }
+                        this.Components.Clear();
+                    }
                     this.Refund();
                     Destroy(this.gameObject);
                 }

@@ -38,6 +38,7 @@
     <buildRequirements>
       <li>BuildRequirementBlue_Fits</li>
       <li>BuildRequirementBlue_IsSupported</li>
+      <li>BuildRequirementBlue_Accessible</li>
     </buildRequirements>
     <components>
       <li Class="BuildingComponentData_StaffRequirement">

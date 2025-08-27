@@ -8,6 +8,8 @@ using System.Linq;
 using System;
 using UnityEditorInternal;
 using Animocity;
+using Animocity.Cities.CityGen;
+using UnityEditor;
 
 namespace Animocity.Cities
 {
@@ -22,10 +24,15 @@ namespace Animocity.Cities
 
         public static CityOverview Current;
 
+        public bool HomelessAreFed { get; private set; } = true;
+
         private Dictionary<PopulationBlue, int> _population;
         private Dictionary<ResourceBlue, float> _resources;
 
-        public List<CityGrid> cityGrids;
+        [SerializeField]
+        private List<CityGrid> cityGrids;
+
+        public MultiGrid CityMultiGrid;
 
         private Dictionary<PopulationBlue, float> _fractionalPopulationGrowth;
 
@@ -36,15 +43,23 @@ namespace Animocity.Cities
         // Start is called before the first frame update
         void Awake()
         {
+            this.CityMultiGrid = new MultiGrid();
+            foreach(var g in cityGrids)
+            {
+                CityMultiGrid.AddGrid(g);
+            }
+            CityMultiGrid.BuildBridges();
+
             DataLoader.OnDataLoaded += this.Init;
             DataLoader.OnDataCleared += this.Clear;
+
 
             this._population = new Dictionary<PopulationBlue, int>();
             this._resources = new Dictionary<ResourceBlue, float>();
             this.Homeless = new();
             this._fractionalPopulationGrowth = new();
             this.PowerGrid = new(new(), new(), new(), new());
-            this.HousingManager = new HousingManager(cityGrids);
+            this.HousingManager = new HousingManager();
             this.WorkforceManager = new();
             this.TransportManager = new TransportManager(this);
             this.FleaCircusManager = new();
@@ -58,6 +73,22 @@ namespace Animocity.Cities
             DataLoader.OnDataCleared -= this.Clear;
         }
 
+        private bool _firstGen = true;
+        private void RunGenSteps()
+        {
+            if (_firstGen)
+            {
+                var steps = BlueprintDatabase<CityGeneratorStepBlue>.FetchAll();
+                print($"Initialising city with {steps.Count()} steps");
+                _firstGen = false;
+                foreach (var item in steps)
+                {
+                        print($"Running worker {item.displayName}..");
+                        item.Worker.Run(CityMultiGrid.GetAllGrids().ToList());
+                }
+            }
+        }
+
         private void Clear(PlayerProfile profile, DataLoader.LoadStatus Status)
         {
             _population.Clear();
@@ -68,6 +99,7 @@ namespace Animocity.Cities
             var scenario = BlueprintDatabase<ScenarioBlue>.FetchAllWhere((blue) => blue.isDefault).FirstOrDefault();
             InitialisePopulation(scenario);
             InitialiseResources(scenario);
+            RunGenSteps();
             _init = true;
         }
 
@@ -106,6 +138,16 @@ namespace Animocity.Cities
                 ticks = 0;
                 WorkforceManager.UpdateWorkforceAssignments();
                 this.Homeless = HousingManager.GetHomelessAfterHousingUnemployed();
+                HousingManager.GetFoodNeedRoutes();
+                
+            }
+        }
+
+        private void UpdatePopulationFedRate()
+        {
+            if (HousingManager.FeedTheHomeless(100f * Time.deltaTime / 60f))
+            {
+
             }
         }
 
@@ -197,6 +239,10 @@ namespace Animocity.Cities
                 }
             }
             return true;
+        }
+        internal bool HasResource(ResourceBlue resource, float val)
+        {
+            return (_resources[resource] >= val);
         }
 
         internal void TakeResource(Vector2Int gridLocation, ResourceBlue resource, float v)

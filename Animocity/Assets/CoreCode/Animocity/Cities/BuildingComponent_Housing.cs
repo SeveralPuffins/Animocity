@@ -8,9 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace Animocity.Cities
 {
@@ -61,6 +58,28 @@ namespace Animocity.Cities
         {
             _residents.Clear();
             _commutes.Clear();
+        }
+
+        public bool TryFindBestFoodSource(IEnumerable<BuildingComponent_NeedSource> allNeedSources, out BuildingComponent_NeedSource foodSource)
+        {
+            var foodSources = 
+                allNeedSources
+                .Where(ns => ns.NeedData.consumable.edible)
+                .ToDictionary((ns) => ns.Building.MultiGridLocation, ns=>ns);
+
+            if(TransportManager.Current.TryFindPaths(Building.MultiGridLocation, foodSources.Keys, 2f, out var paths))
+            {
+                var chosen =
+                    paths
+                    .OrderByDescending(p => foodSources[p.Destination].ServiceQuality)
+                    .ThenBy(p => p.TotalCost)
+                    .FirstOrDefault();
+
+                foodSource = foodSources[chosen.Destination];
+                return true;
+            }
+            foodSource = null;
+            return false;
         }
 
         public float CurrentSatisfaction

@@ -27,5 +27,12 @@ namespace Animocity.Cities
             TransportManager.Current.AddTransport(this.Building.Grid, this.TransportData.transitCost, location);
             base.OnBuild();
         }
+
+        public override void OnDemolish()
+        {
+            var location = Building.GridLocation + Vector2Int.up;
+            TransportManager.Current.RemoveTransport(this.Building.Grid, location);
+            base.OnDemolish();
+        }
     }
 }

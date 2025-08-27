@@ -159,7 +159,7 @@ MonoBehaviour:
     passTag: RenderHighlights
     Event: 600
     filterSettings:
-      RenderQueueType: 0
+      RenderQueueType: 1
       LayerMask:
         serializedVersion: 2
         m_Bits: 256

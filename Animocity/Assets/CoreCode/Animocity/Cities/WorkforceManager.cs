@@ -172,7 +172,7 @@ namespace Animocity.Cities
                 int assignedPopMax = Math.Min(demandRemaining, unassignedWorkers[pop]);
                 if (assignedPopMax <= 0) break;
 
-                if (CityOverview.Current.HousingManager.TryFindAcceptableCommute(workplace.Building.Grid, workplace.Building.GridLocation, pop, assignedPopMax, out int popsSuccessfullyHoused))
+                if (CityOverview.Current.HousingManager.TryFindAcceptableCommute(workplace.Building.MultiGridLocation, pop, assignedPopMax, out int popsSuccessfullyHoused))
                 {
                     successfullyAssigned += popsSuccessfullyHoused;
                     demandRemaining -= popsSuccessfullyHoused;
