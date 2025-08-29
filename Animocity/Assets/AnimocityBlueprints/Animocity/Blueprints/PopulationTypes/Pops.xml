@@ -2,7 +2,6 @@
 <PopulationTypes>
   <PopulationBlue label="basePop" abstract="true" >
     <minComfort>0</minComfort>
-    <startingPopulation>0</startingPopulation>
     <childType>Labourers</childType>
     <housingSatisfactionForMinComfort>0.25</housingSatisfactionForMinComfort>
     <housingSatisfactionForMaxComfort>1</housingSatisfactionForMaxComfort>

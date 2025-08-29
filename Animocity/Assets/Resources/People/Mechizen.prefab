@@ -204,6 +204,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 3.9269679
       objectReference: {fileID: 0}
+    - target: {fileID: 609741058322001331, guid: 5c1295908b3ccde4e9ab19ff7f89ba46, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5c1295908b3ccde4e9ab19ff7f89ba46, type: 3}
       propertyPath: m_Name
       value: Mechizen

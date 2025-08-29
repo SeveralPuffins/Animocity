@@ -16,15 +16,23 @@
     <startingResources>
       <di>
         <dk>Scrap</dk>
-        <dv>200</dv>
+        <dv>20000</dv>
       </di>
       <di>
         <dk>Stone</dk>
-        <dv>200</dv>
+        <dv>20000</dv>
       </di>
       <di>
         <dk>Food</dk>
-        <dv>500</dv>
+        <dv>50000</dv>
+      </di>
+      <di>
+        <dk>Iron</dk>
+        <dv>50000</dv>
+      </di>
+      <di>
+        <dk>Copper</dk>
+        <dv>50000</dv>
       </di>
     </startingResources>
   </ScenarioBlue>

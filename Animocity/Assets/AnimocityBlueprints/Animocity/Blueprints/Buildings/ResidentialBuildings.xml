@@ -69,7 +69,7 @@
   </BuildingBlueprint>
   <BuildingBlueprint label="Tallement" parent ="BaseResidential">
     <displayName>Tallement</displayName>
-    <prefabPath>Main/Buildings/Prefabs/Tallement</prefabPath>
+    <prefabPath>Main/Buildings/Prefabs/TallementAuto</prefabPath>
     <description>A tall residential building that can house up to 24 tall people.</description>
     <resourceCosts>
       <di>

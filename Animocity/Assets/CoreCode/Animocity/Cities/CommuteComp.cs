@@ -32,7 +32,7 @@ namespace Animocity.Cities
 
         private void Update()
         {
-            if(!commute.IsValid())
+            if(false)//!commute.IsValid())
             {
                 Destroy(this.gameObject);
             }

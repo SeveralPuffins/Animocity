@@ -92,6 +92,17 @@ namespace Animocity.Cities
                 {
                     if (graphPoints.ContainsKey(connector.ConnectionEndB))
                     {
+                        if (!temp_edges.ContainsKey(connector.ConnectionEndA))
+                        {
+                            temp_edges.Add(connector.ConnectionEndA, new());
+                            temp_edgeCosts.Add(connector.ConnectionEndA, new());
+                        }
+                        if (!temp_edges.ContainsKey(connector.ConnectionEndB))
+                        {
+                            temp_edges.Add(connector.ConnectionEndB, new());
+                            temp_edgeCosts.Add(connector.ConnectionEndB, new());
+                        }
+
                         temp_edges[connector.ConnectionEndA].Add(connector.ConnectionEndB);
                         temp_edgeCosts[connector.ConnectionEndA].Add(connector.ConnectionTransitCost);
 

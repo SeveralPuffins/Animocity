@@ -30,6 +30,12 @@ namespace Animocity.Cities
             base.OnBuild();
         }
 
+        public override void OnDemolish()
+        {
+            CityOverview.Current.HousingManager.RemoveHouse(this);
+            base.OnDemolish();
+        }
+
         public int RoomsAvailable
         {
             get
@@ -108,7 +114,7 @@ namespace Animocity.Cities
 
         private void FireCommuter()
         {
-            MonoBehaviour.print("FIRE COMMUTER!");
+            //MonoBehaviour.print("FIRE COMMUTER!");
             if(this._commutes.Count > 0)
             {
                 var selected = _commutes.WeightedRandom(com => com.CommuterCount);

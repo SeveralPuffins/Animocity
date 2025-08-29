@@ -365,19 +365,10 @@ namespace Animocity.Cities
 
         private void DrawBridgeGizmo(Vector2 ctr)
         {
+            Vector3 pos = new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, this.transform.position.z); 
 
             Gizmos.color = new Color(1f, 0f, 0f, 0.7f);
-
-            var points = new Vector3[4]
-            {
-                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, transform.position.z),
-                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, transform.position.z),
-                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, transform.position.z),
-                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, transform.position.z)
-            };
-
-            Gizmos.DrawLineStrip(points, true);
-            Gizmos.DrawSphere(ctr, 0.5f);
+            Gizmos.DrawSphere(pos, 0.5f);
         }
 
         private void DrawCellGizmo(Vector2 ctr)
@@ -387,10 +378,10 @@ namespace Animocity.Cities
 
             var points = new Vector3[4]
             {
-                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, transform.position.z),
-                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y - 0.5f * cellSize.y, transform.position.z),
-                new Vector3(ctr.x + 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, transform.position.z),
-                new Vector3(ctr.x - 0.5f * cellSize.x, ctr.y + 0.5f * cellSize.y, transform.position.z)
+                new Vector3(ctr.x + cellSize.x, ctr.y + cellSize.y, transform.position.z),
+                new Vector3(ctr.x, ctr.y + cellSize.y, transform.position.z),
+                new Vector3(ctr.x, ctr.y, transform.position.z),
+                new Vector3(ctr.x + cellSize.x, ctr.y, transform.position.z)
             };
 
             Gizmos.DrawLineStrip(points, true);

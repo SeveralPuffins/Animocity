@@ -32,5 +32,18 @@
     <stringB>MainBody</stringB>
     <stringC></stringC>
   </CityGeneratorStepBlue>
+
+  <CityGeneratorStepBlue label="AddBridges">
+    <displayName>Add bridge access gantries</displayName>
+    <genStepWorker>Animocity.Cities.CityGen.CityGenStepWorker_AddBridges</genStepWorker>
+    <paramA>3.0</paramA>
+    <paramB>1.0</paramB>
+    <paramC>1.0</paramC>
+    <paramD>1.0</paramD>
+    <stringA>ScrapHeap</stringA>
+    <stringB>MainBody</stringB>
+    <stringC></stringC>
+  </CityGeneratorStepBlue>
+  
 </GenSteps>
 
