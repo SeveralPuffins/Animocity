@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using ZLinq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -80,7 +81,7 @@ namespace Animocity.Cities
 
         internal bool TryFindAcceptableCommute(MultiPoint gridLocation, PopulationBlue pop, int assignedPopMax, out int popsSuccessfullyHoused)
         {
-            var gridHouses = _houses.Where(house => house.HousingData.capacity > house.NumTotalResidents);
+            var gridHouses = _houses.AsValueEnumerable().Where(house => house.HousingData.capacity > house.NumTotalResidents);
 
             if (gridHouses.Count() > 0) {
                 
@@ -120,10 +121,21 @@ namespace Animocity.Cities
             }
         }
 
+        private Dictionary<PopulationBlue, int> unhousedWorkers;
         public Dictionary<PopulationBlue, int> GetHomelessAfterHousingUnemployed()
         {
-            var unhousedWorkers = new Dictionary<PopulationBlue, int>(WorkforceManager.Current.unassignedWorkers);
-            int unhousedWorkersCount = unhousedWorkers.Values.Sum();
+            if (unhousedWorkers == null)
+            {
+                unhousedWorkers = new(WorkforceManager.Current.unassignedWorkers);
+            }
+            else
+            {
+                foreach (var key in WorkforceManager.Current.unassignedWorkers.Keys)
+                {
+                    unhousedWorkers[key] = WorkforceManager.Current.unassignedWorkers[key];
+                }
+            }
+            int unhousedWorkersCount = unhousedWorkers.Values.AsValueEnumerable().Sum();
 
 
             foreach (var pop in unhousedWorkers.Keys.ToArray())
@@ -131,7 +143,7 @@ namespace Animocity.Cities
                 if (unhousedWorkers[pop] == 0) continue;
 
                 var availableHousing =
-                    this._houses
+                    this._houses.AsValueEnumerable()
                         .Where((h) => h.RoomsAvailable > 0)
                         .OrderBy((h) => h.CurrentSatisfaction)
                         .ToList();

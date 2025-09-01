@@ -1,12 +1,13 @@
 ﻿using BlueprintSystem;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using ZLinq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Burst;
 using UnityEngine;
+using System.Linq;
 
 namespace Animocity.Cities
 {
@@ -32,8 +33,9 @@ namespace Animocity.Cities
             ResetAssignments();
 
             var workplacesInPriorityOrder = 
-
-                _workplaces.Where((wp) => wp.Priority > 0 && wp.AcceptedPops.Count() > 0)
+                _workplaces
+                       .AsValueEnumerable()
+                       .Where((wp) => wp.Priority > 0 && wp.AcceptedPops.Count() > 0)
                        .GroupBy((wp) => wp.Priority)
                        .OrderByDescending(group => group.Key)
                        .Select(group=>group.AsEnumerable())
@@ -45,7 +47,7 @@ namespace Animocity.Cities
                 (
                     priorityWorkplaceGroup.Count() > 0
                     && unassignedHousing > 0
-                    && unassignedWorkers.Values.Sum() > 0
+                    && unassignedWorkers.Values.AsValueEnumerable().Sum() > 0
                 )
                 {
                     BulkAssignWorkers(priorityWorkplaceGroup.ToList());
@@ -76,14 +78,14 @@ namespace Animocity.Cities
 
             List<BuildingComponent_StaffRequirement> finalAssignments = new();
 
-            var specialistWorkplaces = workplaces.Where((workplace) => workplace.AcceptedPops.Count() == 1 && unassignedWorkers[workplace.AcceptedPops.FirstOrDefault()] > 0).ToList();
+            var specialistWorkplaces = workplaces.AsValueEnumerable().Where((workplace) => workplace.AcceptedPops.Count() == 1 && unassignedWorkers[workplace.AcceptedPops.FirstOrDefault()] > 0).ToList();
 
 
             var specialistJobDemand = GetSpecialistJobDemand(specialistWorkplaces);
 
 
 
-            var orderedSpecialistWorkplaces = specialistWorkplaces.OrderBy(wp =>
+            var orderedSpecialistWorkplaces = specialistWorkplaces.AsValueEnumerable().OrderBy(wp =>
                             {
                                 var pop = wp.AcceptedPops.FirstOrDefault();
                                 float jobCount = specialistJobDemand[pop];
@@ -134,7 +136,7 @@ namespace Animocity.Cities
             // Then assign remaining locations. We could try to order these.
             //
 
-            var remainingWorkplaces = workplaces.Where((workplace) => workplace.AcceptedPops.Count() > 1).ToList();
+            var remainingWorkplaces = workplaces.AsValueEnumerable().Where((workplace) => workplace.AcceptedPops.Count() > 1).ToList();
 
             foreach (var wp in remainingWorkplaces)
             {
@@ -167,7 +169,7 @@ namespace Animocity.Cities
         {
             int demandRemaining = targetNumberOfEmployees;
             successfullyAssigned = 0;
-            foreach (var pop in workplace.StaffData.populationTypesAccepted.OrderByDescending((p) => unassignedWorkers[p]))
+            foreach (var pop in workplace.StaffData.populationTypesAccepted.AsValueEnumerable().OrderByDescending((p) => unassignedWorkers[p]))
             {
                 int assignedPopMax = Math.Min(demandRemaining, unassignedWorkers[pop]);
                 if (assignedPopMax <= 0) break;
@@ -207,9 +209,10 @@ namespace Animocity.Cities
             return workplaces.Sum((wrk) => wrk.StaffData.maxStaff);
         }
 
+        private Dictionary<PopulationBlue, int> specialistJobs = new();
         private Dictionary<PopulationBlue, int> GetSpecialistJobDemand(List<BuildingComponent_StaffRequirement> specialistWorkplaces)
         {
-            Dictionary<PopulationBlue, int> specialistJobs = new Dictionary<PopulationBlue, int>();
+            specialistJobs.Clear();
 
             foreach (var specialistJob in specialistWorkplaces)
             {

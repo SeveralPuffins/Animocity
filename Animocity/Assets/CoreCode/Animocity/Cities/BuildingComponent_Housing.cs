@@ -8,12 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using ZLinq;
 
 namespace Animocity.Cities
 {
     public class BuildingComponent_Housing : BuildingComponent
     {
         public BuildingComponentData_Housing HousingData => this.Data as BuildingComponentData_Housing;
+        private const float BASE_COMMUTER_RATE = 1/500f;
 
         public PowerGrid connectedGrid {get; protected set;}
         private List<Commute> _commutes = new List<Commute>();
@@ -70,6 +72,7 @@ namespace Animocity.Cities
         {
             var foodSources = 
                 allNeedSources
+                .AsValueEnumerable()
                 .Where(ns => ns.NeedData.consumable.edible)
                 .ToDictionary((ns) => ns.Building.MultiGridLocation, ns=>ns);
 
@@ -77,6 +80,7 @@ namespace Animocity.Cities
             {
                 var chosen =
                     paths
+                    .AsValueEnumerable()
                     .OrderByDescending(p => foodSources[p.Destination].ServiceQuality)
                     .ThenBy(p => p.TotalCost)
                     .FirstOrDefault();
@@ -106,18 +110,28 @@ namespace Animocity.Cities
             info.transform.SetParent(inspectorPane);
         }
 
-        protected override bool LongTick(Building building)
+        protected override bool Tick(Building building)
         {
-            FireCommuter();
-            return base.LongTick(building);
+            float timeOfDayMultiplier = Mathf.Sin(Mathf.PI * CityOverview.Current.TimeOfDay / 12f);
+            float chance = this.NumTotalResidents * BASE_COMMUTER_RATE * Math.Abs(timeOfDayMultiplier);
+            if (UnityEngine.Random.value < chance)
+            {
+                FireCommuter(timeOfDayMultiplier<0f);
+            }
+            return base.Tick(building);
         }
 
-        private void FireCommuter()
+        private void FireCommuter(bool reverseCommute = false)
         {
             //MonoBehaviour.print("FIRE COMMUTER!");
             if(this._commutes.Count > 0)
             {
                 var selected = _commutes.WeightedRandom(com => com.CommuterCount);
+
+                if (reverseCommute)
+                {
+                    selected.Reverse();
+                }
 
                 CityOverview.Current.FleaCircusManager.MakeCommuter(selected);
             }

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 658083602331257884}
   - component: {fileID: 8715876598614390936}
   - component: {fileID: 8104104789813666912}
-  - component: {fileID: 2547894076078986466}
   m_Layer: 5
   m_Name: InspectorTabButton
   m_TagString: Untagged
@@ -149,21 +148,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 3133833823121637248}
   text: {fileID: 0}
---- !u!114 &2547894076078986466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7872322667061419267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.23113209, g: 1, b: 0.44150636, a: 0.5}
-  m_EffectDistance: {x: -1.2, y: 1.2}
-  m_UseGraphicAlpha: 1
 --- !u!1 &9095889831591738783
 GameObject:
   m_ObjectHideFlags: 0

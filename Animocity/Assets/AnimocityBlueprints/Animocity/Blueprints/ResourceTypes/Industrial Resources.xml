@@ -4,12 +4,12 @@
     <value>8</value>
     <edible>false</edible>
     <description>Pure(ish) iron, sorted and smelted from the scrap of old</description>
-    <iconPath>Temporary/Icons/GenericResource</iconPath>
+    <iconPath>Main/Icons/ResIcon_Iron</iconPath>
   </ResourceBlue>
   <ResourceBlue label="Copper">
     <value>8</value>
     <edible>false</edible>
     <description>Copper, smelted from scrap.</description>
-    <iconPath>Temporary/Icons/GenericResource</iconPath>
+    <iconPath>Main/Icons/ResIcon_Copper</iconPath>
   </ResourceBlue>
 </Resources>

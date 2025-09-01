@@ -1,15 +1,16 @@
+using Animocity;
 using Animocity.Cities;
+using Animocity.Cities.CityGen;
+using BlueprintSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using BlueprintSystem;
 using System.Linq;
-using System;
-using UnityEditorInternal;
-using Animocity;
-using Animocity.Cities.CityGen;
+using TMPro;
 using UnityEditor;
+using UnityEditorInternal;
+using UnityEngine;
+using ZLinq;
 
 namespace Animocity.Cities
 {
@@ -21,6 +22,16 @@ namespace Animocity.Cities
         public WorkforceManager WorkforceManager { get; private set; }
         public TransportManager TransportManager { get; private set; }
         public FleaCircusManager FleaCircusManager { get; private set; }
+
+        private float _realMinutesPerDay = 2;
+        private float _timeOfDay = 6;
+        public float TimeOfDay
+        {
+            get
+            {
+                return _timeOfDay;
+            }
+        }
 
         public static CityOverview Current;
 
@@ -127,7 +138,12 @@ namespace Animocity.Cities
         int ticks = 0;
         private void Update()
         {
+
             if (!_init) return;
+
+            _timeOfDay = (_timeOfDay + (24*Time.deltaTime / (60f*_realMinutesPerDay))) % 24;
+            //MonoBehaviour.print($"Time is {(int)_timeOfDay}");
+
             ticks++;
             if (ticks == 50)
             {
@@ -221,12 +237,12 @@ namespace Animocity.Cities
 
         public float GetTotalResourceValue()
         {
-            return _resources.Keys.Sum((k) => k.value * GetResourceAmount(k));
+            return _resources.Keys.AsValueEnumerable().Sum((k) => k.value * GetResourceAmount(k));
         }
 
         public float GetTotalWhere(Func<ResourceBlue, bool> pred)
         {
-            return _resources.Keys.Where((k) => pred(k)).Sum((k) => GetResourceAmount(k));
+            return _resources.Keys.AsValueEnumerable().Where((k) => pred(k)).Sum((k) => GetResourceAmount(k));
         }
 
         internal bool HasResources(Dictionary<ResourceBlue, float> inputs)

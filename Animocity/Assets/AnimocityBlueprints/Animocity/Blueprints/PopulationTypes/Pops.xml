@@ -11,6 +11,7 @@
     <startingPopulation>100</startingPopulation>
     <description>Discoverers of the mech, with all-round talents. </description>
     <iconPath>Temporary/Icons/PopPioneer</iconPath>
+    <fleaPrefabPath>Main/People/Pioneer</fleaPrefabPath>
     <minComfort>0.25</minComfort>
     <housingSatisfactionForMinComfort>0.25</housingSatisfactionForMinComfort>
     <housingSatisfactionForMaxComfort>1</housingSatisfactionForMaxComfort>
@@ -21,17 +22,20 @@
     <description>Labourers for vertical farms and basic workshops. </description>
     <iconPath>Temporary/Icons/PopWorkers</iconPath>
     <popWorker>Animocity.Cities.PopWorker</popWorker>
+    <fleaPrefabPath>Main/People/Mechizen</fleaPrefabPath>
   </PopulationBlue>
   
   <PopulationBlue label="Mechanists" parent ="basePop">
     <description>Mechizens with advanced practical skills. </description>
     <iconPath>Temporary/Icons/PopMechanist</iconPath>
+    <fleaPrefabPath>Main/People/Mechizen</fleaPrefabPath>
     <popWorker>Animocity.Cities.PopWorker</popWorker>
   </PopulationBlue>
   
   <PopulationBlue label="Virtuosi" parent ="basePop">
     <description>Mechizens whose efforts reveal the beauty and meaning inherent in life in a giant steel killing machine. </description>
     <iconPath>Temporary/Icons/PopVirtuosi</iconPath>
+    <fleaPrefabPath>Main/People/Virtuoso</fleaPrefabPath>
     <popWorker>Animocity.Cities.PopWorker</popWorker>
   </PopulationBlue>
   
@@ -39,5 +43,6 @@
     <description>Mechizens dedicated to the pure persuit of knowledge (that goes bang). </description>
     <iconPath>Temporary/Icons/PopTechnologist</iconPath>
     <popWorker>Animocity.Cities.PopWorker</popWorker>
+    <fleaPrefabPath>Main/People/Academic</fleaPrefabPath>
   </PopulationBlue>
 </PopulationTypes>

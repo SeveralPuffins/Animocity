@@ -153,10 +153,12 @@
 		</tilesNeeded>
 		<components>
 			<li Class="BuildingComponentData_Power">
+        <iconPath>Main/Icons/BuildingIcon_Power</iconPath>
 				<componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
 				<powerAmount>80.0</powerAmount>
 			</li>
       <li Class="BuildingComponentData_Drill">
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <componentClass>Animocity.Cities.BuildingComponent_Drill</componentClass>
         <motorSpeed>30</motorSpeed>
         <maxExtensionDist>175</maxExtensionDist>
@@ -282,6 +284,7 @@
     <components>
       <li Class="BuildingComponentData_StaffRequirement">
         <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <maxStaff>24</maxStaff>
         <minStaff>5</minStaff>
         <efficiencyAtMax>1.0</efficiencyAtMax>
@@ -295,6 +298,7 @@
       </li>
       <li Class="BuildingComponentData_GiantGlove">
         <componentClass>Animocity.Cities.BuildingComponent_GiantGlove</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <baseReloadTime>4.5</baseReloadTime>
         <launchVelocity>300.0</launchVelocity>
         <maxDistance>300.0</maxDistance>

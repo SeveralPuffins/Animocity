@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Animocity.Cities
@@ -24,11 +25,16 @@ namespace Animocity.Cities
         }
 
 
-        //public override bool Equals(object obj)
-        //{
-        //    MultiPoint other = (MultiPoint) obj;
-        //    
-        //    return other.GridIndex == this.GridIndex && other.Coords == this.Coords;
-        //}
+        public override bool Equals(object obj)
+        {
+            MultiPoint other = (MultiPoint) obj;
+            
+            return other.GridIndex == this.GridIndex && other.Coords == this.Coords;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Coords, GridIndex);
+        }
     }
 }

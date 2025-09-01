@@ -56,14 +56,18 @@
         <efficiencyAtMax>1.0</efficiencyAtMax>
         <efficiencyAtMin>0.35</efficiencyAtMin>
         <defaultPriority>1</defaultPriority>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <populationTypesAccepted>
           <li>Pioneers</li>
           <li>Labourers</li>
           <li>Mechanists</li>
+          <li>Virtuosi</li>
+          <li>Technologists</li>
         </populationTypesAccepted>
       </li>
       <li Class="BuildingComponentData_Production">
         <componentClass>Animocity.Cities.BuildingComponent_Production</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <supportedProcesses>
           <li>BasicAmmo</li>
         </supportedProcesses>

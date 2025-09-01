@@ -59,7 +59,7 @@ namespace Animocity.Cities
 
                 Vector3 o = currentOrigin.ToWorldPoint();
                 Vector3 d = currentTarget.ToWorldPoint();
-                this.transform.position = Vector3.Lerp(o, d, tlerp) + new Vector3(0,0,-2);
+                this.transform.position = Vector3.Lerp(o, d, tlerp) + new Vector3(0.5f,0,-2);
 
                 if(d.y > o.y || d.y < o.y)
                 {

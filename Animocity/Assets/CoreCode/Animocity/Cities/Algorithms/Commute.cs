@@ -21,10 +21,18 @@ namespace Animocity.Cities.Algorithms
             this.CommuterCount = commuterCount;
             this.PopulationType = populationType;
         }
+
+        public void Reverse()
+        {
+            MonoBehaviour.print("Reverse Commute!");
+            route.Reverse();
+        }
+
         public int Length => route.Count;
         public MultiPoint GetNode(int index)
         {
-            return route[index];
+            if (index < 0) index += Length;
+            return route[index%Length];
         }
 
         public MultiPoint Origin

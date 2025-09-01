@@ -11,13 +11,23 @@ namespace Animocity.Cities
     {
 
         public string componentClass;
+        public string iconPath;
 
         public BuildingComponent GetWorker(Building building)
         {
-            //MonoBehaviour.print($"Component Class is {componentClass}");
             Type componentType = Type.GetType(componentClass);
-            //MonoBehaviour.print($"Type is {componentType.FullName}");
             return (BuildingComponent) Activator.CreateInstance(componentType, new object[]{this, building});
+        }
+
+        private Sprite _sprite;
+
+        public Sprite GetSprite()
+        {
+            if( _sprite == null)
+            {
+                _sprite = Resources.Load<Sprite>(iconPath);
+            }
+            return _sprite;
         }
     }
 }

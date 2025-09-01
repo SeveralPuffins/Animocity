@@ -29,9 +29,9 @@ namespace Animocity.Cities
         private void UpdateGrid()
         {
             bool changed = false;
-            if(_removedTransportSquares.Count > 0)
+            if (_removedTransportSquares.Count > 0)
             {
-                foreach(var s in _removedTransportSquares)
+                foreach (var s in _removedTransportSquares)
                 {
                     _transportSquares.Remove(s);
                 }
@@ -41,15 +41,18 @@ namespace Animocity.Cities
 
             if (_newTransportSquares.Count > 0)
             {
-                foreach(var square in _newTransportSquares.Keys)
+                foreach (var square in _newTransportSquares.Keys)
                 {
                     _transportSquares[square] = _newTransportSquares[square];
                 }
                 _newTransportSquares.Clear();
-                UpdateGraphRepresentation();
                 changed = true;
             }
-            if (changed) graph.ClearCache();
+            if (changed)
+            {
+                UpdateGraphRepresentation();
+                graph.ClearCache();
+            }
         }
 
         private void UpdateGraphRepresentation()

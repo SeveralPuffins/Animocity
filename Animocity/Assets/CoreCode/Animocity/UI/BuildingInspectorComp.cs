@@ -96,9 +96,15 @@ namespace Animocity.UI
             }
             Unselect();
         }
-
-        internal void ClearContentPane()
+        internal void UnselectAllTabs()
         {
+            foreach (Transform t in tabPane)
+            {
+                t.GetComponent<Image>().color = new Color(0.2f, 0.0f, 0.0f, 0.5f);
+            }
+        }
+        internal void ClearContentPane()
+        {   
             foreach (Transform item in contentPane)
             {
                 if (item.tag != "NoClear")

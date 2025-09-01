@@ -4,7 +4,7 @@
     <value>1</value>
     <edible>false</edible>
     <description>Rusting sheets, coils of wire, lumps of stuff, and dead machines from the world that was. </description>
-    <iconPath>Temporary/Icons/GenericResource</iconPath>
+    <iconPath>Main/Icons/ResIcon_Scrap</iconPath>
   </ResourceBlue>
   <ResourceBlue label="Stone">
     <value>5</value>
@@ -16,6 +16,6 @@
     <value>5</value>
     <edible>true</edible>
     <description>One food, two foods, many foods!</description>
-    <iconPath>Temporary/Icons/GenericResource</iconPath>
+    <iconPath>Main/Icons/ResIcon_Food</iconPath>
   </ResourceBlue>
 </Resources>

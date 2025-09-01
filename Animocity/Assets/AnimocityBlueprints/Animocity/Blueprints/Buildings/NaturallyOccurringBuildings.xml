@@ -43,6 +43,7 @@
     <components>
       <li Class="BuildingComponentData_StaffRequirement">
         <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <maxStaff>40</maxStaff>
         <minStaff>20</minStaff>
         <efficiencyAtMax>1.0</efficiencyAtMax>
@@ -56,6 +57,7 @@
       </li>
       <li Class="BuildingComponentData_Production">
         <componentClass>Animocity.Cities.BuildingComponent_Production</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <supportedProcesses>
           <li>ScrapMining</li>
         </supportedProcesses>

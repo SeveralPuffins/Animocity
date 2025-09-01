@@ -16,6 +16,7 @@
       <li Class="BuildingComponentData_Power">
         <componentClass>Animocity.Cities.BuildingComponent_PowerSupplier</componentClass>
         <powerAmount>200.0</powerAmount>
+        <iconPath>Main/Icons/BuildingIcon_Power</iconPath>
     </li>
     </components>
     <buildRequirements>
@@ -56,6 +57,7 @@
       <li Class="BuildingComponentData_Power">
         <componentClass>Animocity.Cities.BuildingComponent_PowerSupplier</componentClass>
         <powerAmount>200.0</powerAmount>
+        <iconPath>Main/Icons/BuildingIcon_Power</iconPath>
     </li>
     </components>
     <buildRequirements>
@@ -96,6 +98,7 @@
     <components>
       <li Class="BuildingComponentData_StaffRequirement">
         <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <maxStaff>10</maxStaff>
         <minStaff>4</minStaff>
         <efficiencyAtMax>1.0</efficiencyAtMax>
@@ -105,6 +108,8 @@
           <li>Pioneers</li>
           <li>Labourers</li>
           <li>Mechanists</li>
+          <li>Virtuosi</li>
+          <li>Technologists</li>
         </populationTypesAccepted>
       </li>
       <li Class="BuildingComponentData_NeedSource">
@@ -112,6 +117,7 @@
         <consumable>Food</consumable>
         <consumptionPerPersonPerMinute>0.01</consumptionPerPersonPerMinute>
         <baseQuality>1</baseQuality>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
       </li>
     </components>
     <buildRequirements>
@@ -152,6 +158,7 @@
       <li Class="BuildingComponentData_Transport">
         <componentClass>Animocity.Cities.BuildingComponent_Transport</componentClass>
         <transitCost>0.05</transitCost>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
       </li>
     </components>
   </BuildingBlueprint>

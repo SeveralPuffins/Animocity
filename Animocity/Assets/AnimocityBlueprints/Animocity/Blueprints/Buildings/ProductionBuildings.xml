@@ -49,12 +49,14 @@
     <components>
       <li Class="BuildingComponentData_Production">
         <componentClass>Animocity.Cities.BuildingComponent_Production</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <supportedProcesses>
           <li>CornFarming</li>
         </supportedProcesses>
       </li>
       <li Class="BuildingComponentData_StaffRequirement">
         <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <maxStaff>10</maxStaff>
         <minStaff>4</minStaff>
         <efficiencyAtMax>1.0</efficiencyAtMax>
@@ -64,6 +66,8 @@
           <li>Pioneers</li>
           <li>Labourers</li>
           <li>Mechanists</li>
+          <li>Virtuosi</li>
+          <li>Technologists</li>
         </populationTypesAccepted>
       </li>
     </components>
@@ -116,10 +120,12 @@
     <components>
       <li Class="BuildingComponentData_Power">
         <componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Power</iconPath>
         <powerAmount>30.0</powerAmount>
       </li>
       <li Class="BuildingComponentData_StaffRequirement">
         <componentClass>Animocity.Cities.BuildingComponent_StaffRequirement</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <maxStaff>100</maxStaff>
         <minStaff>30</minStaff>
         <efficiencyAtMax>1.0</efficiencyAtMax>
@@ -129,10 +135,13 @@
           <li>Pioneers</li>
           <li>Labourers</li>
           <li>Mechanists</li>
+          <li>Virtuosi</li>
+          <li>Technologists</li>
         </populationTypesAccepted>
       </li>
       <li Class="BuildingComponentData_Production">
         <componentClass>Animocity.Cities.BuildingComponent_Production</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Production</iconPath>
         <supportedProcesses>
           <li>SmeltingIron</li>
           <li>SmeltingCopper</li>

@@ -63,10 +63,11 @@ namespace Animocity.Cities
             else if (HasInspector())
             {
                 Button tabButton = UIPrefabHelpers.Current.GetInspectorButton();
-
+                tabButton.transform.GetChild(0).GetComponent<Image>().sprite = this.Data.GetSprite();
                 tabButton.onClick.AddListener(() =>
                 {
                     OnSelectInspectorTab(inspector);
+                    tabButton.GetComponent<Image>().color = new Color(0.1f, 0.3f, 0.1f, 0.5f);
                 });
                 tabButton.transform.SetParent(inspector.tabPane);
 
@@ -76,6 +77,7 @@ namespace Animocity.Cities
 
         protected virtual void OnSelectInspectorTab(BuildingInspectorComp inspector)
         {
+            inspector.UnselectAllTabs();
             inspector.ClearContentPane();
             this.PopulateInspectorContentPane(inspector.contentPane);
         }

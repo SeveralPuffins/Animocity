@@ -57,10 +57,12 @@
     <components>
       <li Class="BuildingComponentData_Power">
         <componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Power</iconPath>
         <powerAmount>2.0</powerAmount>
       </li>
       <li Class="BuildingComponentData_Housing">
         <componentClass>Animocity.Cities.BuildingComponent_Housing</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Housing</iconPath>
         <minSatisfaction>0.3</minSatisfaction>
         <maxSatisfaction>1.0</maxSatisfaction>
         <capacity>24</capacity>
@@ -118,10 +120,12 @@
     <components>
       <li Class="BuildingComponentData_Power">
         <componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Power</iconPath>
         <powerAmount>2.0</powerAmount>
       </li>
       <li Class="BuildingComponentData_Housing">
         <componentClass>Animocity.Cities.BuildingComponent_Housing</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Housing</iconPath>
         <minSatisfaction>0.3</minSatisfaction>
         <maxSatisfaction>1.0</maxSatisfaction>
         <capacity>24</capacity>
@@ -162,6 +166,7 @@
     <components>
       <li Class="BuildingComponentData_Housing">
         <componentClass>Animocity.Cities.BuildingComponent_Housing</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Housing</iconPath>
         <minSatisfaction>0.5</minSatisfaction>
         <maxSatisfaction>0.6</maxSatisfaction>
         <capacity>40</capacity>
@@ -216,11 +221,13 @@
     </tilesNeeded>
     <components>
       <li Class="BuildingComponentData_Power">
+        <iconPath>Main/Icons/BuildingIcon_Power</iconPath>
         <componentClass>Animocity.Cities.BuildingComponent_PowerConsumer</componentClass>
         <powerAmount>10.0</powerAmount>
     </li>
       <li Class="BuildingComponentData_Housing">
         <componentClass>Animocity.Cities.BuildingComponent_Housing</componentClass>
+        <iconPath>Main/Icons/BuildingIcon_Housing</iconPath>
         <minSatisfaction>0.20</minSatisfaction>
         <maxSatisfaction>0.6</maxSatisfaction>
         <capacity>120</capacity>
